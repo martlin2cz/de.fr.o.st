@@ -1,8 +1,21 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>cz.martlin</groupId>
-  <artifactId>de.fr.o.st</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>de.fr.o.st</name>
-  <description>Discuss forums offline statistics (de.fr.o.st), a tool for analysis of comments in web site's posts' comments</description>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<groupId>cz.martlin</groupId>
+	<artifactId>de.fr.o.st</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	
+	<name>de.fr.o.st</name>
+	<description>Discuss forums offline statistics (de.fr.o.st), a tool for analysis of comments in web site's posts' comments</description>
+
+
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.htmlparser/htmlparser -->
+		<dependency>
+			<groupId>org.htmlparser</groupId>
+			<artifactId>htmlparser</artifactId>
+			<version>2.1</version>
+		</dependency>
+	</dependencies>
 </project>
