@@ -6,11 +6,11 @@ import java.net.URL;
 import org.htmlparser.tags.Html;
 
 import cz.martlin.defrost.base.ForumDescriptorBase;
+import cz.martlin.defrost.core.DefrostException;
+import cz.martlin.defrost.core.Networker;
+import cz.martlin.defrost.core.PostParser;
 import cz.martlin.defrost.dataobj.Post;
 import cz.martlin.defrost.impl.IDnesForumDesc;
-import cz.martlin.defrost.impl.PostParser;
-import cz.martlin.defrost.tools.Networker;
-import cz.martlin.defrost.tools.NetworkingException;
 
 public class _Testing {
 
@@ -31,7 +31,7 @@ public class _Testing {
 		Post post;
 		try {
 			 post = parser.loadAndParse(url);
-		} catch (NetworkingException e) {
+		} catch (DefrostException e) {
 			e.printStackTrace();
 			return;
 		}
@@ -51,7 +51,7 @@ public class _Testing {
 		Html html;
 		try {
 			html = networker.query(url);
-		} catch (NetworkingException e) {
+		} catch (DefrostException e) {
 			e.printStackTrace();
 			return;
 		}

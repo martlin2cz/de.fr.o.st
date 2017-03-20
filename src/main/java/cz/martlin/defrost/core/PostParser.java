@@ -1,4 +1,4 @@
-package cz.martlin.defrost.impl;
+package cz.martlin.defrost.core;
 
 import java.net.URL;
 import java.util.Calendar;
@@ -13,9 +13,14 @@ import cz.martlin.defrost.base.ForumDescriptorBase;
 import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.Post;
 import cz.martlin.defrost.dataobj.User;
-import cz.martlin.defrost.tools.Networker;
-import cz.martlin.defrost.tools.NetworkingException;
 
+/**
+ * Does the parsing of the one post, based on {@link ForumDescriptorBase}
+ * instance.
+ * 
+ * @author martin
+ *
+ */
 public class PostParser {
 
 	private final ForumDescriptorBase desc;
@@ -23,12 +28,19 @@ public class PostParser {
 
 	public PostParser(ForumDescriptorBase desc) {
 		super();
-		
+
 		this.desc = desc;
 		this.networker = new Networker();
 	}
 
-	public Post loadAndParse(URL url) throws NetworkingException {
+	/**
+	 * Loads and parses the post on given url.
+	 * 
+	 * @param url
+	 * @return
+	 * @throws DefrostException
+	 */
+	public Post loadAndParse(URL url) throws DefrostException {
 		try {
 			Html html = networker.query(url);
 			String title = desc.inferPostTitle(html);
@@ -36,12 +48,19 @@ public class PostParser {
 			List<Comment> comments = inferComments(cmts);
 
 			return new Post(title, url, comments);
-		} catch (NetworkingException e) {
-			throw new NetworkingException("Cannot analyze post " + url.toExternalForm(), e);
+		} catch (DefrostException e) {
+			throw new DefrostException("Cannot analyze post " + url.toExternalForm(), e);
 		}
 	}
 
-	private List<Comment> inferComments(NodeList cmts) throws NetworkingException {
+	/**
+	 * Infers comments from given list of comments elements.
+	 * 
+	 * @param cmts
+	 * @return
+	 * @throws DefrostException
+	 */
+	private List<Comment> inferComments(NodeList cmts) throws DefrostException {
 		List<Comment> comments = new LinkedList<>();
 
 		for (int i = 0; i < cmts.size(); i++) {
@@ -50,8 +69,8 @@ public class PostParser {
 			Comment comment;
 			try {
 				comment = inferComment(node);
-			} catch (NetworkingException e) {
-				throw new NetworkingException("Cannot infer comment from :" + node.toHtml(), e);
+			} catch (DefrostException e) {
+				throw new DefrostException("Cannot infer comment from: " + node.toHtml(), e);
 			}
 			comments.add(comment);
 		}
@@ -59,11 +78,18 @@ public class PostParser {
 		return comments;
 	}
 
-	private Comment inferComment(Node comment) throws NetworkingException {
+	/**
+	 * From given comment element parses and creates comment object.
+	 * 
+	 * @param comment
+	 * @return
+	 * @throws DefrostException
+	 */
+	private Comment inferComment(Node comment) throws DefrostException {
 		User author = desc.inferCommentAuthor(comment);
 		Calendar date = desc.inferCommentDate(comment);
 		String content = desc.inferCommentContent(comment);
-		
+
 		return new Comment(author, date, content);
 	}
 

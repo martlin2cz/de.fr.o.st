@@ -1,4 +1,4 @@
-package cz.martlin.defrost.tools;
+package cz.martlin.defrost.core;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -10,21 +10,19 @@ import org.htmlparser.filters.TagNameFilter;
 import org.htmlparser.tags.Html;
 import org.htmlparser.util.NodeList;
 
+import cz.martlin.defrost.base.ForumDescriptorBase;
+
+/**
+ * Tools to be used in {@link ForumDescriptorBase}'s implementations.
+ * @author martin
+ *
+ */
 public class ParserTools {
 
 	public ParserTools() {
 	}
-	// XXX
-	// public NodeList findChildrenByTagName(Node node, String tag) {
-	// NodeFilter filter = new TagNameFilter(tag);
-	// NodeList children = node.getChildren();
-	//
-	// NodeList filtered = children.extractAllNodesThatMatch(filter);
-	//
-	// return filtered;
-	// }
 
-	public Node findChildByTagName(Node node, String tag) throws NetworkingException {
+	public Node findChildByTagName(Node node, String tag) throws DefrostException {
 		NodeFilter filter = new TagNameFilter(tag);
 		NodeList children = node.getChildren();
 
@@ -32,7 +30,7 @@ public class ParserTools {
 		return getFirst(filtered, "with tag " + tag);
 	}
 
-	public Node findChildById(Node node, String id) throws NetworkingException {
+	public Node findChildById(Node node, String id) throws DefrostException {
 		NodeFilter filter = new HasAttributeFilter("id", id);
 		NodeList children = node.getChildren();
 
@@ -41,7 +39,7 @@ public class ParserTools {
 		return getFirst(filtered, "with id " + id);
 	}
 
-	public Node findChildByClassName(Node node, String clazz) throws NetworkingException {
+	public Node findChildByClassName(Node node, String clazz) throws DefrostException {
 		NodeFilter filter = new HasAttributeFilter("class", clazz);
 		NodeList children = node.getChildren();
 
@@ -51,11 +49,11 @@ public class ParserTools {
 
 	///////////////////////////////////////////////////////////////////////////
 
-	public Node inferHead(Html document) throws NetworkingException {
+	public Node inferHead(Html document) throws DefrostException {
 		return findChildByTagName(document, "head");
 	}
 
-	public Node inferBody(Html document) throws NetworkingException {
+	public Node inferBody(Html document) throws DefrostException {
 		return findChildByTagName(document, "body");
 	}
 
@@ -64,11 +62,10 @@ public class ParserTools {
 		return child.getText();
 	}
 
-	private Node getFirst(NodeList nodes, String desc) throws NetworkingException {
+	private Node getFirst(NodeList nodes, String desc) throws DefrostException {
 
 		if (nodes.size() < 1) {
-			throw new NetworkingException("No such tag (" + desc + ") in " + nodes.toHtml());
-			// TODO FIXME ParserException?
+			throw new DefrostException("No such tag (" + desc + ") in " + nodes.toHtml());
 		}
 
 		return nodes.elementAt(0);

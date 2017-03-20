@@ -11,10 +11,15 @@ import org.htmlparser.tags.Html;
 import org.htmlparser.util.NodeList;
 
 import cz.martlin.defrost.base.ForumDescriptorBase;
+import cz.martlin.defrost.core.DefrostException;
+import cz.martlin.defrost.core.ParserTools;
 import cz.martlin.defrost.dataobj.User;
-import cz.martlin.defrost.tools.NetworkingException;
-import cz.martlin.defrost.tools.ParserTools;
 
+/**
+ * Implements basic forum descripor with some common spefications.
+ * @author martin
+ *
+ */
 public abstract class CommonPostDescriptor implements ForumDescriptorBase {
 
 	protected final ParserTools tools;
@@ -28,10 +33,16 @@ public abstract class CommonPostDescriptor implements ForumDescriptorBase {
 		this.commentsElemsFilter = new IsCommentFilter();
 	}
 
-	public abstract Node inferPostContentElem(Html document) throws NetworkingException;
+	/**
+	 * From the whole document infers the element of post content (i.e. main bar, with title, text and discuss).
+	 * @param document
+	 * @return
+	 * @throws DefrostException
+	 */
+	public abstract Node inferPostContentElem(Html document) throws DefrostException;
 
 	@Override
-	public String inferPostTitle(Html document) throws NetworkingException {
+	public String inferPostTitle(Html document) throws DefrostException {
 		Node content = inferPostContentElem(document);
 
 		Node title = inferTitleElemFromPC(content);
@@ -39,10 +50,16 @@ public abstract class CommonPostDescriptor implements ForumDescriptorBase {
 		return text.getText();
 	}
 
-	public abstract Node inferTitleElemFromPC(Node content) throws NetworkingException;
+	/**
+	 * From the post content element infers the element owning the post title.
+	 * @param content
+	 * @return
+	 * @throws DefrostException
+	 */
+	public abstract Node inferTitleElemFromPC(Node content) throws DefrostException;
 
 	@Override
-	public NodeList inferCommentsElements(Html document) throws NetworkingException {
+	public NodeList inferCommentsElements(Html document) throws DefrostException {
 		Node content = inferPostContentElem(document);
 		Node discuss = inferDiscussElemFromPC(content);
 		NodeList children = discuss.getChildren();
@@ -52,12 +69,23 @@ public abstract class CommonPostDescriptor implements ForumDescriptorBase {
 		return filtered;
 	}
 
-	public abstract Node inferDiscussElemFromPC(Node content) throws NetworkingException;
+	/**
+	 * From the post content element infers the element owning the discuss.
+	 * @param content
+	 * @return
+	 * @throws DefrostException
+	 */
+	public abstract Node inferDiscussElemFromPC(Node content) throws DefrostException;
 
+	/**
+	 * Checks whether is given node (child of {@link #inferDiscussElemFromPC(Node)}) is the comment element or not (i.e. advertisment or so).
+	 * @param node
+	 * @return
+	 */
 	public abstract boolean isCommentElem(Node node);
 
 	@Override
-	public User inferCommentAuthor(Node comment) throws NetworkingException {
+	public User inferCommentAuthor(Node comment) throws DefrostException {
 		Node author = inferCommentAuthorElemFromC(comment);
 
 		String name = inferNameFromCA(author);
@@ -66,14 +94,32 @@ public abstract class CommonPostDescriptor implements ForumDescriptorBase {
 		return new User(id, name);
 	}
 
-	public abstract Node inferCommentAuthorElemFromC(Node comment) throws NetworkingException;
+	/**
+	 * From given comment element infers element containing the author.
+	 * @param comment
+	 * @return
+	 * @throws DefrostException
+	 */
+	public abstract Node inferCommentAuthorElemFromC(Node comment) throws DefrostException;
 
-	public abstract String inferNameFromCA(Node author) throws NetworkingException;
+	/**
+	 * From given author element infers the author's name.
+	 * @param author
+	 * @return
+	 * @throws DefrostException
+	 */
+	public abstract String inferNameFromCA(Node author) throws DefrostException;
 
-	public abstract String inferIdFromCA(Node author) throws NetworkingException;
+	/**
+	 * From given author element infers the author's id.
+	 * @param author
+	 * @return
+	 * @throws DefrostException
+	 */
+	public abstract String inferIdFromCA(Node author) throws DefrostException;
 
 	@Override
-	public Calendar inferCommentDate(Node comment) throws NetworkingException {
+	public Calendar inferCommentDate(Node comment) throws DefrostException {
 		Node elem = inferDateElemFromC(comment);
 		String text = tools.inferTextChild(elem);
 
@@ -81,13 +127,24 @@ public abstract class CommonPostDescriptor implements ForumDescriptorBase {
 		try {
 			date = dateFormat.parse(text);
 		} catch (ParseException e) {
-			throw new NetworkingException("Date " + text + " cannot be parsed");
+			throw new DefrostException("Date " + text + " cannot be parsed");
 		}
 		return tools.dateToCalendar(date);
 	}
 
-	public abstract Node inferDateElemFromC(Node comment) throws NetworkingException;
+	/**
+	 * From given comment element infers element owning the comment date string.
+	 * @param comment
+	 * @return
+	 * @throws DefrostException
+	 */
+	public abstract Node inferDateElemFromC(Node comment) throws DefrostException;
 
+	/**
+	 * Class implementing filtering of nodes using the {@link CommonPostDescriptor#isCommentElem(Node)} method.
+	 * @author martin
+	 *
+	 */
 	private class IsCommentFilter implements NodeFilter {
 
 		private static final long serialVersionUID = 7251877789819204590L;

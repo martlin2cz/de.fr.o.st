@@ -6,7 +6,7 @@ import org.htmlparser.Node;
 import org.htmlparser.tags.Div;
 import org.htmlparser.tags.Html;
 
-import cz.martlin.defrost.tools.NetworkingException;
+import cz.martlin.defrost.core.DefrostException;
 
 public class IDnesForumDesc extends CommonPostDescriptor  {
 
@@ -15,7 +15,7 @@ public class IDnesForumDesc extends CommonPostDescriptor  {
 	}
 
 	@Override
-	public Node inferPostContentElem(Html document) throws NetworkingException {
+	public Node inferPostContentElem(Html document) throws DefrostException {
 		Node node0 = tools.inferBody(document);
 		Node node1 = tools.findChildById(node0, "main");
 		Node node2 = tools.findChildByClassName(node1, "m-bg-1");
@@ -28,7 +28,7 @@ public class IDnesForumDesc extends CommonPostDescriptor  {
 	}
 
 	@Override
-	public Node inferTitleElemFromPC(Node content) throws NetworkingException {
+	public Node inferTitleElemFromPC(Node content) throws DefrostException {
 		Node node0 = content;
 		Node node1 = tools.findChildByClassName(node0, "moot-art");
 		Node node2 = tools.findChildByTagName(node1, "h3");
@@ -37,7 +37,7 @@ public class IDnesForumDesc extends CommonPostDescriptor  {
 	}
 
 	@Override
-	public Node inferDiscussElemFromPC(Node content) throws NetworkingException {
+	public Node inferDiscussElemFromPC(Node content) throws DefrostException {
 		Node node0 = content;
 		Node node1 = tools.findChildById(node0, "disc-list");
 		return node1;
@@ -48,7 +48,7 @@ public class IDnesForumDesc extends CommonPostDescriptor  {
 		return node instanceof Div;	//TODO and class = contribution
 	}
 	
-	private Node inferComentBodyElement(Node comment) throws NetworkingException {
+	private Node inferComentBodyElement(Node comment) throws DefrostException {
 		Node node0 = comment;
 		Node node1 = tools.findChildByTagName(node0, "table");
 		//Node node2 = tools.findChildByTagName(node1, "tbody");
@@ -60,7 +60,7 @@ public class IDnesForumDesc extends CommonPostDescriptor  {
 	
 	
 	@Override
-	public Node inferCommentAuthorElemFromC(Node comment) throws NetworkingException {
+	public Node inferCommentAuthorElemFromC(Node comment) throws DefrostException {
 		Node node0 = inferComentBodyElement(comment);
 		Node node1 = tools.findChildByTagName(node0, "h4");
 		return node1;
@@ -69,19 +69,19 @@ public class IDnesForumDesc extends CommonPostDescriptor  {
 
 
 	@Override
-	public String inferNameFromCA(Node author) throws NetworkingException {
+	public String inferNameFromCA(Node author) throws DefrostException {
 		Node nodeA = tools.findChildByTagName(author, "a");
 		return tools.inferTextChild(nodeA);
 	}
 
 	@Override
-	public String inferIdFromCA(Node author) throws NetworkingException {
+	public String inferIdFromCA(Node author) throws DefrostException {
 		Node nodeSup = tools.findChildByTagName(author, "sup");
 		return tools.inferTextChild(nodeSup);
 	}
 	
 	@Override
-	public Node inferDateElemFromC(Node comment) throws NetworkingException {
+	public Node inferDateElemFromC(Node comment) throws DefrostException {
 		Node node0 = inferComentBodyElement(comment);
 		Node node1 = tools.findChildByClassName(node0, "properties");
 		Node node2 = tools.findChildByClassName(node1, "date hover");
@@ -90,7 +90,7 @@ public class IDnesForumDesc extends CommonPostDescriptor  {
 	}
 
 	@Override
-	public String inferCommentContent(Node comment) throws NetworkingException {
+	public String inferCommentContent(Node comment) throws DefrostException {
 		Node node0 = inferComentBodyElement(comment);
 		Node node1 = tools.findChildByClassName(node0, "user-text");
 		return node1.toHtml();
