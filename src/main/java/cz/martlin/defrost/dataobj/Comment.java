@@ -65,7 +65,7 @@ public class Comment {
 
 	@Override
 	public String toString() {
-		return "Comment [author=" + author + ", when=" + date + ", content=" + content + "]";
+		return "Comment [author=" + author + ", date=" + (date != null ? date.getTime() : null) + ", content=" + content + "]";
 	}
 
 }
