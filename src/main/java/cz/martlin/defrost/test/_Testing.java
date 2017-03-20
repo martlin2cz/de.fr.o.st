@@ -3,7 +3,7 @@ package cz.martlin.defrost.test;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.htmlparser.util.NodeList;
+import org.htmlparser.tags.Html;
 
 import cz.martlin.defrost.tools.Networker;
 import cz.martlin.defrost.tools.NetworkingException;
@@ -19,6 +19,9 @@ public class _Testing {
 		System.out.println("Done.");
 	}
 
+	/**
+	 * 
+	 */
 	private static void testNetworker() {
 		Networker networker = new Networker();
 		
@@ -30,15 +33,16 @@ public class _Testing {
 			return;
 		}
 		
-		NodeList nodes;
+		Html html;
 		try {
-			nodes = networker.query(url);
+			html = networker.query(url);
 		} catch (NetworkingException e) {
 			e.printStackTrace();
 			return;
 		}
 		
-		System.out.println(nodes.asString());
-	}
+		System.out.println(html.toHtml());
+		System.out.println("----");
+			}
 
 }

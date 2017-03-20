@@ -4,13 +4,13 @@ import java.util.Calendar;
 
 public class Comment {
 	private final String author;
-	private final Calendar when;
+	private final Calendar date;
 	private final String content;
 
-	public Comment(String author, Calendar when, String content) {
+	public Comment(String author, Calendar date, String content) {
 		super();
 		this.author = author;
-		this.when = when;
+		this.date = date;
 		this.content = content;
 	}
 
@@ -18,8 +18,8 @@ public class Comment {
 		return author;
 	}
 
-	public Calendar getWhen() {
-		return when;
+	public Calendar getDate() {
+		return date;
 	}
 
 	public String getContent() {
@@ -32,7 +32,7 @@ public class Comment {
 		int result = 1;
 		result = prime * result + ((author == null) ? 0 : author.hashCode());
 		result = prime * result + ((content == null) ? 0 : content.hashCode());
-		result = prime * result + ((when == null) ? 0 : when.hashCode());
+		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		return result;
 	}
 
@@ -55,17 +55,17 @@ public class Comment {
 				return false;
 		} else if (!content.equals(other.content))
 			return false;
-		if (when == null) {
-			if (other.when != null)
+		if (date == null) {
+			if (other.date != null)
 				return false;
-		} else if (!when.equals(other.when))
+		} else if (!date.equals(other.date))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Comment [author=" + author + ", when=" + when + ", content=" + content + "]";
+		return "Comment [author=" + author + ", when=" + date + ", content=" + content + "]";
 	}
 
 }
