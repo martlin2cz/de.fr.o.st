@@ -3,18 +3,18 @@ package cz.martlin.defrost.dataobj;
 import java.util.Calendar;
 
 public class Comment {
-	private final String author;
+	private final User author;
 	private final Calendar date;
 	private final String content;
 
-	public Comment(String author, Calendar date, String content) {
+	public Comment(User author, Calendar date, String content) {
 		super();
 		this.author = author;
 		this.date = date;
 		this.content = content;
 	}
 
-	public String getAuthor() {
+	public User getAuthor() {
 		return author;
 	}
 
@@ -65,7 +65,8 @@ public class Comment {
 
 	@Override
 	public String toString() {
-		return "Comment [author=" + author + ", date=" + (date != null ? date.getTime() : null) + ", content=" + content + "]";
+		return "Comment [author=" + author + ", date=" + (date != null ? date.getTime() : null) + ", content=" + content
+				+ "]";
 	}
 
 }

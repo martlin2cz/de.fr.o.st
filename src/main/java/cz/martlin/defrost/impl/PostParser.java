@@ -12,6 +12,7 @@ import org.htmlparser.util.NodeList;
 import cz.martlin.defrost.base.ForumDescriptorBase;
 import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.Post;
+import cz.martlin.defrost.dataobj.User;
 import cz.martlin.defrost.tools.Networker;
 import cz.martlin.defrost.tools.NetworkingException;
 
@@ -31,7 +32,7 @@ public class PostParser {
 		try {
 			Html html = networker.query(url);
 			String title = desc.inferPostTitle(html);
-			NodeList cmts = desc.inferComments(html);
+			NodeList cmts = desc.inferCommentsElements(html);
 			List<Comment> comments = inferComments(cmts);
 
 			return new Post(title, url, comments);
@@ -59,7 +60,7 @@ public class PostParser {
 	}
 
 	private Comment inferComment(Node comment) throws NetworkingException {
-		String author = desc.inferCommentAuthor(comment);
+		User author = desc.inferCommentAuthor(comment);
 		Calendar date = desc.inferCommentDate(comment);
 		String content = desc.inferCommentContent(comment);
 		

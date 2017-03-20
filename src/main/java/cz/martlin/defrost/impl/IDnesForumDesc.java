@@ -1,53 +1,101 @@
 package cz.martlin.defrost.impl;
 
-import java.util.Calendar;
+import java.text.SimpleDateFormat;
 
 import org.htmlparser.Node;
+import org.htmlparser.tags.Div;
 import org.htmlparser.tags.Html;
-import org.htmlparser.util.NodeList;
 
-import cz.martlin.defrost.base.ForumDescriptorBase;
 import cz.martlin.defrost.tools.NetworkingException;
-import cz.martlin.defrost.tools.ParserTools;
 
-public class IDnesForumDesc implements ForumDescriptorBase {
+public class IDnesForumDesc extends CommonPostDescriptor  {
 
-	private final ParserTools tools;
-	
 	public IDnesForumDesc() {
-		this.tools = new ParserTools();
+		super(new SimpleDateFormat("d.M.y h:mm"));
 	}
 
 	@Override
-	public String inferPostTitle(Html document) throws NetworkingException {
-		Node head = tools.inferHead(document);
-		Node title = tools.findChildByTagName(head, "title");
-		Node text = title.getFirstChild();
-		return text.getText();
+	public Node inferPostContentElem(Html document) throws NetworkingException {
+		Node node0 = tools.inferBody(document);
+		Node node1 = tools.findChildById(node0, "main");
+		Node node2 = tools.findChildByClassName(node1, "m-bg-1");
+		Node node3 = tools.findChildByClassName(node2, "m-bg-2");
+		Node node4 = tools.findChildByClassName(node3, "m-bg-3");
+		Node node5 = tools.findChildByClassName(node4, "m-bg-4");
+		Node node6 = tools.findChildByClassName(node5, "content");
+		Node node7 = tools.findChildByClassName(node6, "col-a");
+		return node7;
 	}
 
 	@Override
-	public NodeList inferComments(Html document) throws NetworkingException {
-		//TODO
-		return document.getChildren().elementAt(1).getChildren();
+	public Node inferTitleElemFromPC(Node content) throws NetworkingException {
+		Node node0 = content;
+		Node node1 = tools.findChildByClassName(node0, "moot-art");
+		Node node2 = tools.findChildByTagName(node1, "h3");
+		Node node3 = tools.findChildByTagName(node2, "a");
+		return node3;
 	}
 
 	@Override
-	public String inferCommentAuthor(Node coment) throws NetworkingException {
-		// TODO
-		return "kdoo";
+	public Node inferDiscussElemFromPC(Node content) throws NetworkingException {
+		Node node0 = content;
+		Node node1 = tools.findChildById(node0, "disc-list");
+		return node1;
 	}
 
 	@Override
-	public Calendar inferCommentDate(Node coment) throws NetworkingException {
-		// TODO 
-		return Calendar.getInstance();
+	public boolean isCommentElem(Node node) {
+		return node instanceof Div;	//TODO and class = contribution
+	}
+	
+	private Node inferComentBodyElement(Node comment) throws NetworkingException {
+		Node node0 = comment;
+		Node node1 = tools.findChildByTagName(node0, "table");
+		//Node node2 = tools.findChildByTagName(node1, "tbody");
+		Node node3 = tools.findChildByTagName(node1, "tr");
+		//Node node4 = tools.findChildByTagName(node3, "td");
+		Node node5 = tools.findChildByClassName(node3, "cell");
+		return node5;
+	}
+	
+	
+	@Override
+	public Node inferCommentAuthorElemFromC(Node comment) throws NetworkingException {
+		Node node0 = inferComentBodyElement(comment);
+		Node node1 = tools.findChildByTagName(node0, "h4");
+		return node1;
+	}
+
+
+
+	@Override
+	public String inferNameFromCA(Node author) throws NetworkingException {
+		Node nodeA = tools.findChildByTagName(author, "a");
+		return tools.inferTextChild(nodeA);
 	}
 
 	@Override
-	public String inferCommentContent(Node coment) throws NetworkingException {
-		// TODO 
-		return "cooo";
+	public String inferIdFromCA(Node author) throws NetworkingException {
+		Node nodeSup = tools.findChildByTagName(author, "sup");
+		return tools.inferTextChild(nodeSup);
 	}
+	
+	@Override
+	public Node inferDateElemFromC(Node comment) throws NetworkingException {
+		Node node0 = inferComentBodyElement(comment);
+		Node node1 = tools.findChildByClassName(node0, "properties");
+		Node node2 = tools.findChildByClassName(node1, "date hover");
+
+		return node2;
+	}
+
+	@Override
+	public String inferCommentContent(Node comment) throws NetworkingException {
+		Node node0 = inferComentBodyElement(comment);
+		Node node1 = tools.findChildByClassName(node0, "user-text");
+		return node1.toHtml();
+	}
+
+
 
 }
