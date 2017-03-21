@@ -8,10 +8,10 @@ import org.htmlparser.tags.Html;
 import org.htmlparser.util.NodeList;
 
 import cz.martlin.defrost.core.DefrostException;
+@Deprecated
+public class XXX_EmiminoForumDesc extends XXX_CommonPostDescriptor {
 
-public class EmiminoForumDesc extends CommonPostDescriptor {
-
-	public EmiminoForumDesc() {
+	public XXX_EmiminoForumDesc() {
 		super(new EmiminoDateFormat());
 	}
 

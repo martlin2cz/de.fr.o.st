@@ -11,10 +11,10 @@ import org.htmlparser.nodes.TagNode;
 import org.htmlparser.tags.Html;
 import org.htmlparser.util.NodeList;
 
-import cz.martlin.defrost.base.ForumDescriptorBase;
+import cz.martlin.defrost.base.XXX_ForumDescriptorBase;
 
 /**
- * Tools to be used in {@link ForumDescriptorBase}'s implementations.
+ * Tools to be used in {@link XXX_ForumDescriptorBase}'s implementations.
  * 
  * @author martin
  *
@@ -115,5 +115,15 @@ public class ParserTools {
 
 		return calendar;
 	}
+///////////////////////////////////////////////////////////////////////////
 
+	public NodeList applySelector(Node node, String selector) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("not imeplemented #applySelector");
+	}
+
+	public Node applySelectorGetFirst(Node node, String selector) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("not imeplemented #applySelector");
+	}
 }

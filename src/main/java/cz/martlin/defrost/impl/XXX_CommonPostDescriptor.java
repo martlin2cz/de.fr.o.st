@@ -10,7 +10,7 @@ import org.htmlparser.NodeFilter;
 import org.htmlparser.tags.Html;
 import org.htmlparser.util.NodeList;
 
-import cz.martlin.defrost.base.ForumDescriptorBase;
+import cz.martlin.defrost.base.XXX_ForumDescriptorBase;
 import cz.martlin.defrost.core.DefrostException;
 import cz.martlin.defrost.core.ParserTools;
 import cz.martlin.defrost.dataobj.User;
@@ -21,13 +21,14 @@ import cz.martlin.defrost.dataobj.User;
  * @author martin
  *
  */
-public abstract class CommonPostDescriptor implements ForumDescriptorBase {
+@Deprecated
+public abstract class XXX_CommonPostDescriptor implements XXX_ForumDescriptorBase {
 
 	protected final ParserTools tools;
 	private final DateFormat dateFormat;
 	private final NodeFilter commentsElemsFilter;
 
-	public CommonPostDescriptor(DateFormat dateFormat) {
+	public XXX_CommonPostDescriptor(DateFormat dateFormat) {
 		super();
 		this.tools = new ParserTools();
 		this.dateFormat = dateFormat;
@@ -173,7 +174,7 @@ public abstract class CommonPostDescriptor implements ForumDescriptorBase {
 
 	/**
 	 * Class implementing filtering of nodes using the
-	 * {@link CommonPostDescriptor#isCommentElem(Node)} method.
+	 * {@link XXX_CommonPostDescriptor#isCommentElem(Node)} method.
 	 * 
 	 * @author martin
 	 *

@@ -1,113 +1,87 @@
 package cz.martlin.defrost.impl;
 
+import java.net.URL;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import org.htmlparser.Node;
-import org.htmlparser.NodeFilter;
-import org.htmlparser.filters.NodeClassFilter;
-import org.htmlparser.filters.NotFilter;
-import org.htmlparser.nodes.TagNode;
-import org.htmlparser.tags.Div;
-import org.htmlparser.tags.Html;
-import org.htmlparser.util.NodeList;
+import cz.martlin.defrost.base.CommonForumDescriptor;
 
-import cz.martlin.defrost.core.DefrostException;
+public class IDnesForumDesc extends CommonForumDescriptor {
 
-public class IDnesForumDesc extends CommonPostDescriptor {
+	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yy hh:mm");
 
 	public IDnesForumDesc() {
-		super(new SimpleDateFormat("d.M.yyyy h:mm"));
+		super(//
+				"http://" + CATEGORY_ID_NEEDLE + ".idnes.cz/archiv.aspx?strana=" + PAGE_NUMBER_NEEDLE, //
+				"http://" + CATEGORY_ID_NEEDLE + ".idnes.cz/archiv.aspx?c=" + POST_ID_NEEDLE, //
+				DATE_FORMAT);//
+
 	}
 
 	@Override
-	public Node inferPostContentElem(Html document) throws DefrostException {
-		Node node0 = tools.inferBody(document);
-		Node node1 = tools.findChildById(node0, "main");
-		Node node2 = tools.findChildByClassName(node1, "m-bg-1");
-		Node node3 = tools.findChildByClassName(node2, "m-bg-2");
-		Node node4 = tools.findChildByClassName(node3, "m-bg-3");
-		Node node5 = tools.findChildByClassName(node4, "m-bg-4");
-		Node node6 = tools.findChildByClassName(node5, "content");
-		Node node7 = tools.findChildByClassName(node6, "col-a");
-		return node7;
+	public String postUrlToPostId(URL url) {
+		// TODO okej, easy
+		return null;
 	}
 
 	@Override
-	public Node inferTitleElemFromPC(Node content) throws DefrostException {
-		Node node0 = content;
-		Node node1 = tools.findChildByClassName(node0, "moot-art");
-		Node node2 = tools.findChildByTagName(node1, "h3");
-		Node node3 = tools.findChildByTagName(node2, "a");
-		return node3;
+	public String postUrlToCategoryId(URL url) {
+		// TODO okey, easy
+		return null;
 	}
 
 	@Override
-	public Node inferDiscussElemFromPC(Node content) throws DefrostException {
-		Node node0 = content;
-		Node node1 = tools.findChildById(node0, "disc-list");
-		return node1;
+	public String selectorOfPostsItemsInCategorySite() {
+		// TODO ok
+		return null;
 	}
 
 	@Override
-	public boolean isCommentElem(Node node) {
-		if (!(node instanceof Div)) {
-			return false;
-		}
-
-		if (!tools.isClass(node, "contribution")) {
-			return false;
-		}
-
-		return true;
-	}
-
-	private Node inferComentBodyElement(Node comment) throws DefrostException {
-		Node node0 = comment;
-		Node node1 = tools.findChildByTagName(node0, "table");
-		Node node3 = tools.findChildByTagName(node1, "tr");
-		Node node5 = tools.findChildByClassName(node3, "cell");
-		return node5;
+	public String selectorOfPostLinkInPostItem() {
+		// TODO ok
+		return null;
 	}
 
 	@Override
-	public Node inferCommentAuthorElemFromC(Node comment) throws DefrostException {
-		Node node0 = inferComentBodyElement(comment);
-		Node node1 = tools.findChildByTagName(node0, "h4");
-		return node1;
+	public String selectorOfTitleInPostSite() {
+		// TODO ok, easy
+		return null;
 	}
 
 	@Override
-	public String inferNameFromCA(Node author) throws DefrostException {
-		Node nodeA = tools.findChildByTagName(author, "a");
-
-		NodeFilter filter = new NotFilter(new NodeClassFilter(TagNode.class));
-		NodeList chars = nodeA.getChildren().extractAllNodesThatMatch(filter);
-		return chars.toHtml();
+	public String selectorOfDiscussElementInPostSite() {
+		// TODO ok
+		return null;
 	}
 
 	@Override
-	public String inferIdFromCA(Node author) throws DefrostException {
-		return inferNameFromCA(author); // FIXME
-		// Node nodeSup = tools.findChildByTagName(author, "sup");
-		// return nodeSup.toHtml();// FIXME
-		// // tools.inferTextChild(nodeSup);
+	public String selectorOfCommentsElementInDiscuss() {
+		// TODO okay
+		return null;
 	}
 
 	@Override
-	public Node inferDateElemFromC(Node comment) throws DefrostException {
-		Node node0 = inferComentBodyElement(comment);
-		Node node1 = tools.findChildByClassName(node0, "properties");
-		Node node2 = tools.findChildByClassName(node1, "date hover");
-
-		return node2;
+	public String selectorOfIdInComment() {
+		// TODO ok?
+		return null;
 	}
 
 	@Override
-	public Node inferCommentElementFromC(Node comment) throws DefrostException {
-		Node node0 = inferComentBodyElement(comment);
-		Node node1 = tools.findChildByClassName(node0, "user-text");
+	public String selectorOfNameInComment() {
+		// TODO ok?
+		return null;
+	}
 
-		return node1;
+	@Override
+	public String selectorOfCommentDateInComment() {
+		// TODO okay
+		return null;
+	}
+
+	@Override
+	public String selectorOfCommentContentInComment() {
+		// TODO okay, easy
+		return null;
 	}
 
 }

@@ -9,13 +9,13 @@ import org.htmlparser.Node;
 import org.htmlparser.tags.Html;
 import org.htmlparser.util.NodeList;
 
-import cz.martlin.defrost.base.ForumDescriptorBase;
+import cz.martlin.defrost.base.XXX_ForumDescriptorBase;
 import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.Post;
 import cz.martlin.defrost.dataobj.User;
 
 /**
- * Does the parsing of the one post, based on {@link ForumDescriptorBase}
+ * Does the parsing of the one post, based on {@link XXX_ForumDescriptorBase}
  * instance.
  * 
  * @author martin
@@ -23,10 +23,10 @@ import cz.martlin.defrost.dataobj.User;
  */
 public class PostParser {
 
-	private final ForumDescriptorBase desc;
+	private final XXX_ForumDescriptorBase desc;
 	private final Networker networker;
 
-	public PostParser(ForumDescriptorBase desc) {
+	public PostParser(XXX_ForumDescriptorBase desc) {
 		super();
 
 		this.desc = desc;

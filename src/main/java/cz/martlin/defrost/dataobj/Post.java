@@ -1,20 +1,45 @@
 package cz.martlin.defrost.dataobj;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
 public class Post {
 
+	@Deprecated
 	private final String title;
+	@Deprecated
 	private final URL url;
+	private final PostInfo info;
 	private final List<Comment> comments;
 
+	
 	public Post(String title, URL url, List<Comment> comments) {
 		super();
 		this.title = title;
 		this.url = url;
+		this.info = new PostInfo("TODO", "TODO", "TODO");	//TODO FIXME
 		this.comments = comments;
 	}
+
+	
+	
+	public Post(PostInfo info, List<Comment> comments) {
+		super();
+		this.info = info;
+		this.comments = comments;
+		
+		//XXX: 
+		try {
+			this.url = new URL("http://XXX.com");
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		this.title = "XXX";
+	}
+
+
 
 	public String getTitle() {
 		return title;

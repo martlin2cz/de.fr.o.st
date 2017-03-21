@@ -8,14 +8,14 @@ import java.util.Date;
 
 import org.htmlparser.tags.Html;
 
-import cz.martlin.defrost.base.ForumDescriptorBase;
+import cz.martlin.defrost.base.XXX_ForumDescriptorBase;
 import cz.martlin.defrost.core.DefrostException;
 import cz.martlin.defrost.core.Networker;
 import cz.martlin.defrost.core.PostParser;
 import cz.martlin.defrost.dataobj.Post;
 import cz.martlin.defrost.impl.EmiminoDateFormat;
-import cz.martlin.defrost.impl.EmiminoForumDesc;
-import cz.martlin.defrost.impl.IDnesForumDesc;
+import cz.martlin.defrost.impl.XXX_EmiminoForumDesc;
+import cz.martlin.defrost.impl.XXX_IDnesForumDesc;
 
 public class _Testing {
 
@@ -23,9 +23,11 @@ public class _Testing {
 
 		System.out.println("Testing someting...");
 		// testNetworker();
-		//testDateParsers();
-		//testNovinkycz();
-		testEmimino();
+		// testDateParsers();
+		// testNovinkycz();
+		
+		//testEmimino();
+		//testEmiminos();
 
 		System.out.println("Done.");
 	}
@@ -45,10 +47,9 @@ public class _Testing {
 		System.out.println(d1);
 
 	}
-	
 
 	private static void testEmimino() {
-		ForumDescriptorBase desc = new EmiminoForumDesc();
+		XXX_ForumDescriptorBase desc = new XXX_EmiminoForumDesc();
 		PostParser parser = new PostParser(desc);
 		PostPrettyPrinter printer = new PostPrettyPrinter();
 		URL url = toURL("http://www.emimino.cz/clanky/hormonalni-antikoncepce-2016/");
@@ -71,8 +72,30 @@ public class _Testing {
 		printer.print(post, System.out);
 	}
 
+	private static void testEmiminos() {
+		String[] urls = new String[] { //
+				"http://www.emimino.cz/denicky/trapeni-13148/", //
+				"http://www.emimino.cz/denicky/introvert-na-malomeste-13119/", //
+				"http://www.emimino.cz/denicky/me-hororove-tehotenstvi-12804/", //
+		};
+
+		XXX_ForumDescriptorBase desc = new XXX_EmiminoForumDesc();
+		PostParser parser = new PostParser(desc);
+
+		for (String url : urls) {
+			URL theUrl = toURL(url);
+
+			try {
+				Post post = parser.loadAndParse(theUrl);
+				System.out.println(post.getTitle() + ", " + post.getComments().size() + " comments");
+			} catch (DefrostException e) {
+				System.err.println(e);
+			}
+		}
+	}
+
 	private static void testNovinkycz() {
-		ForumDescriptorBase desc = new IDnesForumDesc();
+		XXX_ForumDescriptorBase desc = new XXX_IDnesForumDesc();
 		PostParser parser = new PostParser(desc);
 		PostPrettyPrinter printer = new PostPrettyPrinter();
 		URL url = toURL("http://technet.idnes.cz/diskuse.aspx?iddiskuse=A170317_143422_veda_dvz");

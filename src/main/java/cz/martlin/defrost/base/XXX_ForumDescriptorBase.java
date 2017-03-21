@@ -16,7 +16,8 @@ import cz.martlin.defrost.dataobj.User;
  * @author martin
  *
  */
-public interface ForumDescriptorBase {
+@Deprecated
+public interface XXX_ForumDescriptorBase {
 
 	/**
 	 * From given post infers title of post.
