@@ -51,7 +51,13 @@ public class _Testing {
 		ForumDescriptorBase desc = new EmiminoForumDesc();
 		PostParser parser = new PostParser(desc);
 		PostPrettyPrinter printer = new PostPrettyPrinter();
-		URL url = toURL("http://www.emimino.cz/denicky/trapeni-13148/");
+		URL url = toURL("http://www.emimino.cz/clanky/hormonalni-antikoncepce-2016/");
+		// http://www.emimino.cz/denicky/trapeni-13148/
+		// http://www.emimino.cz/denicky/introvert-na-malomeste-13119/
+		// http://www.emimino.cz/denicky/me-hororove-tehotenstvi-12804/
+		// http://www.emimino.cz/denicky/vysledky-a-jak-jit-dal-13023/
+		// http://www.emimino.cz/souteze/vyrobte-si-zivy-domaci-jogurt/
+		// http://www.emimino.cz/clanky/pet-porci-ovoce-a-zeleniny-je-to-snadne/
 
 		Post post;
 		try {

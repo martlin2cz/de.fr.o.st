@@ -17,7 +17,9 @@ public class PostPrettyPrinter {
 		out.print(post.getTitle());
 		out.print(" (");
 		out.print(post.getUrl().toExternalForm());
-		out.print("):");
+		out.print("), ");
+		out.print(post.getComments().size() + " comments");
+		out.print(":");
 		out.println();
 
 		for (Comment comment : post.getComments()) {
