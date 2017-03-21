@@ -7,6 +7,7 @@ import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.filters.TagNameFilter;
+import org.htmlparser.nodes.TagNode;
 import org.htmlparser.tags.Html;
 import org.htmlparser.util.NodeList;
 
@@ -46,6 +47,13 @@ public class ParserTools {
 		NodeList filtered = children.extractAllNodesThatMatch(filter);
 		return getFirst(filtered, "with class " + clazz);
 	}
+	
+	public boolean isClass(Node node, String clazz) {
+		TagNode elem = (TagNode) node;
+		String clazzReal = elem.getAttribute("class");
+		
+		return clazz.equals(clazzReal);
+	}
 
 	///////////////////////////////////////////////////////////////////////////
 
@@ -78,5 +86,7 @@ public class ParserTools {
 
 		return calendar;
 	}
+
+
 
 }

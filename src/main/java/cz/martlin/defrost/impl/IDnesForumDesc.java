@@ -3,15 +3,20 @@ package cz.martlin.defrost.impl;
 import java.text.SimpleDateFormat;
 
 import org.htmlparser.Node;
+import org.htmlparser.NodeFilter;
+import org.htmlparser.filters.NodeClassFilter;
+import org.htmlparser.filters.NotFilter;
+import org.htmlparser.nodes.TagNode;
 import org.htmlparser.tags.Div;
 import org.htmlparser.tags.Html;
+import org.htmlparser.util.NodeList;
 
 import cz.martlin.defrost.core.DefrostException;
 
-public class IDnesForumDesc extends CommonPostDescriptor  {
+public class IDnesForumDesc extends CommonPostDescriptor {
 
 	public IDnesForumDesc() {
-		super(new SimpleDateFormat("d.M.y h:mm"));
+		super(new SimpleDateFormat("d.M.yyyy h:mm"));
 	}
 
 	@Override
@@ -45,20 +50,25 @@ public class IDnesForumDesc extends CommonPostDescriptor  {
 
 	@Override
 	public boolean isCommentElem(Node node) {
-		return node instanceof Div;	//TODO and class = contribution
+		if (!(node instanceof Div)) {
+			return false;
+		}
+
+		if (!tools.isClass(node, "contribution")) {
+			return false;
+		}
+
+		return true;
 	}
-	
+
 	private Node inferComentBodyElement(Node comment) throws DefrostException {
 		Node node0 = comment;
 		Node node1 = tools.findChildByTagName(node0, "table");
-		//Node node2 = tools.findChildByTagName(node1, "tbody");
 		Node node3 = tools.findChildByTagName(node1, "tr");
-		//Node node4 = tools.findChildByTagName(node3, "td");
 		Node node5 = tools.findChildByClassName(node3, "cell");
 		return node5;
 	}
-	
-	
+
 	@Override
 	public Node inferCommentAuthorElemFromC(Node comment) throws DefrostException {
 		Node node0 = inferComentBodyElement(comment);
@@ -66,20 +76,23 @@ public class IDnesForumDesc extends CommonPostDescriptor  {
 		return node1;
 	}
 
-
-
 	@Override
 	public String inferNameFromCA(Node author) throws DefrostException {
 		Node nodeA = tools.findChildByTagName(author, "a");
-		return tools.inferTextChild(nodeA);
+
+		NodeFilter filter = new NotFilter(new NodeClassFilter(TagNode.class));
+		NodeList chars = nodeA.getChildren().extractAllNodesThatMatch(filter);
+		return chars.toHtml();
 	}
 
 	@Override
 	public String inferIdFromCA(Node author) throws DefrostException {
-		Node nodeSup = tools.findChildByTagName(author, "sup");
-		return tools.inferTextChild(nodeSup);
+		return inferNameFromCA(author);	//FIXME
+//		Node nodeSup = tools.findChildByTagName(author, "sup");
+//		return nodeSup.toHtml();// FIXME
+//											// tools.inferTextChild(nodeSup);
 	}
-	
+
 	@Override
 	public Node inferDateElemFromC(Node comment) throws DefrostException {
 		Node node0 = inferComentBodyElement(comment);
@@ -93,9 +106,8 @@ public class IDnesForumDesc extends CommonPostDescriptor  {
 	public String inferCommentContent(Node comment) throws DefrostException {
 		Node node0 = inferComentBodyElement(comment);
 		Node node1 = tools.findChildByClassName(node0, "user-text");
-		return node1.toHtml();
+		
+		return node1.getChildren().toHtml().trim();
 	}
-
-
 
 }

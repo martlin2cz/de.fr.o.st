@@ -47,7 +47,7 @@ public abstract class CommonPostDescriptor implements ForumDescriptorBase {
 
 		Node title = inferTitleElemFromPC(content);
 		Node text = title.getFirstChild();
-		return text.getText();
+		return text.getText().trim();
 	}
 
 	/**
@@ -122,12 +122,13 @@ public abstract class CommonPostDescriptor implements ForumDescriptorBase {
 	public Calendar inferCommentDate(Node comment) throws DefrostException {
 		Node elem = inferDateElemFromC(comment);
 		String text = tools.inferTextChild(elem);
+		String trimmed = text.trim();
 
 		Date date;
 		try {
-			date = dateFormat.parse(text);
+			date = dateFormat.parse(trimmed);
 		} catch (ParseException e) {
-			throw new DefrostException("Date " + text + " cannot be parsed");
+			throw new DefrostException("Date " + trimmed + " cannot be parsed");
 		}
 		return tools.dateToCalendar(date);
 	}
