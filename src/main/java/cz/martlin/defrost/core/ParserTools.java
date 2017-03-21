@@ -48,6 +48,14 @@ public class ParserTools {
 		return getFirst(filtered, "with class " + clazz);
 	}
 	
+	public NodeList findChildrenByClassName(Node node, String clazz) throws DefrostException {
+		NodeFilter filter = new HasAttributeFilter("class", clazz);
+		NodeList children = node.getChildren();
+
+		NodeList filtered = children.extractAllNodesThatMatch(filter);
+		return filtered;
+	}
+	
 	public boolean isClass(Node node, String clazz) {
 		TagNode elem = (TagNode) node;
 		String clazzReal = elem.getAttribute("class");
@@ -73,7 +81,7 @@ public class ParserTools {
 	private Node getFirst(NodeList nodes, String desc) throws DefrostException {
 
 		if (nodes.size() < 1) {
-			throw new DefrostException("No such tag (" + desc + ") in " + nodes.toHtml());
+			throw new DefrostException("No such tag (" + desc + ") in \"" + nodes.toHtml() + "\"");
 		}
 
 		return nodes.elementAt(0);

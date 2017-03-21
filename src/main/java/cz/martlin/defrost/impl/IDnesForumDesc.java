@@ -87,10 +87,10 @@ public class IDnesForumDesc extends CommonPostDescriptor {
 
 	@Override
 	public String inferIdFromCA(Node author) throws DefrostException {
-		return inferNameFromCA(author);	//FIXME
-//		Node nodeSup = tools.findChildByTagName(author, "sup");
-//		return nodeSup.toHtml();// FIXME
-//											// tools.inferTextChild(nodeSup);
+		return inferNameFromCA(author); // FIXME
+		// Node nodeSup = tools.findChildByTagName(author, "sup");
+		// return nodeSup.toHtml();// FIXME
+		// // tools.inferTextChild(nodeSup);
 	}
 
 	@Override
@@ -103,11 +103,11 @@ public class IDnesForumDesc extends CommonPostDescriptor {
 	}
 
 	@Override
-	public String inferCommentContent(Node comment) throws DefrostException {
+	public Node inferCommentElementFromC(Node comment) throws DefrostException {
 		Node node0 = inferComentBodyElement(comment);
 		Node node1 = tools.findChildByClassName(node0, "user-text");
-		
-		return node1.getChildren().toHtml().trim();
+
+		return node1;
 	}
 
 }

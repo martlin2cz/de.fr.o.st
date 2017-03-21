@@ -36,7 +36,7 @@ public class PostPrettyPrinter {
 			out.println();
 
 			out.print(comment.getContent());
-			out.println();
+			out.println("\n");
 		}
 	}
 }

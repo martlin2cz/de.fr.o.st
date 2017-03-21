@@ -13,6 +13,8 @@ import cz.martlin.defrost.core.DefrostException;
 import cz.martlin.defrost.core.Networker;
 import cz.martlin.defrost.core.PostParser;
 import cz.martlin.defrost.dataobj.Post;
+import cz.martlin.defrost.impl.EmiminoDateFormat;
+import cz.martlin.defrost.impl.EmiminoForumDesc;
 import cz.martlin.defrost.impl.IDnesForumDesc;
 
 public class _Testing {
@@ -21,8 +23,9 @@ public class _Testing {
 
 		System.out.println("Testing someting...");
 		// testNetworker();
-		testDateParsers();
-		testNovinkycz();
+		//testDateParsers();
+		//testNovinkycz();
+		testEmimino();
 
 		System.out.println("Done.");
 	}
@@ -41,6 +44,25 @@ public class _Testing {
 		}
 		System.out.println(d1);
 
+	}
+	
+
+	private static void testEmimino() {
+		ForumDescriptorBase desc = new EmiminoForumDesc();
+		PostParser parser = new PostParser(desc);
+		PostPrettyPrinter printer = new PostPrettyPrinter();
+		URL url = toURL("http://www.emimino.cz/denicky/trapeni-13148/");
+
+		Post post;
+		try {
+			post = parser.loadAndParse(url);
+		} catch (DefrostException e) {
+			e.printStackTrace();
+			return;
+		}
+
+		// System.out.println(post);
+		printer.print(post, System.out);
 	}
 
 	private static void testNovinkycz() {
