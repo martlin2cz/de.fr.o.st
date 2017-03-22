@@ -11,7 +11,6 @@ import org.htmlparser.filters.HasAttributeFilter;
 
 import cz.martlin.defrost.base.SelectorsUsingForumDescriptor;
 import cz.martlin.defrost.core.DefrostException;
-import cz.martlin.defrost.dataobj.User;
 
 public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 
@@ -29,6 +28,8 @@ public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 
 	}
 
+	///////////////////////////////////////////////////////////////////////////
+
 	@Override
 	public String postUrlToPostId(URL url) {
 		Map<String, String> params = tools.getUrlQueryParams(url);
@@ -43,6 +44,8 @@ public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 		int index = host.indexOf('.');
 		return host.substring(0, index);
 	}
+
+	///////////////////////////////////////////////////////////////////////////
 
 	@Override
 	public String selectorOfPostsItemsInCategorySite() {
@@ -96,16 +99,15 @@ public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 		NodeFilter filter = new HasAttributeFilter("class", "date hover");
 		return tools.applyFilterGetFirst(comment, filter);
 	}
-	
+
 	///////////////////////////////////////////////////////////////////////////
-	
-	
+
 	@Override
 	protected String findCommentAuthorId(Node comment) throws Exception {
 		String id = super.findCommentAuthorId(comment);
 		return id.replaceAll("\\s+", "");
 	}
-	
+
 	@Override
 	protected String findCommentAuthorName(Node comment) throws Exception {
 		String name = super.findCommentAuthorName(comment);

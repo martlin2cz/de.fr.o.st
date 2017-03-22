@@ -5,6 +5,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.IdentityHashMap;
 import java.util.List;
 
 import org.htmlparser.tags.Html;
@@ -19,6 +20,7 @@ import cz.martlin.defrost.dataobj.Post;
 import cz.martlin.defrost.dataobj.PostIdentifier;
 import cz.martlin.defrost.dataobj.PostInfo;
 import cz.martlin.defrost.impl.EmiminoDateFormat;
+import cz.martlin.defrost.impl.EmiminoForumDesc;
 import cz.martlin.defrost.impl.IDnesForumDesc;
 import cz.martlin.defrost.impl.XXX_EmiminoForumDesc;
 import cz.martlin.defrost.impl.XXX_IDnesForumDesc;
@@ -30,28 +32,25 @@ public class _Testing {
 		System.out.println("Testing someting...");
 		// testNetworker();
 		// testDateParsers();
-		// testNovinkycz();
 
-		testIDnesCategory();
-		testIDnesPosts();
-		// testEmimino();
-		// testEmiminos();
-
+		testEmimino();
+		//testIdnes();
+		
 		System.out.println("Done.");
 	}
 
-
-	private static void testIDnesCategory() {
-		BaseForumDescriptor desc = new IDnesForumDesc();
+	private static void testCategory(BaseForumDescriptor desc, String category1, String category2) {
 		CategoryParser parser = new CategoryParser(desc);
 		PrettyPrinter printer = new PrettyPrinter();
 
 		try {
-			List<PostInfo> infos1 = parser.listPosts("zpravy", 1);
+			System.out.println("Category " + category1 + " of " + desc + ":");
+			List<PostInfo> infos1 = parser.listPosts(category1, 1);
 			printer.printPostsInfos(infos1, System.out);
 			System.out.println();
 
-			List<PostInfo> infos2 = parser.listPosts("zpravy", 2);
+			System.out.println("Category " + category2 + " of " + desc + ":");
+			List<PostInfo> infos2 = parser.listPosts(category2, 2);
 			printer.printPostsInfos(infos2, System.out);
 			System.out.println();
 
@@ -59,20 +58,18 @@ public class _Testing {
 			e.printStackTrace();
 		}
 	}
-	
-	private static void testIDnesPosts() {
-		BaseForumDescriptor desc = new IDnesForumDesc();
+
+	private static void testPosts(BaseForumDescriptor desc, PostIdentifier identifier1, PostIdentifier identifier2) {
 		PostParser parser = new PostParser(desc);
 		PrettyPrinter printer = new PrettyPrinter();
 
 		try {
-			
-			PostIdentifier identifier1 = new PostIdentifier("zpravy", "A170321_083811_domaci_fka");
+			System.out.println("Post " + identifier1 + " of " + desc + ":");
 			Post post1 = parser.loadAndParse(identifier1, 1);
 			printer.printPost(post1, System.out);
 			System.out.println();
 
-			PostIdentifier identifier2 = new PostIdentifier("zpravy", "A170321_151510_domaci_kop");
+			System.out.println("Post " + identifier2 + " of " + desc + ":");
 			Post post2 = parser.loadAndParse(identifier2, 1);
 			printer.printPost(post2, System.out);
 			System.out.println();
@@ -82,6 +79,30 @@ public class _Testing {
 		}
 	}
 
+	private static void testEmimino() {
+		BaseForumDescriptor desc = new EmiminoForumDesc();
+
+		String category1 = "tehotenstvi-porod";
+		String category2 = "od-batolete-do-puberty";
+		testCategory(desc, category1, category2);
+		
+		PostIdentifier identifier1 = new PostIdentifier("whatever", "dat-odklad-65roku-284416");
+		PostIdentifier identifier2 = new PostIdentifier("whatever", "kamaradka-z-uherskeho-brodu-266104");
+		testPosts(desc, identifier1, identifier2);
+
+	}
+
+	private static void testIdnes() {
+		BaseForumDescriptor desc = new IDnesForumDesc();
+
+		String category1 = "zpravy";
+		String category2 = "zpravy";
+		testCategory(desc, category1, category2);
+
+		PostIdentifier identifier1 = new PostIdentifier("zpravy", "A170321_083811_domaci_fka");
+		PostIdentifier identifier2 = new PostIdentifier("zpravy", "A170321_151510_domaci_kop");
+		testPosts(desc, identifier1, identifier2);
+	}
 
 	private static void testDateParsers() {
 		SimpleDateFormat sdf1 = new SimpleDateFormat("d.M.yyyy h:mm");
