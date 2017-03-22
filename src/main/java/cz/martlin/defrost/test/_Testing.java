@@ -34,26 +34,28 @@ public class _Testing {
 		// testNetworker();
 		// testDateParsers();
 
-		//testEmimino();
-		 //testIdnes();
+		// testEmimino();
+		// testIdnes();
 
-		 testLoader();
-		 
+		testLoader();
+
 		System.out.println("Done.");
 	}
 
 	private static void testLoader() {
 		StatusReporter reporter = new LoggingReporter();
 		BaseForumDescriptor emimino = new EmiminoForumDesc();
-		//BaseForumDescriptor idnes = new IDnesForumDesc();
+		// BaseForumDescriptor idnes = new IDnesForumDesc();
 		Loader loader = new Loader(emimino, reporter);
-		
-		List<PostInfo> posts1 = loader.loadCategory("detske-nadobi");
+
+		String category1 = "detske-nadobi";
+		List<PostInfo> posts1 = loader.loadCategory(category1);
 		System.out.println(posts1.size());
-		
-		List<Post> post1 = loader.loadPost(posts1.get(0).getIdentifier());
-		System.out.println(post1.size());
-		
+
+		PostIdentifier identifier1 = new PostIdentifier("whatever", "kranialni-remodelacni-orteza-mate-zkusenost-82977");
+		Post post1 = loader.loadPost(identifier1);
+		System.out.println(post1.getComments().size());
+
 	}
 
 	private static void testEmimino() {
@@ -61,20 +63,19 @@ public class _Testing {
 
 		String category1 = "tehotenstvi-porod";
 		testCategory(desc, category1);
-		
+
 		String category2 = "od-batolete-do-puberty";
 		testCategory(desc, category2);
-		
+
 		String category3 = "emimino-podporuje";
 		testCategory(desc, category3);
-		
-		
+
 		PostIdentifier identifier1 = new PostIdentifier("whatever", "dat-odklad-65roku-284416");
 		testPosts(desc, identifier1);
-		
+
 		PostIdentifier identifier2 = new PostIdentifier("whatever", "kamaradka-z-uherskeho-brodu-266104");
 		testPosts(desc, identifier2);
-		
+
 	}
 
 	private static void testIdnes() {
@@ -85,7 +86,7 @@ public class _Testing {
 
 		PostIdentifier identifier1 = new PostIdentifier("zpravy", "A170321_083811_domaci_fka");
 		testPosts(desc, identifier1);
-		
+
 		PostIdentifier identifier2 = new PostIdentifier("zpravy", "A170321_151510_domaci_kop");
 		testPosts(desc, identifier2);
 	}
@@ -100,7 +101,7 @@ public class _Testing {
 				PagedDataResult<List<PostInfo>> result = parser.listPosts(category, i);
 				List<PostInfo> infos = result.getData();
 				printer.printPostsInfos(infos, System.out);
-				
+
 				if (!result.isHasNextPage()) {
 					System.out.println("No more pages");
 					break;
@@ -122,7 +123,7 @@ public class _Testing {
 				PagedDataResult<Post> result = parser.loadAndParse(identifier, i);
 				Post post = result.getData();
 				printer.printPost(post, System.out);
-				
+
 				if (!result.isHasNextPage()) {
 					System.out.println("No more pages");
 					break;

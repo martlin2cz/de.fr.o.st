@@ -14,7 +14,7 @@ import cz.martlin.defrost.misc.StatusReporter;
 
 public class Loader implements Interruptable {
 
-	private final BaseForumDescriptor desc;
+	// private final BaseForumDescriptor desc;
 	private final StatusReporter reporter;
 	private final CategoryParser categoryParser;
 	private final PostParser postParser;
@@ -22,7 +22,7 @@ public class Loader implements Interruptable {
 	private boolean interrupted;
 
 	public Loader(BaseForumDescriptor desc, StatusReporter reporter) {
-		this.desc = desc;
+		// this.desc = desc;
 		this.reporter = reporter;
 		this.categoryParser = new CategoryParser(desc);
 		this.postParser = new PostParser(desc);
@@ -60,26 +60,30 @@ public class Loader implements Interruptable {
 
 		return posts;
 	}
-	
-	public List<Post> loadPost(PostIdentifier post) {
-		restart();
-		List<Post> posts = new ArrayList<>();
 
-		reporter.startingLoadPost(post);
+	public Post loadPost(PostIdentifier identifier) {
+		restart();
+		Post post = null;
+
+		reporter.startingLoadPost(identifier);
 		for (int i = 1;; i++) {
-			reporter.loadingPostPage(post, i);
+			reporter.loadingPostPage(identifier, i);
 
 			PagedDataResult<Post> result;
 			try {
-				result = postParser.loadAndParse(post, i);
+				result = postParser.loadAndParse(identifier, i);
 			} catch (DefrostException e) {
 				reporter.error(e);
 				continue;
 			}
-			posts.add(result.getData());
+			if (post == null) {
+				post = result.getData();
+			} else {
+				post.getComments().addAll(result.getData().getComments());
+			}
 
 			if (!result.isHasNextPage()) {
-				reporter.lastPostPage(post, i);
+				reporter.lastPostPage(identifier, i);
 				break;
 			}
 			if (isInterrupted()) {
@@ -87,9 +91,9 @@ public class Loader implements Interruptable {
 				break;
 			}
 		}
-		reporter.postLoaded(post);
+		reporter.postLoaded(identifier);
 
-		return posts;
+		return post;
 	}
 	///////////////////////////////////////////////////////////////////////////////
 

@@ -33,6 +33,7 @@ public class PostParser {
 		this.networker = new Networker();
 	}
 
+ 	
 	/**
 	 * Loads and parses the post on given url.
 	 * 
@@ -59,7 +60,7 @@ public class PostParser {
 		try {
 			info = desc.findPostInfoInPost(identifier, html);
 		} catch (Exception e) {
-			throw new DefrostException("Cannot infer post title", e);
+			throw new DefrostException("Cannot infer post info", e);
 		}
 
 		NodeList cmts;
