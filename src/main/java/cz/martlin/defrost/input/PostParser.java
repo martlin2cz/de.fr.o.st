@@ -1,4 +1,4 @@
-package cz.martlin.defrost.core;
+package cz.martlin.defrost.input;
 
 import java.net.URL;
 import java.util.Calendar;
@@ -18,6 +18,7 @@ import cz.martlin.defrost.dataobj.Post;
 import cz.martlin.defrost.dataobj.PostIdentifier;
 import cz.martlin.defrost.dataobj.PostInfo;
 import cz.martlin.defrost.dataobj.User;
+import cz.martlin.defrost.misc.DefrostException;
 
 public class PostParser {
 	private final Logger LOG = Logger.getLogger(getClass().getName());

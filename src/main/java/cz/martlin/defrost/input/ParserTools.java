@@ -1,4 +1,4 @@
-package cz.martlin.defrost.core;
+package cz.martlin.defrost.input;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -16,6 +16,8 @@ import org.htmlparser.filters.TagNameFilter;
 import org.htmlparser.nodes.TagNode;
 import org.htmlparser.tags.Html;
 import org.htmlparser.util.NodeList;
+
+import cz.martlin.defrost.misc.DefrostException;
 
 public class ParserTools {
 

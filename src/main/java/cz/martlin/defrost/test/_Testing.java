@@ -5,26 +5,24 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.IdentityHashMap;
 import java.util.List;
 
 import org.htmlparser.tags.Html;
 
 import cz.martlin.defrost.base.BaseForumDescriptor;
-import cz.martlin.defrost.base.XXX_ForumDescriptorBase;
-import cz.martlin.defrost.core.DefrostException;
-import cz.martlin.defrost.core.Networker;
-import cz.martlin.defrost.core.PostParser;
-import cz.martlin.defrost.core.CategoryParser;
 import cz.martlin.defrost.dataobj.PagedDataResult;
 import cz.martlin.defrost.dataobj.Post;
 import cz.martlin.defrost.dataobj.PostIdentifier;
 import cz.martlin.defrost.dataobj.PostInfo;
-import cz.martlin.defrost.impl.EmiminoDateFormat;
-import cz.martlin.defrost.impl.EmiminoForumDesc;
-import cz.martlin.defrost.impl.IDnesForumDesc;
-import cz.martlin.defrost.impl.XXX_EmiminoForumDesc;
-import cz.martlin.defrost.impl.XXX_IDnesForumDesc;
+import cz.martlin.defrost.impls.EmiminoForumDesc;
+import cz.martlin.defrost.impls.IDnesForumDesc;
+import cz.martlin.defrost.input.CategoryParser;
+import cz.martlin.defrost.input.Loader;
+import cz.martlin.defrost.input.Networker;
+import cz.martlin.defrost.input.PostParser;
+import cz.martlin.defrost.misc.DefrostException;
+import cz.martlin.defrost.misc.LoggingReporter;
+import cz.martlin.defrost.misc.StatusReporter;
 
 public class _Testing {
 
@@ -37,9 +35,25 @@ public class _Testing {
 		// testDateParsers();
 
 		//testEmimino();
-		 testIdnes();
+		 //testIdnes();
 
+		 testLoader();
+		 
 		System.out.println("Done.");
+	}
+
+	private static void testLoader() {
+		StatusReporter reporter = new LoggingReporter();
+		BaseForumDescriptor emimino = new EmiminoForumDesc();
+		//BaseForumDescriptor idnes = new IDnesForumDesc();
+		Loader loader = new Loader(emimino, reporter);
+		
+		List<PostInfo> posts1 = loader.loadCategory("detske-nadobi");
+		System.out.println(posts1.size());
+		
+		List<Post> post1 = loader.loadPost(posts1.get(0).getIdentifier());
+		System.out.println(post1.size());
+		
 	}
 
 	private static void testEmimino() {

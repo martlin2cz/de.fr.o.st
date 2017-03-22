@@ -1,4 +1,4 @@
-package cz.martlin.defrost.impl;
+package cz.martlin.defrost.impls;
 
 import java.text.DateFormat;
 import java.text.FieldPosition;
@@ -92,7 +92,7 @@ public class EmiminoDateFormat extends DateFormat {
 		return cal.getTime();
 	}
 
-	protected static Date mergeDateAndTime(Date date, Date time) {
+	public static Date mergeDateAndTime(Date date, Date time) {
 		Calendar dateCal = Calendar.getInstance();
 		Calendar timeCal = Calendar.getInstance();
 		Calendar cal = Calendar.getInstance();
@@ -106,7 +106,7 @@ public class EmiminoDateFormat extends DateFormat {
 		return cal.getTime();
 	}
 
-	protected static String[] splitAtLastSpace(String string) {
+	public static String[] splitAtLastSpace(String string) {
 		int index = string.lastIndexOf(" ");
 
 		String first = string.substring(0, index);

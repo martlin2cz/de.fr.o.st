@@ -1,4 +1,4 @@
-package cz.martlin.defrost.impl;
+package cz.martlin.defrost.impls;
 
 import java.net.URL;
 
@@ -11,7 +11,7 @@ import org.htmlparser.tags.Html;
 import org.htmlparser.util.NodeList;
 
 import cz.martlin.defrost.base.SelectorsUsingForumDescriptor;
-import cz.martlin.defrost.core.DefrostException;
+import cz.martlin.defrost.misc.DefrostException;
 
 public class EmiminoForumDesc extends SelectorsUsingForumDescriptor {
 

@@ -1,4 +1,4 @@
-package cz.martlin.defrost.core;
+package cz.martlin.defrost.misc;
 
 import java.io.IOException;
 

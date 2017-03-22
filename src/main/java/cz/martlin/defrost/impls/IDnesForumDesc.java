@@ -1,4 +1,4 @@
-package cz.martlin.defrost.impl;
+package cz.martlin.defrost.impls;
 
 import java.net.URL;
 import java.text.DateFormat;
@@ -10,7 +10,7 @@ import org.htmlparser.NodeFilter;
 import org.htmlparser.filters.HasAttributeFilter;
 
 import cz.martlin.defrost.base.SelectorsUsingForumDescriptor;
-import cz.martlin.defrost.core.DefrostException;
+import cz.martlin.defrost.misc.DefrostException;
 
 public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 

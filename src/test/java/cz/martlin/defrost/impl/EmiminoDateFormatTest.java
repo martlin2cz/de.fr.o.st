@@ -10,6 +10,8 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import cz.martlin.defrost.impls.EmiminoDateFormat;
+
 public class EmiminoDateFormatTest {
 
 	private static final long DELTA = 10;

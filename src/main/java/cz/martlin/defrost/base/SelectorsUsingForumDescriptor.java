@@ -7,7 +7,7 @@ import org.htmlparser.tags.Html;
 import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.NodeList;
 
-import cz.martlin.defrost.core.DefrostException;
+import cz.martlin.defrost.misc.DefrostException;
 
 public abstract class SelectorsUsingForumDescriptor extends CommonForumDescriptor {
 
