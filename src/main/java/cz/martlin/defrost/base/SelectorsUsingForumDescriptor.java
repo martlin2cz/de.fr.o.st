@@ -30,6 +30,12 @@ public abstract class SelectorsUsingForumDescriptor extends CommonForumDescripto
 	}
 
 	@Override
+	public Node selectCategoryNextPageButton(Html document) throws Exception {
+		String selector = selectorOfCategoryNextPageButton();
+		return tools.applySelectorGetFirst(document, selector);
+	}
+
+	@Override
 	public Node selectDiscussElementInPostSite(Html document) throws DefrostException {
 		String selector = selectorOfDiscussElementInPostSite();
 		return tools.applySelectorGetFirst(document, selector);
@@ -48,7 +54,18 @@ public abstract class SelectorsUsingForumDescriptor extends CommonForumDescripto
 	}
 
 	@Override
-	public Node selectorCommentDateInComment(Node comment) throws DefrostException {
+	public Node selectPostNextPageButton(Html document) throws Exception {
+		String selector = selectorOfPostNextPageButton();
+		NodeList nodes = tools.applySelector(document, selector);
+		if (nodes.size() == 0) {
+			return null;
+		} else {
+			return nodes.elementAt(0);
+		}
+	}
+
+	@Override
+	public Node selectCommentDateInComment(Node comment) throws DefrostException {
 		String selector = selectorOfCommentDateInComment();
 		return tools.applySelectorGetFirst(comment, selector);
 	}
@@ -77,9 +94,13 @@ public abstract class SelectorsUsingForumDescriptor extends CommonForumDescripto
 
 	public abstract String selectorOfPostLinkInPostItem();
 
+	public abstract String selectorOfCategoryNextPageButton();
+
 	public abstract String selectorOfTitleInPostSite();
 
 	public abstract String selectorOfDiscussElementInPostSite();
+
+	public abstract String selectorOfPostNextPageButton();
 
 	public abstract String selectorOfCommentsElementInDiscuss();
 

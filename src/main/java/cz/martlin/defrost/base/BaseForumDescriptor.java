@@ -17,13 +17,18 @@ public interface BaseForumDescriptor {
 
 	public NodeList findPostItems(Html document) throws Exception;
 
-	public PostInfo postItemToPostInfo(Node postItem) throws Exception;
+	public PostInfo postItemToPostInfo(Node postItem, String category) throws Exception;
+	
+	public boolean hasCategoryNextPage(Html document) throws Exception;
+
 
 	///////////////////////////////////////////////////////////////////////////
 
 	public URL urlOfPost(PostIdentifier identifier, int page) throws Exception;
 
-	public PostIdentifier identifierOfPost(URL url) throws Exception;
+	public PostIdentifier identifierOfPost(URL url, String category) throws Exception;
+	
+	public boolean hasPostNextPage(Html document) throws Exception;
 
 	///////////////////////////////////////////////////////////////////////////
 

@@ -11,6 +11,7 @@ import org.htmlparser.tags.Html;
 import org.htmlparser.util.NodeList;
 
 import cz.martlin.defrost.base.BaseForumDescriptor;
+import cz.martlin.defrost.dataobj.PagedDataResult;
 import cz.martlin.defrost.dataobj.PostInfo;
 
 public class CategoryParser {
@@ -25,7 +26,7 @@ public class CategoryParser {
 		this.desc = desc;
 	}
 
-	public List<PostInfo> listPosts(String category, int page) throws DefrostException {
+	public PagedDataResult<List<PostInfo>> listPosts(String category, int page) throws DefrostException {
 		URL url;
 		try {
 			url = desc.urlOfCategory(category, page);
@@ -42,15 +43,22 @@ public class CategoryParser {
 
 		List<PostInfo> posts;
 		try {
-			posts = parsePosts(document);
+			posts = parsePosts(document, category);
 		} catch (Exception e) {
 			throw new DefrostException("Cannot parse posts of category", e);
 		}
 
-		return posts;
+		boolean hasNextPage;
+		try {
+			hasNextPage = desc.hasCategoryNextPage(document);
+		} catch (Exception e) {
+			throw new DefrostException("Cannot find if has next page", e);
+		}
+
+		return new PagedDataResult<List<PostInfo>>(posts, page, hasNextPage);
 	}
 
-	private List<PostInfo> parsePosts(Html document) throws Exception {
+	private List<PostInfo> parsePosts(Html document, String category) throws Exception {
 		List<PostInfo> posts = new LinkedList<>();
 
 		NodeList items = desc.findPostItems(document);
@@ -60,7 +68,7 @@ public class CategoryParser {
 
 			PostInfo info;
 			try {
-				info = desc.postItemToPostInfo(item);
+				info = desc.postItemToPostInfo(item, category);
 			} catch (Exception e) {
 				LOG.log(Level.WARNING, "Cannot find post info in post item", e);
 				continue;

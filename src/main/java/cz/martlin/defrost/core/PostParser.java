@@ -13,6 +13,7 @@ import org.htmlparser.util.NodeList;
 
 import cz.martlin.defrost.base.BaseForumDescriptor;
 import cz.martlin.defrost.dataobj.Comment;
+import cz.martlin.defrost.dataobj.PagedDataResult;
 import cz.martlin.defrost.dataobj.Post;
 import cz.martlin.defrost.dataobj.PostIdentifier;
 import cz.martlin.defrost.dataobj.PostInfo;
@@ -38,7 +39,7 @@ public class PostParser {
 	 * @return
 	 * @throws DefrostException
 	 */
-	public Post loadAndParse(PostIdentifier identifier, int page) throws DefrostException {
+	public PagedDataResult<Post> loadAndParse(PostIdentifier identifier, int page) throws DefrostException {
 		URL url;
 		try {
 			url = desc.urlOfPost(identifier, page);
@@ -74,7 +75,15 @@ public class PostParser {
 			throw new DefrostException("Cannot parse comments", e);
 		}
 
-		return new Post(info, comments);
+		boolean hasNextPage;
+		try {
+			hasNextPage = desc.hasPostNextPage(html);
+		} catch (Exception e) {
+			throw new DefrostException("Cannot find if post has next page", e);
+		}
+
+		Post post = new Post(info, comments);
+		return new PagedDataResult<Post>(post, page, hasNextPage);
 	}
 
 	/**

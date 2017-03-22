@@ -22,7 +22,7 @@ public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 				"http://" + CATEGORY_ID_NEEDLE + ".idnes.cz/diskuse.aspx?iddiskuse=" + POST_ID_NEEDLE, //
 				DATE_FORMAT);//
 
-		// post url:
+		// article url:
 		// "http://" + CATEGORY_ID_NEEDLE + ".idnes.cz/archiv.aspx?c="+
 		// POST_ID_NEEDLE
 
@@ -37,13 +37,13 @@ public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 		return params.get("c");
 	}
 
-	@Override
-	public String postUrlToCategoryId(URL url) {
-		String host = url.getHost();
-
-		int index = host.indexOf('.');
-		return host.substring(0, index);
-	}
+//	@Override
+//	public String postUrlToCategoryId(URL url) {
+//		String host = url.getHost();
+//
+//		int index = host.indexOf('.');
+//		return host.substring(0, index);
+//	}
 
 	///////////////////////////////////////////////////////////////////////////
 
@@ -63,6 +63,11 @@ public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 	}
 
 	@Override
+	public String selectorOfCategoryNextPageButton() {
+		return "td.tar a.ico-right span";
+	}
+	
+	@Override
 	public String selectorOfDiscussElementInPostSite() {
 		return "div#disc-list";
 	}
@@ -72,6 +77,11 @@ public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 		return "div.contribution";
 	}
 
+	@Override
+	public String selectorOfPostNextPageButton() {
+		return "td.tar a.ico-right span";
+	}
+	
 	@Override
 	public String selectorOfIdInComment() {
 		return "h4.name";
@@ -95,7 +105,7 @@ public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 	///////////////////////////////////////////////////////////////////////////
 
 	@Override
-	public Node selectorCommentDateInComment(Node comment) throws DefrostException {
+	public Node selectCommentDateInComment(Node comment) throws DefrostException {
 		NodeFilter filter = new HasAttributeFilter("class", "date hover");
 		return tools.applyFilterGetFirst(comment, filter);
 	}

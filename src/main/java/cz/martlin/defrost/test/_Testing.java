@@ -16,6 +16,7 @@ import cz.martlin.defrost.core.DefrostException;
 import cz.martlin.defrost.core.Networker;
 import cz.martlin.defrost.core.PostParser;
 import cz.martlin.defrost.core.CategoryParser;
+import cz.martlin.defrost.dataobj.PagedDataResult;
 import cz.martlin.defrost.dataobj.Post;
 import cz.martlin.defrost.dataobj.PostIdentifier;
 import cz.martlin.defrost.dataobj.PostInfo;
@@ -27,81 +28,97 @@ import cz.martlin.defrost.impl.XXX_IDnesForumDesc;
 
 public class _Testing {
 
+	private static final int PAGES_COUNT = 10;
+
 	public static void main(String[] args) {
 
 		System.out.println("Testing someting...");
 		// testNetworker();
 		// testDateParsers();
 
-		testEmimino();
-		//testIdnes();
-		
+		//testEmimino();
+		 testIdnes();
+
 		System.out.println("Done.");
-	}
-
-	private static void testCategory(BaseForumDescriptor desc, String category1, String category2) {
-		CategoryParser parser = new CategoryParser(desc);
-		PrettyPrinter printer = new PrettyPrinter();
-
-		try {
-			System.out.println("Category " + category1 + " of " + desc + ":");
-			List<PostInfo> infos1 = parser.listPosts(category1, 1);
-			printer.printPostsInfos(infos1, System.out);
-			System.out.println();
-
-			System.out.println("Category " + category2 + " of " + desc + ":");
-			List<PostInfo> infos2 = parser.listPosts(category2, 2);
-			printer.printPostsInfos(infos2, System.out);
-			System.out.println();
-
-		} catch (DefrostException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private static void testPosts(BaseForumDescriptor desc, PostIdentifier identifier1, PostIdentifier identifier2) {
-		PostParser parser = new PostParser(desc);
-		PrettyPrinter printer = new PrettyPrinter();
-
-		try {
-			System.out.println("Post " + identifier1 + " of " + desc + ":");
-			Post post1 = parser.loadAndParse(identifier1, 1);
-			printer.printPost(post1, System.out);
-			System.out.println();
-
-			System.out.println("Post " + identifier2 + " of " + desc + ":");
-			Post post2 = parser.loadAndParse(identifier2, 1);
-			printer.printPost(post2, System.out);
-			System.out.println();
-
-		} catch (DefrostException e) {
-			e.printStackTrace();
-		}
 	}
 
 	private static void testEmimino() {
 		BaseForumDescriptor desc = new EmiminoForumDesc();
 
 		String category1 = "tehotenstvi-porod";
+		testCategory(desc, category1);
+		
 		String category2 = "od-batolete-do-puberty";
-		testCategory(desc, category1, category2);
+		testCategory(desc, category2);
+		
+		String category3 = "emimino-podporuje";
+		testCategory(desc, category3);
+		
 		
 		PostIdentifier identifier1 = new PostIdentifier("whatever", "dat-odklad-65roku-284416");
+		testPosts(desc, identifier1);
+		
 		PostIdentifier identifier2 = new PostIdentifier("whatever", "kamaradka-z-uherskeho-brodu-266104");
-		testPosts(desc, identifier1, identifier2);
-
+		testPosts(desc, identifier2);
+		
 	}
 
 	private static void testIdnes() {
 		BaseForumDescriptor desc = new IDnesForumDesc();
 
 		String category1 = "zpravy";
-		String category2 = "zpravy";
-		testCategory(desc, category1, category2);
+		testCategory(desc, category1);
 
 		PostIdentifier identifier1 = new PostIdentifier("zpravy", "A170321_083811_domaci_fka");
+		testPosts(desc, identifier1);
+		
 		PostIdentifier identifier2 = new PostIdentifier("zpravy", "A170321_151510_domaci_kop");
-		testPosts(desc, identifier1, identifier2);
+		testPosts(desc, identifier2);
+	}
+
+	private static void testCategory(BaseForumDescriptor desc, String category) {
+		CategoryParser parser = new CategoryParser(desc);
+		PrettyPrinter printer = new PrettyPrinter();
+
+		try {
+			for (int i = 1; i <= PAGES_COUNT; i++) {
+				System.out.println("Category " + category + " of " + desc + ", page " + i + ":");
+				PagedDataResult<List<PostInfo>> result = parser.listPosts(category, i);
+				List<PostInfo> infos = result.getData();
+				printer.printPostsInfos(infos, System.out);
+				
+				if (!result.isHasNextPage()) {
+					System.out.println("No more pages");
+					break;
+				}
+			}
+			System.out.println();
+		} catch (DefrostException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void testPosts(BaseForumDescriptor desc, PostIdentifier identifier) {
+		PostParser parser = new PostParser(desc);
+		PrettyPrinter printer = new PrettyPrinter();
+
+		try {
+			for (int i = 1; i <= 10; i++) {
+				System.out.println("Post " + identifier + " of " + desc + ", page " + i + ":");
+				PagedDataResult<Post> result = parser.loadAndParse(identifier, i);
+				Post post = result.getData();
+				printer.printPost(post, System.out);
+				
+				if (!result.isHasNextPage()) {
+					System.out.println("No more pages");
+					break;
+				}
+			}
+			System.out.println();
+
+		} catch (DefrostException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private static void testDateParsers() {

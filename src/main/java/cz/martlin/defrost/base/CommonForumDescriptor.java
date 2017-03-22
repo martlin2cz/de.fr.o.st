@@ -62,16 +62,19 @@ public abstract class CommonForumDescriptor implements BaseForumDescriptor {
 	}
 
 	@Override
-	public PostIdentifier identifierOfPost(URL url) {
+	public PostIdentifier identifierOfPost(URL url, String category) {
 		String id = postUrlToPostId(url);
-		String category = postUrlToCategoryId(url);
 
 		return new PostIdentifier(category, id);
 	}
 
 	public abstract String postUrlToPostId(URL url);
 
-	public abstract String postUrlToCategoryId(URL url);
+	@Override
+	public boolean hasCategoryNextPage(Html document) throws Exception {
+		Node node = selectCategoryNextPageButton(document);
+		return node != null;
+	}
 
 	///////////////////////////////////////////////////////////////////////////
 
@@ -81,9 +84,9 @@ public abstract class CommonForumDescriptor implements BaseForumDescriptor {
 	}
 
 	@Override
-	public PostInfo postItemToPostInfo(Node postItem) throws Exception {
+	public PostInfo postItemToPostInfo(Node postItem, String category) throws Exception {
 		URL url = findPostURLInPostItem(postItem);
-		PostIdentifier identifier = identifierOfPost(url);
+		PostIdentifier identifier = identifierOfPost(url, category);
 
 		String title = findPostTitleInPostItem(postItem);
 		return new PostInfo(title, identifier);
@@ -107,6 +110,12 @@ public abstract class CommonForumDescriptor implements BaseForumDescriptor {
 	protected String findPostTitleInPostItem(Node postItem) throws Exception {
 		LinkTag link = findPostItemElement(postItem);
 		return tools.inferTextInside(link);
+	}
+
+	@Override
+	public boolean hasPostNextPage(Html document) throws Exception {
+		Node node = selectPostNextPageButton(document);
+		return node != null;
 	}
 
 	///////////////////////////////////////////////////////////////////////////
@@ -142,7 +151,7 @@ public abstract class CommonForumDescriptor implements BaseForumDescriptor {
 
 	@Override
 	public Calendar findCommentDate(Node comment) throws Exception {
-		Node node = selectorCommentDateInComment(comment);
+		Node node = selectCommentDateInComment(comment);
 		String text = tools.inferTextInside(node);
 		return parseDateFromDateNode(text);
 	}
@@ -174,13 +183,17 @@ public abstract class CommonForumDescriptor implements BaseForumDescriptor {
 
 	public abstract LinkTag selectPostLinkInPostItem(Node postItem) throws Exception;
 
+	public abstract Node selectCategoryNextPageButton(Html document) throws Exception;
+
 	public abstract Node selectDiscussElementInPostSite(Html document) throws Exception;
 
 	public abstract NodeList selectCommentsElementInDiscuss(Node discuss) throws Exception;
 
 	public abstract Node selectTitleInPostSite(Html document) throws Exception;
 
-	public abstract Node selectorCommentDateInComment(Node comment) throws Exception;
+	public abstract Node selectPostNextPageButton(Html document) throws Exception;
+
+	public abstract Node selectCommentDateInComment(Node comment) throws Exception;
 
 	public abstract Node selectCommentContentInComment(Node comment) throws Exception;
 
