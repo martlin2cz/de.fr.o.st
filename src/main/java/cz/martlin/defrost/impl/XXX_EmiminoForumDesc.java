@@ -76,7 +76,7 @@ public class XXX_EmiminoForumDesc extends XXX_CommonPostDescriptor {
 		Node node0 = author;
 		// Node node1 = tools.findChildByTagName(node0, "b");
 		Node node2 = tools.findChildByTagName(node0, "a");
-		return tools.inferTextChild(node2);
+		return tools.inferTextInside(node2);
 	}
 
 	@Override

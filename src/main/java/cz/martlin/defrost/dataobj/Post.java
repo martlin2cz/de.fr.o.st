@@ -14,15 +14,6 @@ public class Post {
 	private final List<Comment> comments;
 
 	
-	public Post(String title, URL url, List<Comment> comments) {
-		super();
-		this.title = title;
-		this.url = url;
-		this.info = new PostInfo("TODO", "TODO", "TODO");	//TODO FIXME
-		this.comments = comments;
-	}
-
-	
 	
 	public Post(PostInfo info, List<Comment> comments) {
 		super();
@@ -40,11 +31,16 @@ public class Post {
 	}
 
 
+	public PostInfo getInfo() {
+		return info;
+	}
 
+	@Deprecated
 	public String getTitle() {
 		return title;
 	}
 
+	@Deprecated
 	public URL getUrl() {
 		return url;
 	}

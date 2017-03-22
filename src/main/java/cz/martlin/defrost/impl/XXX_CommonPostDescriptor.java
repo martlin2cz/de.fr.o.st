@@ -133,7 +133,7 @@ public abstract class XXX_CommonPostDescriptor implements XXX_ForumDescriptorBas
 	@Override
 	public Calendar inferCommentDate(Node comment) throws DefrostException {
 		Node elem = inferDateElemFromC(comment);
-		String text = tools.inferTextChild(elem);
+		String text = tools.inferTextInside(elem);
 		String trimmed = text.trim();
 
 		Date date;

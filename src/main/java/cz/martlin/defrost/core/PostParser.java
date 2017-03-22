@@ -4,29 +4,27 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.htmlparser.Node;
 import org.htmlparser.tags.Html;
 import org.htmlparser.util.NodeList;
 
-import cz.martlin.defrost.base.XXX_ForumDescriptorBase;
+import cz.martlin.defrost.base.BaseForumDescriptor;
 import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.Post;
+import cz.martlin.defrost.dataobj.PostIdentifier;
+import cz.martlin.defrost.dataobj.PostInfo;
 import cz.martlin.defrost.dataobj.User;
 
-/**
- * Does the parsing of the one post, based on {@link XXX_ForumDescriptorBase}
- * instance.
- * 
- * @author martin
- *
- */
 public class PostParser {
+	private final Logger LOG = Logger.getLogger(getClass().getName());
 
-	private final XXX_ForumDescriptorBase desc;
+	private final BaseForumDescriptor desc;
 	private final Networker networker;
 
-	public PostParser(XXX_ForumDescriptorBase desc) {
+	public PostParser(BaseForumDescriptor desc) {
 		super();
 
 		this.desc = desc;
@@ -36,21 +34,47 @@ public class PostParser {
 	/**
 	 * Loads and parses the post on given url.
 	 * 
-	 * @param url
+	 * 
 	 * @return
 	 * @throws DefrostException
 	 */
-	public Post loadAndParse(URL url) throws DefrostException {
+	public Post loadAndParse(PostIdentifier identifier, int page) throws DefrostException {
+		URL url;
 		try {
-			Html html = networker.query(url);
-			String title = desc.inferPostTitle(html);
-			NodeList cmts = desc.inferCommentsElements(html);
-			List<Comment> comments = inferComments(cmts);
-
-			return new Post(title, url, comments);
-		} catch (DefrostException e) {
-			throw new DefrostException("Cannot analyze post " + url.toExternalForm(), e);
+			url = desc.urlOfPost(identifier, page);
+		} catch (Exception e) {
+			throw new DefrostException("Cannot create url of post", e);
 		}
+
+		Html html;
+		try {
+			html = networker.query(url);
+		} catch (Exception e) {
+			throw new DefrostException("Cannot download post", e);
+		}
+
+		PostInfo info;
+		try {
+			info = desc.findPostInfoInPost(identifier, html);
+		} catch (Exception e) {
+			throw new DefrostException("Cannot infer post title", e);
+		}
+
+		NodeList cmts;
+		try {
+			cmts = desc.findPostDiscussElements(html);
+		} catch (Exception e) {
+			throw new DefrostException("Cannot find comments", e);
+		}
+
+		List<Comment> comments;
+		try {
+			comments = inferComments(cmts);
+		} catch (DefrostException e) {
+			throw new DefrostException("Cannot parse comments", e);
+		}
+
+		return new Post(info, comments);
 	}
 
 	/**
@@ -69,8 +93,9 @@ public class PostParser {
 			Comment comment;
 			try {
 				comment = inferComment(node);
-			} catch (DefrostException e) {
-				throw new DefrostException("Cannot infer comment from: " + node.toHtml(), e);
+			} catch (Exception e) {
+				LOG.log(Level.WARNING, "Cannot infer comment", e);
+				continue;
 			}
 			comments.add(comment);
 		}
@@ -83,12 +108,12 @@ public class PostParser {
 	 * 
 	 * @param comment
 	 * @return
-	 * @throws DefrostException
+	 * @throws Exception
 	 */
-	private Comment inferComment(Node comment) throws DefrostException {
-		User author = desc.inferCommentAuthor(comment);
-		Calendar date = desc.inferCommentDate(comment);
-		String content = desc.inferCommentContent(comment);
+	private Comment inferComment(Node comment) throws Exception {
+		User author = desc.findCommentAuthor(comment);
+		Calendar date = desc.findCommentDate(comment);
+		String content = desc.findCommentContent(comment);
 
 		return new Comment(author, date, content);
 	}

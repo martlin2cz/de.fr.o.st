@@ -3,20 +3,24 @@ package cz.martlin.defrost.test;
 import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.Post;
+import cz.martlin.defrost.dataobj.PostInfo;
 
-public class PostPrettyPrinter {
+public class PrettyPrinter {
 	private final DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss");
 
-	public PostPrettyPrinter() {
+	public PrettyPrinter() {
 	}
 
-	public void print(Post post, PrintStream out) {
-		out.print(post.getTitle());
+	public void printPost(Post post, PrintStream out) {
+		out.print(post.getInfo().getTitle());
 		out.print(" (");
-		out.print(post.getUrl().toExternalForm());
+		out.print(post.getInfo().getIdentifier().getCategory());
+		out.print(" / ");
+		out.print(post.getInfo().getIdentifier().getId());
 		out.print("), ");
 		out.print(post.getComments().size() + " comments");
 		out.print(":");
@@ -39,6 +43,17 @@ public class PostPrettyPrinter {
 
 			out.print(comment.getContent());
 			out.println("\n");
+		}
+	}
+	
+	public void printPostsInfos(List<PostInfo> infos, PrintStream out) {
+		for (PostInfo info: infos) {
+			out.print(info.getIdentifier().getCategory());
+			out.print(" / ");
+			out.print(info.getIdentifier().getId());
+			out.print(": ");
+			out.print(info.getTitle());
+			out.println();
 		}
 	}
 }
