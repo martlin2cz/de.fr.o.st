@@ -1,4 +1,4 @@
-package cz.martlin.defrost.input;
+package cz.martlin.defrost.input.load;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +36,11 @@ public class Loader implements Interruptable {
 
 		reporter.startingLoadCategory(category);
 		for (int i = 1;; i++) {
+			if (isInterrupted()) {
+				reporter.interrupted();
+				break;
+			}
+			
 			reporter.loadingCategoryPage(category, i);
 
 			PagedDataResult<List<PostInfo>> result;
@@ -51,10 +56,6 @@ public class Loader implements Interruptable {
 				reporter.lastCategoryPage(category, i);
 				break;
 			}
-			if (isInterrupted()) {
-				reporter.interrupted();
-				break;
-			}
 		}
 		reporter.categoryLoaded(category);
 
@@ -67,6 +68,11 @@ public class Loader implements Interruptable {
 
 		reporter.startingLoadPost(identifier);
 		for (int i = 1;; i++) {
+			if (isInterrupted()) {
+				reporter.interrupted();
+				break;
+			}
+
 			reporter.loadingPostPage(identifier, i);
 
 			PagedDataResult<Post> result;
@@ -86,15 +92,43 @@ public class Loader implements Interruptable {
 				reporter.lastPostPage(identifier, i);
 				break;
 			}
-			if (isInterrupted()) {
-				reporter.interrupted();
-				break;
-			}
 		}
 		reporter.postLoaded(identifier);
 
 		return post;
 	}
+	///////////////////////////////////////////////////////////////////////////////
+
+	public List<PostInfo> loadCategories(List<String> categories) {
+		List<PostInfo> result = new ArrayList<>();
+
+		for (String category : categories) {
+			List<PostInfo> posts = loadCategory(category);
+			result.addAll(posts);
+
+			if (isInterrupted()) {
+				break;
+			}
+		}
+
+		return result;
+	}
+
+	public List<Post> loadPosts(List<PostInfo> infos) {
+		List<Post> result = new ArrayList<>();
+
+		for (PostInfo info : infos) {
+			Post post = loadPost(info.getIdentifier());
+			result.add(post);
+
+			if (isInterrupted()) {
+				break;
+			}
+		}
+
+		return result;
+	}
+
 	///////////////////////////////////////////////////////////////////////////////
 
 	@Override
@@ -112,7 +146,5 @@ public class Loader implements Interruptable {
 	public boolean isInterrupted() {
 		return interrupted;
 	}
-
-	///////////////////////////////////////////////////////////////////////////////
 
 }

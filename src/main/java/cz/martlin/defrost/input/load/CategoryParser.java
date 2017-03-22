@@ -1,4 +1,4 @@
-package cz.martlin.defrost.input;
+package cz.martlin.defrost.input.load;
 
 import java.net.URL;
 import java.util.LinkedList;
@@ -13,6 +13,7 @@ import org.htmlparser.util.NodeList;
 import cz.martlin.defrost.base.BaseForumDescriptor;
 import cz.martlin.defrost.dataobj.PagedDataResult;
 import cz.martlin.defrost.dataobj.PostInfo;
+import cz.martlin.defrost.input.tools.Networker;
 import cz.martlin.defrost.misc.DefrostException;
 
 public class CategoryParser {

@@ -1,9 +1,11 @@
 package cz.martlin.defrost.misc;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import cz.martlin.defrost.dataobj.PostIdentifier;
+import cz.martlin.defrost.dataobj.PostInfo;
 
 public class LoggingReporter implements StatusReporter {
 	private final Logger LOG = Logger.getLogger(getClass().getName());
@@ -66,10 +68,29 @@ public class LoggingReporter implements StatusReporter {
 	}
 
 	@Override
-	public void error(DefrostException e) {
+	public void error(Exception e) {
 		LOG.log(Level.SEVERE, "Error: " + e, e);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
 
+	public void loadingOfCategoriesInThreadStarted(java.util.List<String> categories) {
+		LOG.info("Loading posts of " + categories.size() + " categories in thread started");
+	}
+
+	@Override
+	public void loadingOfPostsInThreadStarted(List<PostInfo> posts) {
+		LOG.info("Loading comments of " + posts.size() + " posts in thread started");
+
+	}
+
+	public void loadingInThreadStopping() {
+		LOG.info("Stopping of loading in thread");
+
+	}
+
+	@Override
+	public void loadingInThreadStopped() {
+		LOG.info("Loading in thread stopped");
+	}
 }

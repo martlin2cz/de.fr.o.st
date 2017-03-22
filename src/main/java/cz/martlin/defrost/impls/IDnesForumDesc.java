@@ -28,6 +28,11 @@ public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 
 	}
 
+	@Override
+	public String[] listAvaibleCategories() {
+		return new String[] {"zpravy", "ona", "technet", "sport"};
+	}
+	
 	///////////////////////////////////////////////////////////////////////////
 
 	@Override

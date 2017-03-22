@@ -1,6 +1,9 @@
 package cz.martlin.defrost.misc;
 
+import java.util.List;
+
 import cz.martlin.defrost.dataobj.PostIdentifier;
+import cz.martlin.defrost.dataobj.PostInfo;
 
 public interface StatusReporter {
 	///////////////////////////////////////////////////////////////////////////////
@@ -24,8 +27,16 @@ public interface StatusReporter {
 	///////////////////////////////////////////////////////////////////////////////
 	void interrupted();
 
-	void error(DefrostException e);
+	void error(Exception e);
 
 	///////////////////////////////////////////////////////////////////////////////
+
+	void loadingOfCategoriesInThreadStarted(List<String> categories);
+
+	void loadingOfPostsInThreadStarted(List<PostInfo> posts);
+
+	void loadingInThreadStopping();
+
+	void loadingInThreadStopped();
 
 }

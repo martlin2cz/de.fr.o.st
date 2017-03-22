@@ -13,6 +13,9 @@ import cz.martlin.defrost.dataobj.User;
 
 public interface BaseForumDescriptor {
 
+	
+	public String[] listAvaibleCategories();
+	
 	public URL urlOfCategory(String categoryID, int page) throws Exception;
 
 	public NodeList findPostItems(Html document) throws Exception;

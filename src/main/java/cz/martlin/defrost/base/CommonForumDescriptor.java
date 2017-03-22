@@ -15,7 +15,7 @@ import org.htmlparser.util.NodeList;
 import cz.martlin.defrost.dataobj.PostIdentifier;
 import cz.martlin.defrost.dataobj.PostInfo;
 import cz.martlin.defrost.dataobj.User;
-import cz.martlin.defrost.input.ParserTools;
+import cz.martlin.defrost.input.tools.ParserTools;
 
 public abstract class CommonForumDescriptor implements BaseForumDescriptor {
 

@@ -1,4 +1,4 @@
-package cz.martlin.defrost.input;
+package cz.martlin.defrost.input.tools;
 
 import java.net.URL;
 

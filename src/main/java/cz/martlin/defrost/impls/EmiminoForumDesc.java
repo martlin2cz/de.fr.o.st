@@ -22,6 +22,11 @@ public class EmiminoForumDesc extends SelectorsUsingForumDescriptor {
 				new EmiminoDateFormat()); //
 	}
 
+	@Override
+	public String[] listAvaibleCategories() {
+		return new String[] { "miminko", "tehotenstvi-porod", "jak-na-emiminko", "o-bazaru", "vybavicka-pro-miminko" };
+	}
+
 	///////////////////////////////////////////////////////////////////////////
 
 	@Override
