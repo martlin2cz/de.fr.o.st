@@ -102,6 +102,8 @@ public class Loader implements Interruptable {
 	public List<PostInfo> loadCategories(List<String> categories) {
 		List<PostInfo> result = new ArrayList<>();
 
+		reporter.firstCategoryLoading(categories);
+		
 		for (String category : categories) {
 			if (isInterrupted()) {
 				break;
@@ -111,7 +113,7 @@ public class Loader implements Interruptable {
 			result.addAll(posts);
 		}
 
-		reporter.lastCategoryLoaded();
+		reporter.lastCategoryLoaded(result);
 		
 		return result;
 	}
@@ -119,6 +121,8 @@ public class Loader implements Interruptable {
 	public List<Post> loadPosts(List<PostInfo> infos) {
 		List<Post> result = new ArrayList<>();
 
+		reporter.firstPostLoading(infos);
+		
 		for (PostInfo info : infos) {
 			if (isInterrupted()) {
 				break;
@@ -128,7 +132,7 @@ public class Loader implements Interruptable {
 			result.add(post);
 		}
 
-		reporter.lastPostLoaded();
+		reporter.lastPostLoaded(result);
 		
 		return result;
 	}

@@ -24,7 +24,22 @@ public class EmiminoForumDesc extends SelectorsUsingForumDescriptor {
 
 	@Override
 	public String[] listAvaibleCategories() {
-		return new String[] { "miminko", "tehotenstvi-porod", "jak-na-emiminko", "o-bazaru", "vybavicka-pro-miminko" };
+		return new String[] { "o-bazaru", // 2 pages
+				"jak-na-emimino", // 30 pages
+				"hobby-zajmy", // 144 pages
+				"hledame-maminky", // 178 pages
+				"kocarky", // 196 pages
+				"vybavicka-pro-miminko", // 236 pages
+				"snazime-se-o-miminko", // 317 pages
+				"finance", // 356 pages
+				"vztahy", // 359 pages
+				"od-batolete-do-puberty", // 421 pages
+				"bydleni-domacnost", // 474 pages
+				"tehotenstvi-porod", // 536 pages
+				"novorozenec-kojenec", // 644 pages
+				"co-trapi-maminky", // 660 pages
+				"zdravi", // 684 pages
+				"xxxx-testing-error" };
 	}
 
 	///////////////////////////////////////////////////////////////////////////

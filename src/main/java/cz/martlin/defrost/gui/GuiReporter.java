@@ -11,8 +11,13 @@ public class GuiReporter implements StatusReporter {
 
 	private final MainController ctl;
 
+	@Deprecated
 	private int posts;
+	@Deprecated
 	private int comments;
+
+	private int itemsToLoad;
+	private int currentItemIndex;
 
 	public GuiReporter(MainController ctl) {
 		super();
@@ -21,14 +26,18 @@ public class GuiReporter implements StatusReporter {
 
 	///////////////////////////////////////////////////////////////////////////////
 
+	public void firstCategoryLoading(List<String> categories) {
+		itemsLoadingStarting("categories", categories.size());
+	}
+
 	@Override
 	public void startingLoadCategory(String category) {
-		ctl.setStatus("Loading category " + category);
+		itemsLoadingProgress("category " + category, null);
 	}
 
 	@Override
 	public void loadingCategoryPage(String category, int page) {
-		ctl.setStatus("Loading category " + category + ", page " + page);
+		itemsLoadingProgress("category " + category, page);
 	}
 
 	@Override
@@ -38,22 +47,28 @@ public class GuiReporter implements StatusReporter {
 
 	@Override
 	public void categoryLoaded(String category, List<PostInfo> infos) {
-		ctl.setStatus("Category " + category + " loaded");
-		posts += infos.size();
+		// nothing
+	}
 
-		updateTotals(category, null);
+	@Override
+	public void lastCategoryLoaded(List<PostInfo> infos) {
+		itemsLoadingComplete("categories");
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
 
+	public void firstPostLoading(List<PostInfo> infos) {
+		itemsLoadingStarting("posts", infos.size());
+	}
+
 	@Override
 	public void startingLoadPost(PostIdentifier post) {
-		ctl.setStatus("Loading post " + post.getId());
+		itemsLoadingProgress("post " + post.getId(), null);
 	}
 
 	@Override
 	public void loadingPostPage(PostIdentifier post, int page) {
-		ctl.setStatus("Loading post " + post.getId() + ", page " + page);
+		itemsLoadingProgress("post " + post.getId(), page);
 	}
 
 	@Override
@@ -63,10 +78,12 @@ public class GuiReporter implements StatusReporter {
 
 	@Override
 	public void postLoaded(PostIdentifier identifier, Post post) {
-		ctl.setStatus("Post " + identifier.getId() + " loaded");
-		comments += post.getComments().size();
+		// nothing
+	}
 
-		updateTotals(null, post.getInfo());
+	@Override
+	public void lastPostLoaded(List<Post> posts) {
+		itemsLoadingComplete("posts");
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -78,6 +95,7 @@ public class GuiReporter implements StatusReporter {
 
 	@Override
 	public void error(Exception e) {
+		e.printStackTrace(); // TODO FIXME LOGGING
 		ctl.error(e.getMessage(), true);
 	}
 
@@ -86,25 +104,11 @@ public class GuiReporter implements StatusReporter {
 	@Override
 	public void loadingOfCategoriesInThreadStarted(List<String> categories) {
 		ctl.setStatus("Started");
-		posts = 0;
-		updateTotals(null, null);
 	}
 
 	@Override
 	public void loadingOfPostsInThreadStarted(List<PostInfo> posts) {
 		ctl.setStatus("Started");
-		comments = 0;
-		updateTotals(null, null);
-	}
-
-	@Override
-	public void lastCategoryLoaded() {
-		ctl.loadingStopped();
-	}
-
-	@Override
-	public void lastPostLoaded() {
-		ctl.loadingStopped();
 	}
 
 	@Override
@@ -119,6 +123,57 @@ public class GuiReporter implements StatusReporter {
 
 	///////////////////////////////////////////////////////////////////////////////
 
+	/**
+	 * Reports that started loading of what with given total count of items to
+	 * be loaded.
+	 * 
+	 * @param what
+	 * @param totalCount
+	 */
+	private void itemsLoadingStarting(String what, int totalCount) {
+		itemsToLoad = totalCount;
+		currentItemIndex = 0;
+
+		String message = "(" + currentItemIndex + "/" + itemsToLoad + ") Loading " + what;
+		ctl.setStatus(message);
+		ctl.setLoadingStarted(message);
+	}
+
+	/**
+	 * Reports loaded one next item. If page is specified, reports as a new
+	 * item, else reports as only a page of item loaded.
+	 * 
+	 * @param what
+	 * @param page
+	 */
+	private void itemsLoadingProgress(String what, Integer page) {
+		if (page == null) {
+			currentItemIndex++;
+
+			double progress = ((double) currentItemIndex) / (itemsToLoad + 1);
+			String message = "(" + currentItemIndex + "/" + itemsToLoad + ") Loading " + what;
+
+			ctl.setLoadingProgress(message, progress);
+		} else {
+			double progress = ((double) currentItemIndex) / (itemsToLoad + 1);
+			String message = "(" + currentItemIndex + "/" + itemsToLoad + ") Loading " + what + ", page " + page;
+			ctl.setLoadingProgress(message, progress);
+		}
+	}
+
+	/**
+	 * Reports that loading have been completed.
+	 * 
+	 * @param what
+	 */
+	private void itemsLoadingComplete(String what) {
+		String message = what + " loaded";
+		ctl.setLoadingStopped(message);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////
+
+	@Deprecated
 	private void updateTotals(String category, PostInfo info) {
 		ctl.updateTotals(posts, comments, category, info);
 	}

@@ -32,13 +32,19 @@ public interface StatusReporter {
 
 	///////////////////////////////////////////////////////////////////////////////
 
+	void firstCategoryLoading(List<String> categories);
+
+	void lastCategoryLoaded(List<PostInfo> infos);
+
+	void firstPostLoading(List<PostInfo> infos);
+
+	void lastPostLoaded(List<Post> posts);
+
+	///////////////////////////////////////////////////////////////////////////////
+
 	void loadingOfCategoriesInThreadStarted(List<String> categories);
 
 	void loadingOfPostsInThreadStarted(List<PostInfo> posts);
-
-	void lastCategoryLoaded();
-
-	void lastPostLoaded();
 
 	void loadingInThreadStopping();
 

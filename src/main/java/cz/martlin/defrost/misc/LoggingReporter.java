@@ -84,17 +84,17 @@ public class LoggingReporter implements StatusReporter {
 		LOG.info("Loading comments of " + posts.size() + " posts in thread started");
 
 	}
-
-	@Override
-	public void lastCategoryLoaded() {
-		LOG.info("Categories loaded");
-
-	}
-
-	@Override
-	public void lastPostLoaded() {
-		LOG.info("Posts loaded");
-	}
+//
+//	@Override
+//	public void lastCategoryLoaded() {
+//		LOG.info("Categories loaded");
+//
+//	}
+//
+//	@Override
+//	public void lastPostLoaded() {
+//		LOG.info("Posts loaded");
+//	}
 
 	public void loadingInThreadStopping() {
 		LOG.info("Stopping of loading in thread");
@@ -105,4 +105,31 @@ public class LoggingReporter implements StatusReporter {
 	public void loadingInThreadStopped() {
 		LOG.info("Loading in thread stopped");
 	}
+
+	@Override
+	public void firstCategoryLoading(List<String> categories) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void lastCategoryLoaded(List<PostInfo> infos) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void firstPostLoading(List<PostInfo> infos) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void lastPostLoaded(List<Post> posts) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////
+
 }
