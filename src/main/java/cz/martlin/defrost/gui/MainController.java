@@ -7,7 +7,6 @@ import java.util.ResourceBundle;
 import cz.martlin.defrost.base.BaseForumDescriptor;
 import cz.martlin.defrost.dataobj.PostInfo;
 import cz.martlin.defrost.input.threading.LoaderInThread;
-import cz.martlin.defrost.misc.LoggingReporter;
 import cz.martlin.defrost.misc.StatusReporter;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -141,13 +140,13 @@ public class MainController implements Initializable {
 	private void loadPostsButtAction(ActionEvent event) {
 		loadPostsButt.setDisable(true);
 
-		List<PostInfo> posts = postsLst.getSelectionModel().getSelectedItems();
-		if (posts.isEmpty()) {
+		List<PostInfo> infos = postsLst.getSelectionModel().getSelectedItems();
+		if (infos.isEmpty()) {
 			error("Select at least one post", false);
 			loadPostsButt.setDisable(false);
 			return;
 		}
-		loader.startLoadingPosts(posts);
+		loader.startLoadingPosts(infos);
 
 		setEditable(false);
 	}
@@ -162,41 +161,49 @@ public class MainController implements Initializable {
 
 	///////////////////////////////////////////////////////////////////////////////
 
-	public void setStatus(final String status) {
+	protected void setStatus(final String status) {
 		Platform.runLater(() -> {
 			statusBarLbl.setText(status);
 		});
 	}
 
-	public void updateTotals() {
-		// XXX categoriesTotalLbl.setText("total: " + );
+	protected void updateTotals(int pages, int comments, String category, PostInfo info) {
 		Platform.runLater(() -> {
-			int infos = loader.getLoadedInfosCount();
-			postsTotalLbl.setText("total: " + infos);
+			this.postsTotalLbl.setText("total: " + pages);
+			this.commentsTotalLbl.setText("total: " + comments);
 
-			int posts = loader.getLoadedPostsCount();
-			commentsTotalLbl.setText("total: " + posts);
+			if (category != null) {
+				this.categoriesLst.getSelectionModel().select(category);
+			}
+			if (info != null) {
+				this.postsLst.getSelectionModel().select(info);
+			}
+
 		});
 	}
 
 	protected void loadingStopped() {
-		initializePosts();
+		Platform.runLater(() -> {
+			initializePosts();
 
-		setEditable(true);
+			setEditable(true);
+		});
 	}
 
 	public void error(String text, boolean isFatal) {
-		AlertType type;
-		if (isFatal) {
-			type = AlertType.ERROR;
-		} else {
-			type = AlertType.WARNING;
-		}
+		Platform.runLater(() -> {
+			AlertType type;
+			if (isFatal) {
+				type = AlertType.ERROR;
+			} else {
+				type = AlertType.WARNING;
+			}
 
-		Alert alert = new Alert(type);
-		alert.setHeaderText("Error");
-		alert.setContentText(text);
-		alert.show();
+			Alert alert = new Alert(type);
+			alert.setHeaderText("Error");
+			alert.setContentText(text);
+			alert.show();
+		});
 	}
 
 }

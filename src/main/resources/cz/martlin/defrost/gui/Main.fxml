@@ -18,13 +18,18 @@
         <Button id="" fx:id="loadPostsButt" mnemonicParsing="false" onAction="#loadPostsButtAction" text="Load comments of posts" textAlignment="CENTER" underline="false" wrapText="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
         <ListView fx:id="categoriesLst" disable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
         <ListView fx:id="postsLst" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-        <Label fx:id="resultLbl" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="1" />
         <Label text="Categories:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="BOTTOM" />
-        <Label text="Posts:" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="BOTTOM" />
+        <Label text="Posts to analyze:" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="BOTTOM" />
         <Label fx:id="categoriesTotalLbl" text="total" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
         <Label fx:id="postsTotalLbl" disable="false" text="total" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
         <Label fx:id="commentsTotalLbl" text="total" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-        <Label text="Label" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="BOTTOM" />
+        <Label text="Comments:" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="BOTTOM" />
+        <VBox alignment="CENTER" disable="false" fillWidth="true" focusTraversable="false" prefHeight="200.0" prefWidth="100.0" spacing="0.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
+          <children>
+            <Button mnemonicParsing="false" text="Download raw" textAlignment="CENTER" textOverrun="ELLIPSIS" wrapText="true" />
+            <Button alignment="CENTER" mnemonicParsing="false" text="Download by User" textAlignment="CENTER" wrapText="true" />
+          </children>
+        </VBox>
       </children>
       <columnConstraints>
         <ColumnConstraints fillWidth="true" halignment="RIGHT" hgrow="SOMETIMES" maxWidth="0.0" minWidth="0.0" percentWidth="20.0" prefWidth="0.0" />

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import cz.martlin.defrost.dataobj.Post;
 import cz.martlin.defrost.dataobj.PostIdentifier;
 import cz.martlin.defrost.dataobj.PostInfo;
 
@@ -32,7 +33,7 @@ public class LoggingReporter implements StatusReporter {
 	}
 
 	@Override
-	public void categoryLoaded(String category) {
+	public void categoryLoaded(String category, List<PostInfo> infos) {
 		LOG.info("Category " + category + " loaded");
 
 	}
@@ -56,8 +57,8 @@ public class LoggingReporter implements StatusReporter {
 	}
 
 	@Override
-	public void postLoaded(PostIdentifier post) {
-		LOG.info("Post " + post + " loaded");
+	public void postLoaded(PostIdentifier identifier, Post post) {
+		LOG.info("Post " + identifier + " loaded");
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -82,6 +83,17 @@ public class LoggingReporter implements StatusReporter {
 	public void loadingOfPostsInThreadStarted(List<PostInfo> posts) {
 		LOG.info("Loading comments of " + posts.size() + " posts in thread started");
 
+	}
+
+	@Override
+	public void lastCategoryLoaded() {
+		LOG.info("Categories loaded");
+
+	}
+
+	@Override
+	public void lastPostLoaded() {
+		LOG.info("Posts loaded");
 	}
 
 	public void loadingInThreadStopping() {

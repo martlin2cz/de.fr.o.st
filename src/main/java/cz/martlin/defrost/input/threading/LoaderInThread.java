@@ -18,6 +18,7 @@ public class LoaderInThread {
 
 	private CategoriesLoaderThread currentCategoriesThread;
 	private PostsLoaderThread currentPostsThread;
+	
 	private final Set<PostInfo> loadedInfos;
 	private final Set<Post> loadedPosts;
 
@@ -32,7 +33,7 @@ public class LoaderInThread {
 	public synchronized List<PostInfo> getLoadedInfos() {
 		return new ArrayList<>(loadedInfos);
 	}
-
+	
 	public synchronized int getLoadedInfosCount() {
 		return loadedInfos.size();
 	}
@@ -40,9 +41,9 @@ public class LoaderInThread {
 	public synchronized List<Post> getLoadedPosts() {
 		return new ArrayList<>(loadedPosts);
 	}
-
-	public synchronized int getLoadedPostsCount() {
-		return loadedPosts.size();
+	
+	public synchronized int getLoadedCount() {
+		return loadedInfos.size();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////

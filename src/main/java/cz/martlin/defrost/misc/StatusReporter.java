@@ -2,6 +2,7 @@ package cz.martlin.defrost.misc;
 
 import java.util.List;
 
+import cz.martlin.defrost.dataobj.Post;
 import cz.martlin.defrost.dataobj.PostIdentifier;
 import cz.martlin.defrost.dataobj.PostInfo;
 
@@ -13,16 +14,16 @@ public interface StatusReporter {
 
 	void lastCategoryPage(String category, int page);
 
-	void categoryLoaded(String category);
+	void categoryLoaded(String category, List<PostInfo> infos);
 	///////////////////////////////////////////////////////////////////////////////
 
-	void startingLoadPost(PostIdentifier post);
+	void startingLoadPost(PostIdentifier identifier);
 
-	void loadingPostPage(PostIdentifier post, int page);
+	void loadingPostPage(PostIdentifier identifier, int page);
 
-	void lastPostPage(PostIdentifier post, int page);
+	void lastPostPage(PostIdentifier identifier, int page);
 
-	void postLoaded(PostIdentifier post);
+	void postLoaded(PostIdentifier identifier, Post post);
 
 	///////////////////////////////////////////////////////////////////////////////
 	void interrupted();
@@ -34,6 +35,10 @@ public interface StatusReporter {
 	void loadingOfCategoriesInThreadStarted(List<String> categories);
 
 	void loadingOfPostsInThreadStarted(List<PostInfo> posts);
+
+	void lastCategoryLoaded();
+
+	void lastPostLoaded();
 
 	void loadingInThreadStopping();
 

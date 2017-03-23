@@ -9,22 +9,21 @@ public class CategoriesLoaderThread extends Thread {
 
 	private final Loader loader;
 	private final List<String> categories;
-	
-	private List<PostInfo> posts;
-	
+	private List<PostInfo> infos;
+
 	public CategoriesLoaderThread(Loader loader, List<String> categories) {
 		super("CategoriesLoaderThread");
 		this.loader = loader;
 		this.categories = categories;
-	}
-	
-	@Override
-	public void run() {
-		posts = loader.loadCategories(categories);
-	}
-	
-	public List<PostInfo> getLoadedInfos() {
-		return posts;
+
 	}
 
+	@Override
+	public void run() {
+		infos = loader.loadCategories(categories);
+	}
+
+	public List<PostInfo> getLoadedInfos() {
+		return infos;
+	}
 }

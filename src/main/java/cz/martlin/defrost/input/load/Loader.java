@@ -40,7 +40,7 @@ public class Loader implements Interruptable {
 				reporter.interrupted();
 				break;
 			}
-			
+
 			reporter.loadingCategoryPage(category, i);
 
 			PagedDataResult<List<PostInfo>> result;
@@ -57,7 +57,7 @@ public class Loader implements Interruptable {
 				break;
 			}
 		}
-		reporter.categoryLoaded(category);
+		reporter.categoryLoaded(category, posts);
 
 		return posts;
 	}
@@ -93,7 +93,7 @@ public class Loader implements Interruptable {
 				break;
 			}
 		}
-		reporter.postLoaded(identifier);
+		reporter.postLoaded(identifier, post);
 
 		return post;
 	}
@@ -103,14 +103,16 @@ public class Loader implements Interruptable {
 		List<PostInfo> result = new ArrayList<>();
 
 		for (String category : categories) {
-			List<PostInfo> posts = loadCategory(category);
-			result.addAll(posts);
-
 			if (isInterrupted()) {
 				break;
 			}
+
+			List<PostInfo> posts = loadCategory(category);
+			result.addAll(posts);
 		}
 
+		reporter.lastCategoryLoaded();
+		
 		return result;
 	}
 
@@ -118,14 +120,16 @@ public class Loader implements Interruptable {
 		List<Post> result = new ArrayList<>();
 
 		for (PostInfo info : infos) {
-			Post post = loadPost(info.getIdentifier());
-			result.add(post);
-
 			if (isInterrupted()) {
 				break;
 			}
+
+			Post post = loadPost(info.getIdentifier());
+			result.add(post);
 		}
 
+		reporter.lastPostLoaded();
+		
 		return result;
 	}
 

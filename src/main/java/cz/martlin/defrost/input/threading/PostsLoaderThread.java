@@ -22,9 +22,8 @@ public class PostsLoaderThread extends Thread {
 	public void run() {
 		posts = loader.loadPosts(infos);
 	}
-
+	
 	public List<Post> getLoadedPosts() {
 		return posts;
 	}
-
 }

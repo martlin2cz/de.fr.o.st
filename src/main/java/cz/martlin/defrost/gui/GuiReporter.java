@@ -2,6 +2,7 @@ package cz.martlin.defrost.gui;
 
 import java.util.List;
 
+import cz.martlin.defrost.dataobj.Post;
 import cz.martlin.defrost.dataobj.PostIdentifier;
 import cz.martlin.defrost.dataobj.PostInfo;
 import cz.martlin.defrost.misc.StatusReporter;
@@ -10,10 +11,15 @@ public class GuiReporter implements StatusReporter {
 
 	private final MainController ctl;
 
+	private int posts;
+	private int comments;
+
 	public GuiReporter(MainController ctl) {
 		super();
 		this.ctl = ctl;
 	}
+
+	///////////////////////////////////////////////////////////////////////////////
 
 	@Override
 	public void startingLoadCategory(String category) {
@@ -27,14 +33,18 @@ public class GuiReporter implements StatusReporter {
 
 	@Override
 	public void lastCategoryPage(String category, int page) {
-		ctl.loadingStopped();
+		// nothing
 	}
 
 	@Override
-	public void categoryLoaded(String category) {
+	public void categoryLoaded(String category, List<PostInfo> infos) {
 		ctl.setStatus("Category " + category + " loaded");
-		ctl.updateTotals();
+		posts += infos.size();
+
+		updateTotals(category, null);
 	}
+
+	///////////////////////////////////////////////////////////////////////////////
 
 	@Override
 	public void startingLoadPost(PostIdentifier post) {
@@ -48,14 +58,18 @@ public class GuiReporter implements StatusReporter {
 
 	@Override
 	public void lastPostPage(PostIdentifier post, int page) {
-		ctl.loadingStopped();
+		// nothing
 	}
 
 	@Override
-	public void postLoaded(PostIdentifier post) {
-		ctl.setStatus("Post " + post.getId() + " loaded");
-		ctl.updateTotals();
+	public void postLoaded(PostIdentifier identifier, Post post) {
+		ctl.setStatus("Post " + identifier.getId() + " loaded");
+		comments += post.getComments().size();
+
+		updateTotals(null, post.getInfo());
 	}
+
+	///////////////////////////////////////////////////////////////////////////////
 
 	@Override
 	public void interrupted() {
@@ -67,15 +81,30 @@ public class GuiReporter implements StatusReporter {
 		ctl.error(e.getMessage(), true);
 	}
 
+	///////////////////////////////////////////////////////////////////////////////
+
 	@Override
 	public void loadingOfCategoriesInThreadStarted(List<String> categories) {
 		ctl.setStatus("Started");
+		posts = 0;
+		updateTotals(null, null);
 	}
 
 	@Override
 	public void loadingOfPostsInThreadStarted(List<PostInfo> posts) {
 		ctl.setStatus("Started");
+		comments = 0;
+		updateTotals(null, null);
+	}
 
+	@Override
+	public void lastCategoryLoaded() {
+		ctl.loadingStopped();
+	}
+
+	@Override
+	public void lastPostLoaded() {
+		ctl.loadingStopped();
 	}
 
 	@Override
@@ -87,5 +116,13 @@ public class GuiReporter implements StatusReporter {
 	public void loadingInThreadStopped() {
 		ctl.setStatus("Stopped");
 	}
+
+	///////////////////////////////////////////////////////////////////////////////
+
+	private void updateTotals(String category, PostInfo info) {
+		ctl.updateTotals(posts, comments, category, info);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////
 
 }
