@@ -14,7 +14,6 @@ import org.htmlparser.util.NodeList;
 import cz.martlin.defrost.base.BaseForumDescriptor;
 import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.PagedDataResult;
-import cz.martlin.defrost.dataobj.Post;
 import cz.martlin.defrost.dataobj.PostIdentifier;
 import cz.martlin.defrost.dataobj.PostInfo;
 import cz.martlin.defrost.dataobj.User;
@@ -34,15 +33,14 @@ public class PostParser {
 		this.networker = new Networker();
 	}
 
- 	
 	/**
-	 * Loads and parses the post on given url.
+	 * Loads and parses the Comment on given url.
 	 * 
 	 * 
 	 * @return
 	 * @throws DefrostException
 	 */
-	public PagedDataResult<Post> loadAndParse(PostIdentifier identifier, int page) throws DefrostException {
+	public PagedDataResult<List<Comment>> loadAndParse(PostIdentifier identifier, int page) throws DefrostException {
 		URL url;
 		try {
 			url = desc.urlOfPost(identifier, page);
@@ -57,9 +55,9 @@ public class PostParser {
 			throw new DefrostException("Cannot download post", e);
 		}
 
-		PostInfo info;
+		PostInfo post;
 		try {
-			info = desc.findPostInfoInPost(identifier, html);
+			post = desc.findPostInfoInPost(identifier, html);
 		} catch (Exception e) {
 			throw new DefrostException("Cannot infer post info", e);
 		}
@@ -73,7 +71,7 @@ public class PostParser {
 
 		List<Comment> comments;
 		try {
-			comments = inferComments(cmts);
+			comments = inferComments(post, cmts);
 		} catch (DefrostException e) {
 			throw new DefrostException("Cannot parse comments", e);
 		}
@@ -85,8 +83,7 @@ public class PostParser {
 			throw new DefrostException("Cannot find if post has next page", e);
 		}
 
-		Post post = new Post(info, comments);
-		return new PagedDataResult<Post>(post, page, hasNextPage);
+		return new PagedDataResult<List<Comment>>(comments, page, hasNextPage);
 	}
 
 	/**
@@ -96,7 +93,7 @@ public class PostParser {
 	 * @return
 	 * @throws DefrostException
 	 */
-	private List<Comment> inferComments(NodeList cmts) throws DefrostException {
+	private List<Comment> inferComments(PostInfo post, NodeList cmts) throws DefrostException {
 		List<Comment> comments = new LinkedList<>();
 
 		for (int i = 0; i < cmts.size(); i++) {
@@ -104,7 +101,7 @@ public class PostParser {
 
 			Comment comment;
 			try {
-				comment = inferComment(node);
+				comment = inferComment(post, node);
 			} catch (Exception e) {
 				LOG.log(Level.WARNING, "Cannot infer comment", e);
 				continue;
@@ -122,12 +119,12 @@ public class PostParser {
 	 * @return
 	 * @throws Exception
 	 */
-	private Comment inferComment(Node comment) throws Exception {
+	private Comment inferComment(PostInfo post, Node comment) throws Exception {
 		User author = desc.findCommentAuthor(comment);
 		Calendar date = desc.findCommentDate(comment);
 		String content = desc.findCommentContent(comment);
 
-		return new Comment(author, date, content);
+		return new Comment(post, author, date, content);
 	}
 
 }

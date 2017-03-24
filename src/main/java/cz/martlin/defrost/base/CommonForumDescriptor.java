@@ -20,21 +20,21 @@ import cz.martlin.defrost.input.tools.ParserTools;
 public abstract class CommonForumDescriptor implements BaseForumDescriptor {
 
 	public static final String CATEGORY_ID_NEEDLE = "${category_id}";
-	public static final String POST_ID_NEEDLE = "${post_id}";
+	public static final String COMMENT_ID_NEEDLE = "${comment_id}";
 	public static final String PAGE_NUMBER_NEEDLE = "${page_number}";
 
 	protected final ParserTools tools;
 	protected final String categorySiteURLPattern;
-	protected final String postSiteURLPattern;
+	protected final String commentSiteURLPattern;
 	protected final DateFormat commentDateFormat;
 
-	public CommonForumDescriptor(String categorySiteURLPattern, String postSiteURLPattern,
+	public CommonForumDescriptor(String categorySiteURLPattern, String commentSiteURLPattern,
 			DateFormat commentDateFormat) {
 		super();
 		this.tools = new ParserTools();
 
 		this.categorySiteURLPattern = categorySiteURLPattern;
-		this.postSiteURLPattern = postSiteURLPattern;
+		this.commentSiteURLPattern = commentSiteURLPattern;
 		this.commentDateFormat = commentDateFormat;
 	}
 
@@ -53,7 +53,7 @@ public abstract class CommonForumDescriptor implements BaseForumDescriptor {
 
 	@Override
 	public URL urlOfPost(PostIdentifier identifier, int page) throws IllegalArgumentException {
-		String path = renderPath(postSiteURLPattern, identifier, page);
+		String path = renderPath(commentSiteURLPattern, identifier, page);
 		try {
 			return new URL(path);
 		} catch (MalformedURLException e) {
@@ -63,12 +63,12 @@ public abstract class CommonForumDescriptor implements BaseForumDescriptor {
 
 	@Override
 	public PostIdentifier identifierOfPost(URL url, String category) {
-		String id = postUrlToPostId(url);
+		String id = commentUrlToCommentId(url);
 
 		return new PostIdentifier(category, id);
 	}
 
-	public abstract String postUrlToPostId(URL url);
+	public abstract String commentUrlToCommentId(URL url);
 
 	@Override
 	public boolean hasCategoryNextPage(Html document) throws Exception {
@@ -84,20 +84,20 @@ public abstract class CommonForumDescriptor implements BaseForumDescriptor {
 	}
 
 	@Override
-	public PostInfo postItemToPostInfo(Node postItem, String category) throws Exception {
-		URL url = findPostURLInPostItem(postItem);
+	public PostInfo postItemToPostInfo(Node PostItem, String category) throws Exception {
+		URL url = findPostURLInPostItem(PostItem);
 		PostIdentifier identifier = identifierOfPost(url, category);
 
-		String title = findPostTitleInPostItem(postItem);
+		String title = findPostTitleInPostItem(PostItem);
 		return new PostInfo(title, identifier);
 	}
 
-	protected LinkTag findPostItemElement(Node postItem) throws Exception {
-		return selectPostLinkInPostItem(postItem);
+	protected LinkTag findPostItemElement(Node PostItem) throws Exception {
+		return selectPostLinkInPostItem(PostItem);
 	}
 
-	protected URL findPostURLInPostItem(Node postItem) throws Exception {
-		LinkTag link = findPostItemElement(postItem);
+	protected URL findPostURLInPostItem(Node PostItem) throws Exception {
+		LinkTag link = findPostItemElement(PostItem);
 		String path = link.getLink();
 
 		try {
@@ -107,8 +107,8 @@ public abstract class CommonForumDescriptor implements BaseForumDescriptor {
 		}
 	}
 
-	protected String findPostTitleInPostItem(Node postItem) throws Exception {
-		LinkTag link = findPostItemElement(postItem);
+	protected String findPostTitleInPostItem(Node PostItem) throws Exception {
+		LinkTag link = findPostItemElement(PostItem);
 		return tools.inferTextInside(link);
 	}
 
@@ -181,7 +181,7 @@ public abstract class CommonForumDescriptor implements BaseForumDescriptor {
 	///////////////////////////////////////////////////////////////////////////
 	public abstract NodeList selectPostItemInCategorySite(Html document) throws Exception;
 
-	public abstract LinkTag selectPostLinkInPostItem(Node postItem) throws Exception;
+	public abstract LinkTag selectPostLinkInPostItem(Node PostItem) throws Exception;
 
 	public abstract Node selectCategoryNextPageButton(Html document) throws Exception;
 
@@ -207,7 +207,7 @@ public abstract class CommonForumDescriptor implements BaseForumDescriptor {
 		String result = pattern;
 
 		result = result.replace(CATEGORY_ID_NEEDLE, identifier.getCategory());
-		result = result.replace(POST_ID_NEEDLE, identifier.getId());
+		result = result.replace(COMMENT_ID_NEEDLE, identifier.getId());
 		result = result.replace(PAGE_NUMBER_NEEDLE, Integer.toString(page));
 
 		return result;

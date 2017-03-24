@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import cz.martlin.defrost.dataobj.Post;
+import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.PostIdentifier;
 import cz.martlin.defrost.dataobj.PostInfo;
 
@@ -57,7 +57,7 @@ public class LoggingReporter implements StatusReporter {
 	}
 
 	@Override
-	public void postLoaded(PostIdentifier identifier, Post post) {
+	public void postLoaded(PostIdentifier identifier, List<Comment> comments) {
 		LOG.info("Post " + identifier + " loaded");
 	}
 
@@ -75,13 +75,13 @@ public class LoggingReporter implements StatusReporter {
 
 	///////////////////////////////////////////////////////////////////////////////
 
-	public void loadingOfCategoriesInThreadStarted(java.util.List<String> categories) {
-		LOG.info("Loading posts of " + categories.size() + " categories in thread started");
+	public void loadingOfPostsInThreadStarting(java.util.List<String> categories) {
+		LOG.info("Loading Comments of " + categories.size() + " categories in thread started");
 	}
 
 	@Override
-	public void loadingOfPostsInThreadStarted(List<PostInfo> posts) {
-		LOG.info("Loading comments of " + posts.size() + " posts in thread started");
+	public void loadingOfCommentsInThreadStarting(List<PostInfo> Comments) {
+		LOG.info("Loading comments of " + Comments.size() + " Comments in thread started");
 
 	}
 //
@@ -92,8 +92,8 @@ public class LoggingReporter implements StatusReporter {
 //	}
 //
 //	@Override
-//	public void lastPostLoaded() {
-//		LOG.info("Posts loaded");
+//	public void lastCommentLoaded() {
+//		LOG.info("Comments loaded");
 //	}
 
 	public void loadingInThreadStopping() {
@@ -125,7 +125,31 @@ public class LoggingReporter implements StatusReporter {
 	}
 
 	@Override
-	public void lastPostLoaded(List<Post> posts) {
+	public void lastPostLoaded(List<Comment> Comments) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void loadingOfPostsInThreadStarted(List<String> categories) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void loadingOfPostsInThreadFinished(List<String> categories) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void loadingOfCommentsInThreadStarted(List<PostInfo> comments) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void loadingOfCommentsInThreadFinished(List<PostInfo> comments) {
 		// TODO Auto-generated method stub
 		
 	}

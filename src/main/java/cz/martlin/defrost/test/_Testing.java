@@ -11,7 +11,7 @@ import org.htmlparser.tags.Html;
 
 import cz.martlin.defrost.base.BaseForumDescriptor;
 import cz.martlin.defrost.dataobj.PagedDataResult;
-import cz.martlin.defrost.dataobj.Post;
+import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.PostIdentifier;
 import cz.martlin.defrost.dataobj.PostInfo;
 import cz.martlin.defrost.impls.EmiminoForumDesc;
@@ -49,12 +49,12 @@ public class _Testing {
 		Loader loader = new Loader(emimino, reporter);
 
 		String category1 = "detske-nadobi";
-		List<PostInfo> posts1 = loader.loadCategory(category1);
-		System.out.println(posts1.size());
+		List<PostInfo> Comments1 = loader.loadCategory(category1);
+		System.out.println(Comments1.size());
 
 		PostIdentifier identifier1 = new PostIdentifier("whatever", "kranialni-remodelacni-orteza-mate-zkusenost-82977");
-		Post post1 = loader.loadPost(identifier1);
-		System.out.println(post1.getComments().size());
+		List<Comment> comments1 = loader.loadComments(identifier1);
+		System.out.println(comments1.size());
 
 	}
 
@@ -71,10 +71,10 @@ public class _Testing {
 		testCategory(desc, category3);
 
 		PostIdentifier identifier1 = new PostIdentifier("whatever", "dat-odklad-65roku-284416");
-		testPosts(desc, identifier1);
+		testComments(desc, identifier1);
 
 		PostIdentifier identifier2 = new PostIdentifier("whatever", "kamaradka-z-uherskeho-brodu-266104");
-		testPosts(desc, identifier2);
+		testComments(desc, identifier2);
 
 	}
 
@@ -85,10 +85,10 @@ public class _Testing {
 		testCategory(desc, category1);
 
 		PostIdentifier identifier1 = new PostIdentifier("zpravy", "A170321_083811_domaci_fka");
-		testPosts(desc, identifier1);
+		testComments(desc, identifier1);
 
 		PostIdentifier identifier2 = new PostIdentifier("zpravy", "A170321_151510_domaci_kop");
-		testPosts(desc, identifier2);
+		testComments(desc, identifier2);
 	}
 
 	private static void testCategory(BaseForumDescriptor desc, String category) {
@@ -100,7 +100,7 @@ public class _Testing {
 				System.out.println("Category " + category + " of " + desc + ", page " + i + ":");
 				PagedDataResult<List<PostInfo>> result = parser.listPosts(category, i);
 				List<PostInfo> infos = result.getData();
-				printer.printPostsInfos(infos, System.out);
+				printer.printCommentsInfos(infos, System.out);
 
 				if (!result.isHasNextPage()) {
 					System.out.println("No more pages");
@@ -113,16 +113,16 @@ public class _Testing {
 		}
 	}
 
-	private static void testPosts(BaseForumDescriptor desc, PostIdentifier identifier) {
+	private static void testComments(BaseForumDescriptor desc, PostIdentifier identifier) {
 		PostParser parser = new PostParser(desc);
 		PrettyPrinter printer = new PrettyPrinter();
 
 		try {
 			for (int i = 1; i <= 10; i++) {
-				System.out.println("Post " + identifier + " of " + desc + ", page " + i + ":");
-				PagedDataResult<Post> result = parser.loadAndParse(identifier, i);
-				Post post = result.getData();
-				printer.printPost(post, System.out);
+				System.out.println("Comment " + identifier + " of " + desc + ", page " + i + ":");
+				PagedDataResult<List<Comment>> result = parser.loadAndParse(identifier, i);
+				List<Comment> comments = result.getData();
+				printer.printComment(comments, System.out);
 
 				if (!result.isHasNextPage()) {
 					System.out.println("No more pages");
@@ -154,7 +154,7 @@ public class _Testing {
 
 	/*
 	 * private static void testEmimino() { XXX_ForumDescriptorBase desc = new
-	 * XXX_EmiminoForumDesc(); PostParser parser = new PostParser(desc);
+	 * XXX_EmiminoForumDesc(); CommentParser parser = new CommentParser(desc);
 	 * PrettyPrinter printer = new PrettyPrinter(); URL url =
 	 * toURL("http://www.emimino.cz/clanky/hormonalni-antikoncepce-2016/"); //
 	 * http://www.emimino.cz/denicky/trapeni-13148/ //
@@ -164,35 +164,35 @@ public class _Testing {
 	 * http://www.emimino.cz/souteze/vyrobte-si-zivy-domaci-jogurt/ //
 	 * http://www.emimino.cz/clanky/pet-porci-ovoce-a-zeleniny-je-to-snadne/
 	 * 
-	 * Post post; try { post = parser.loadAndParse(url); } catch
+	 * Comment Comment; try { Comment = parser.loadAndParse(url); } catch
 	 * (DefrostException e) { e.printStackTrace(); return; }
 	 * 
-	 * // System.out.println(post); printer.printPost(post, System.out); }
+	 * // System.out.println(Comment); printer.printComment(Comment, System.out); }
 	 * 
 	 * private static void testEmiminos() { String[] urls = new String[] { //
 	 * "http://www.emimino.cz/denicky/trapeni-13148/", //
 	 * "http://www.emimino.cz/denicky/introvert-na-malomeste-13119/", //
 	 * "http://www.emimino.cz/denicky/me-hororove-tehotenstvi-12804/", // };
 	 * 
-	 * XXX_ForumDescriptorBase desc = new XXX_EmiminoForumDesc(); PostParser
-	 * parser = new PostParser(desc);
+	 * XXX_ForumDescriptorBase desc = new XXX_EmiminoForumDesc(); CommentParser
+	 * parser = new CommentParser(desc);
 	 * 
 	 * for (String url : urls) { URL theUrl = toURL(url);
 	 * 
-	 * try { Post post = parser.loadAndParse(theUrl);
-	 * System.out.println(post.getTitle() + ", " + post.getComments().size() +
+	 * try { Comment Comment = parser.loadAndParse(theUrl);
+	 * System.out.println(Comment.getTitle() + ", " + Comment.getComments().size() +
 	 * " comments"); } catch (DefrostException e) { System.err.println(e); } } }
 	 * 
 	 * private static void testNovinkycz() { XXX_ForumDescriptorBase desc = new
-	 * XXX_IDnesForumDesc(); PostParser parser = new PostParser(desc);
+	 * XXX_IDnesForumDesc(); CommentParser parser = new CommentParser(desc);
 	 * PrettyPrinter printer = new PrettyPrinter(); URL url = toURL(
 	 * "http://technet.idnes.cz/diskuse.aspx?iddiskuse=A170317_143422_veda_dvz")
 	 * ;
 	 * 
-	 * Post post; try { post = parser.loadAndParse(url); } catch
+	 * Comment Comment; try { Comment = parser.loadAndParse(url); } catch
 	 * (DefrostException e) { e.printStackTrace(); return; }
 	 * 
-	 * // System.out.println(post); printer.printPost(post, System.out);
+	 * // System.out.println(Comment); printer.printComment(Comment, System.out);
 	 * 
 	 * }
 	 */

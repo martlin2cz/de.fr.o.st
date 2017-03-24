@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+@Deprecated
 public class Post {
 
 	@Deprecated
@@ -88,7 +89,7 @@ public class Post {
 
 	@Override
 	public String toString() {
-		return "Post [title=" + title + ", url=" + url + ", comments=" + comments + "]";
+		return "Comment [title=" + title + ", url=" + url + ", comments=" + comments + "]";
 	}
 
 }

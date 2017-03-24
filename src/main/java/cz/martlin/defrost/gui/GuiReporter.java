@@ -2,7 +2,7 @@ package cz.martlin.defrost.gui;
 
 import java.util.List;
 
-import cz.martlin.defrost.dataobj.Post;
+import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.PostIdentifier;
 import cz.martlin.defrost.dataobj.PostInfo;
 import cz.martlin.defrost.misc.StatusReporter;
@@ -12,7 +12,7 @@ public class GuiReporter implements StatusReporter {
 	private final MainController ctl;
 
 	@Deprecated
-	private int posts;
+	private int Comments;
 	@Deprecated
 	private int comments;
 
@@ -58,17 +58,17 @@ public class GuiReporter implements StatusReporter {
 	///////////////////////////////////////////////////////////////////////////////
 
 	public void firstPostLoading(List<PostInfo> infos) {
-		itemsLoadingStarting("posts", infos.size());
+		itemsLoadingStarting("Post", infos.size());
 	}
 
 	@Override
 	public void startingLoadPost(PostIdentifier post) {
-		itemsLoadingProgress("post " + post.getId(), null);
+		itemsLoadingProgress("Post " + post.getId(), null);
 	}
 
 	@Override
 	public void loadingPostPage(PostIdentifier post, int page) {
-		itemsLoadingProgress("post " + post.getId(), page);
+		itemsLoadingProgress("Post " + post.getId(), page);
 	}
 
 	@Override
@@ -77,13 +77,13 @@ public class GuiReporter implements StatusReporter {
 	}
 
 	@Override
-	public void postLoaded(PostIdentifier identifier, Post post) {
+	public void postLoaded(PostIdentifier identifier, List<Comment> comments) {
 		// nothing
 	}
 
 	@Override
-	public void lastPostLoaded(List<Post> posts) {
-		itemsLoadingComplete("posts");
+	public void lastPostLoaded(List<Comment> Comments) {
+		itemsLoadingComplete("Comments");
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -102,13 +102,35 @@ public class GuiReporter implements StatusReporter {
 	///////////////////////////////////////////////////////////////////////////////
 
 	@Override
-	public void loadingOfCategoriesInThreadStarted(List<String> categories) {
+	public void loadingOfPostsInThreadStarting(List<String> categories) {
+		ctl.setStatus("Starting");
+	}
+
+	@Override
+	public void loadingOfCommentsInThreadStarting(List<PostInfo> Comments) {
+		ctl.setStatus("Starting");
+	}
+
+	@Override
+	public void loadingOfPostsInThreadStarted(List<String> categories) {
 		ctl.setStatus("Started");
 	}
 
 	@Override
-	public void loadingOfPostsInThreadStarted(List<PostInfo> posts) {
+	public void loadingOfCommentsInThreadStarted(List<PostInfo> comments) {
 		ctl.setStatus("Started");
+	}
+
+	@Override
+	public void loadingOfPostsInThreadFinished(List<String> categories) {
+		ctl.setStatus("Finished");
+		ctl.loadingFinished();
+	}
+
+	@Override
+	public void loadingOfCommentsInThreadFinished(List<PostInfo> comments) {
+		ctl.setStatus("Finished");
+		ctl.loadingFinished();
 	}
 
 	@Override
@@ -169,13 +191,14 @@ public class GuiReporter implements StatusReporter {
 	private void itemsLoadingComplete(String what) {
 		String message = what + " loaded";
 		ctl.setLoadingStopped(message);
+		ctl.updateTotals();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
 
 	@Deprecated
 	private void updateTotals(String category, PostInfo info) {
-		ctl.updateTotals(posts, comments, category, info);
+
 	}
 
 	///////////////////////////////////////////////////////////////////////////////

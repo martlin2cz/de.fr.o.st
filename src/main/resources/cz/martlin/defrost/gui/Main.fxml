@@ -14,24 +14,24 @@
     <Label id="" fx:id="discussInUseLbl" layoutX="120.0" text="discuss" AnchorPane.topAnchor="10.0" />
     <GridPane pickOnBounds="true" prefHeight="254.0" prefWidth="600.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
       <children>
-        <Button id="" fx:id="loadCategoriesButt" mnemonicParsing="false" onAction="#loadCategoriesButtAction" text="Load posts of categories" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+        <Button id="" fx:id="loadPostsButt" mnemonicParsing="false" onAction="#loadPostsButtAction" text="Load Comments of categories" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
           <GridPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" fx:id="x1" />
           </GridPane.margin>
         </Button>
-        <Button id="" fx:id="loadPostsButt" mnemonicParsing="false" onAction="#loadPostsButtAction" text="Load comments of posts" textAlignment="CENTER" underline="false" wrapText="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.margin="$x1" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+        <Button id="" fx:id="loadCommentsButt" mnemonicParsing="false" onAction="#loadCommentsButtAction" text="Load comments of Comments" textAlignment="CENTER" underline="false" wrapText="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.margin="$x1" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
         <ListView fx:id="categoriesLst" disable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-        <ListView fx:id="postsLst" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+        <ListView id="CommentsLst" fx:id="postsLst" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
         <Label text="Categories:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="BOTTOM" />
-        <Label text="Posts to analyze:" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="BOTTOM" />
+        <Label text="Comments to analyze:" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="BOTTOM" />
         <Label fx:id="categoriesTotalLbl" text="total" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-        <Label fx:id="postsTotalLbl" disable="false" text="total" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+        <Label id="CommentsTotalLbl" fx:id="postsTotalLbl" disable="false" text="total" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
         <Label fx:id="commentsTotalLbl" text="total" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
         <Label text="Comments:" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="BOTTOM" />
         <VBox alignment="CENTER" disable="false" fillWidth="true" focusTraversable="false" prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
           <children>
             <Button alignment="CENTER" mnemonicParsing="false" text="Download by User" textAlignment="CENTER" wrapText="true" VBox.margin="$x1" />
-            <Button mnemonicParsing="false" text="Download user x post" textAlignment="CENTER" wrapText="true" VBox.margin="$x1" />
+            <Button mnemonicParsing="false" text="Download user x Comment" textAlignment="CENTER" wrapText="true" VBox.margin="$x1" />
           </children>
         </VBox>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="0.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
@@ -42,8 +42,8 @@
         </HBox>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
           <children>
-            <Button mnemonicParsing="false" onAction="#exportPostsButtAction" text="Export" HBox.margin="$x1" />
-            <Button mnemonicParsing="false" onAction="#importPostsButtAction" text="Import" />
+            <Button mnemonicParsing="false" onAction="#exportCommentsButtAction" text="Export" HBox.margin="$x1" />
+            <Button mnemonicParsing="false" onAction="#importCommentsButtAction" text="Import" />
           </children>
         </HBox>
       </children>

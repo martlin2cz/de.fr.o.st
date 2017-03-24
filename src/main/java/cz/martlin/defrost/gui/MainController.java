@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
 import cz.martlin.defrost.base.BaseForumDescriptor;
-import cz.martlin.defrost.dataobj.Post;
+import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.PostInfo;
 import cz.martlin.defrost.input.threading.LoaderInThread;
 import cz.martlin.defrost.misc.StatusReporter;
@@ -42,9 +42,9 @@ public class MainController implements Initializable {
 	@FXML
 	private Button stopButt;
 	@FXML
-	private Button loadCategoriesButt;
-	@FXML
 	private Button loadPostsButt;
+	@FXML
+	private Button loadCommentsButt;
 	@FXML
 	private ListView<String> categoriesLst;
 	@FXML
@@ -87,6 +87,7 @@ public class MainController implements Initializable {
 
 		initializeCategories();
 		loadingFinished();
+		updateTotals();
 		setLoadingStopped("Ready.");
 	}
 	///////////////////////////////////////////////////////////////////////////////
@@ -110,28 +111,39 @@ public class MainController implements Initializable {
 	}
 
 	private void initializePosts() {
-		List<PostInfo> posts = loader.getLoadedInfos();
+		List<PostInfo> posts = loader.getLoadedPosts();
 
 		ObservableList<PostInfo> items = FXCollections.observableList(posts);
 		postsLst.setItems(items);
 		postsLst.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		postsLst.setCellFactory(new PostsListViewCallback());
 
 		String text = "total: " + posts.size();
 		postsTotalLbl.setText(text);
+	}
+
+	private void initializeComments() {
+		// TODO label.setText("totla: " ....) ?
+
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
 
 	public void setEditable(boolean editable) {
 		stopButt.setDisable(editable);
-		loadCategoriesButt.setDisable(!editable);
 		loadPostsButt.setDisable(!editable);
+		loadCommentsButt.setDisable(!editable);
 
 		categoriesLst.setDisable(!editable);
 		categoriesTotalLbl.setDisable(!editable);
 
 		postsLst.setDisable(!editable);
 		postsTotalLbl.setDisable(!editable);
+		
+		//postsLst.setDisable(!editable);
+		commentsTotalLbl.setDisable(!editable);
+		
+		
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -168,31 +180,31 @@ public class MainController implements Initializable {
 	///////////////////////////////////////////////////////////////////////////////
 
 	@FXML
-	private void loadCategoriesButtAction(ActionEvent event) {
-		loadCategoriesButt.setDisable(true);
+	private void loadPostsButtAction(ActionEvent event) {
+		loadPostsButt.setDisable(true);
 
 		List<String> categories = categoriesLst.getSelectionModel().getSelectedItems();
 		if (categories.isEmpty()) {
 			error("Select at least one category", false);
-			loadCategoriesButt.setDisable(false);
+			loadPostsButt.setDisable(false);
 			return;
 		}
-		loader.startLoadingCategories(categories);
+		loader.startLoadingPosts(categories);
 
 		setEditable(false);
 	}
 
 	@FXML
-	private void loadPostsButtAction(ActionEvent event) {
-		loadPostsButt.setDisable(true);
+	private void loadCommentsButtAction(ActionEvent event) {
+		loadCommentsButt.setDisable(true);
 
 		List<PostInfo> infos = postsLst.getSelectionModel().getSelectedItems();
 		if (infos.isEmpty()) {
 			error("Select at least one post", false);
-			loadPostsButt.setDisable(false);
+			loadCommentsButt.setDisable(false);
 			return;
 		}
-		loader.startLoadingPosts(infos);
+		loader.startLoadingComments(infos);
 
 		setEditable(false);
 	}
@@ -212,34 +224,35 @@ public class MainController implements Initializable {
 	@FXML
 	private void exportInfosButtAction(ActionEvent event) {
 		setLoadingStarted("Exporting");
-		List<PostInfo> infos = loader.getLoadedInfos();
-		ie.exportInfos(infos);
+		List<PostInfo> infos = loader.getLoadedPosts();
+		ie.exportPosts(infos);
 		setLoadingStopped("Exported");
 	}
 
 	@FXML
 	private void importInfosButtAction(ActionEvent event) {
 		setLoadingStarted("Importing");
-		List<PostInfo> infos = ie.importInfos();
-		loader.setLoadedInfos(infos);
+		List<PostInfo> infos = ie.importPosts();
+		loader.setLoadedPosts(infos);
 		setLoadingStopped("Imported");
 		initializePosts();
 	}
 
 	@FXML
-	private void exportPostsButtAction(ActionEvent event) {
+	private void exportCommentsButtAction(ActionEvent event) {
 		setLoadingStarted("Exporting");
-		List<Post> posts = loader.getLoadedPosts();
-		ie.exportPosts(posts);
+		List<Comment> Comments = loader.getLoadedComments();
+		ie.exportComments(Comments);
 		setLoadingStopped("Exported");
 	}
 
 	@FXML
-	private void importPostsButtAction(ActionEvent event) {
+	private void importCommentsButtAction(ActionEvent event) {
 		setLoadingStarted("Importing");
-		List<Post> posts = ie.importPosts();
-		loader.setLoadedPosts(posts);
+		List<Comment> comments = ie.importComments();
+		loader.setLoadedComments(comments);
 		setLoadingStopped("Imported");
+		initializeComments();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -254,24 +267,18 @@ public class MainController implements Initializable {
 		});
 	}
 
-	protected void updateTotals(int pages, int comments, String category, PostInfo info) {
+	protected void updateTotals() {
 		Platform.runLater(() -> {
-			this.postsTotalLbl.setText("total: " + pages);
-			this.commentsTotalLbl.setText("total: " + comments);
-
-			if (category != null) {
-				this.categoriesLst.getSelectionModel().select(category);
-			}
-			if (info != null) {
-				this.postsLst.getSelectionModel().select(info);
-			}
-
+			this.postsTotalLbl.setText("total: " + loader.getLoadedPostsCount());
+			this.commentsTotalLbl.setText("total: " + loader.getLoadedCommentsCount());
 		});
 	}
 
 	protected void loadingFinished() {
 		Platform.runLater(() -> {
 			initializePosts();
+			initializeComments();
+			updateTotals();	//this is called inside of another task, problem?
 
 			setEditable(true);
 		});

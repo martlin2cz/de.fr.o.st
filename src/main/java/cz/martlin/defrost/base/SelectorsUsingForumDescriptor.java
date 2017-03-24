@@ -11,22 +11,22 @@ import cz.martlin.defrost.misc.DefrostException;
 
 public abstract class SelectorsUsingForumDescriptor extends CommonForumDescriptor {
 
-	public SelectorsUsingForumDescriptor(String categorySiteURLPattern, String postSiteURLPattern,
+	public SelectorsUsingForumDescriptor(String categorySiteURLPattern, String commentSiteURLPattern,
 			DateFormat commentDateFormat) {
-		super(categorySiteURLPattern, postSiteURLPattern, commentDateFormat);
+		super(categorySiteURLPattern, commentSiteURLPattern, commentDateFormat);
 	}
 
 	///////////////////////////////////////////////////////////////////////////
 	@Override
 	public NodeList selectPostItemInCategorySite(Html document) throws DefrostException {
-		String selector = selectorOfPostsItemsInCategorySite();
+		String selector = selectorOfPostItemsInCategorySite();
 		return tools.applySelector(document, selector);
 	}
 
 	@Override
-	public LinkTag selectPostLinkInPostItem(Node postItem) throws DefrostException {
+	public LinkTag selectPostLinkInPostItem(Node PostItem) throws DefrostException {
 		String selector = selectorOfPostLinkInPostItem();
-		return (LinkTag) tools.applySelectorGetFirst(postItem, selector);
+		return (LinkTag) tools.applySelectorGetFirst(PostItem, selector);
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public abstract class SelectorsUsingForumDescriptor extends CommonForumDescripto
 
 	@Override
 	public Node selectTitleInPostSite(Html document) throws DefrostException {
-		String selector = selectorOfTitleInPostSite();
+		String selector = selectorOfTitleInCommentSite();
 		return tools.applySelectorGetFirst(document, selector);
 	}
 
@@ -90,13 +90,13 @@ public abstract class SelectorsUsingForumDescriptor extends CommonForumDescripto
 
 	///////////////////////////////////////////////////////////////////////////
 
-	public abstract String selectorOfPostsItemsInCategorySite();
+	public abstract String selectorOfPostItemsInCategorySite();
 
 	public abstract String selectorOfPostLinkInPostItem();
 
 	public abstract String selectorOfCategoryNextPageButton();
 
-	public abstract String selectorOfTitleInPostSite();
+	public abstract String selectorOfTitleInCommentSite();
 
 	public abstract String selectorOfDiscussElementInPostSite();
 

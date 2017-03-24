@@ -3,15 +3,30 @@ package cz.martlin.defrost.dataobj;
 import java.util.Calendar;
 
 public class Comment {
+	private final PostInfo post;
 	private final User author;
 	private final Calendar date;
 	private final String content;
 
+	@Deprecated
 	public Comment(User author, Calendar date, String content) {
 		super();
+		this.post = null;
 		this.author = author;
 		this.date = date;
 		this.content = content;
+	}
+	
+	
+	public Comment(PostInfo post, User author, Calendar date, String content) {
+		this.post = post;
+		this.author = author;
+		this.date = date;
+		this.content = content;
+	}
+	
+	public PostInfo getPost() {
+		return post;
 	}
 
 	public User getAuthor() {

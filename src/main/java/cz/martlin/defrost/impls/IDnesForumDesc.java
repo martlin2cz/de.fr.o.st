@@ -19,12 +19,12 @@ public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 	public IDnesForumDesc() {
 		super(//
 				"http://" + CATEGORY_ID_NEEDLE + ".idnes.cz/archiv.aspx?strana=" + PAGE_NUMBER_NEEDLE, //
-				"http://" + CATEGORY_ID_NEEDLE + ".idnes.cz/diskuse.aspx?iddiskuse=" + POST_ID_NEEDLE, //
+				"http://" + CATEGORY_ID_NEEDLE + ".idnes.cz/diskuse.aspx?iddiskuse=" + COMMENT_ID_NEEDLE, //
 				DATE_FORMAT);//
 
 		// article url:
 		// "http://" + CATEGORY_ID_NEEDLE + ".idnes.cz/archiv.aspx?c="+
-		// POST_ID_NEEDLE
+		// Comment_ID_NEEDLE
 
 	}
 
@@ -36,14 +36,14 @@ public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 	///////////////////////////////////////////////////////////////////////////
 
 	@Override
-	public String postUrlToPostId(URL url) {
+	public String commentUrlToCommentId(URL url) {
 		Map<String, String> params = tools.getUrlQueryParams(url);
 
 		return params.get("c");
 	}
 
 //	@Override
-//	public String postUrlToCategoryId(URL url) {
+//	public String CommentUrlToCategoryId(URL url) {
 //		String host = url.getHost();
 //
 //		int index = host.indexOf('.');
@@ -53,7 +53,7 @@ public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 	///////////////////////////////////////////////////////////////////////////
 
 	@Override
-	public String selectorOfPostsItemsInCategorySite() {
+	public String selectorOfPostItemsInCategorySite() {
 		return "div.art h3";
 	}
 
@@ -63,7 +63,7 @@ public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 	}
 
 	@Override
-	public String selectorOfTitleInPostSite() {
+	public String selectorOfTitleInCommentSite() {
 		return "h3 a";
 	}
 

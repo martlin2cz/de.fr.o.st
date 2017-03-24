@@ -114,7 +114,7 @@ public class ParserTools {
 		return nodes.elementAt(0);
 	}
 
-	public Calendar dateToCalendar(Date date) {
+	public static Calendar dateToCalendar(Date date) {
 		Calendar calendar = Calendar.getInstance();
 
 		calendar.setTime(date);

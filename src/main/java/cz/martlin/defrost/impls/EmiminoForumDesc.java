@@ -18,7 +18,7 @@ public class EmiminoForumDesc extends SelectorsUsingForumDescriptor {
 	public EmiminoForumDesc() {
 		super(//
 				"http://www.emimino.cz/diskuse/" + CATEGORY_ID_NEEDLE + "/strankovani/" + PAGE_NUMBER_NEEDLE, //
-				"http://www.emimino.cz/diskuse/" + POST_ID_NEEDLE + "/strankovani/" + PAGE_NUMBER_NEEDLE, //
+				"http://www.emimino.cz/diskuse/" + COMMENT_ID_NEEDLE + "/strankovani/" + PAGE_NUMBER_NEEDLE, //
 				new EmiminoDateFormat()); //
 	}
 
@@ -45,7 +45,7 @@ public class EmiminoForumDesc extends SelectorsUsingForumDescriptor {
 	///////////////////////////////////////////////////////////////////////////
 
 	@Override
-	public String postUrlToPostId(URL url) {
+	public String commentUrlToCommentId(URL url) {
 		final String prefix = "/diskuse/";
 		String path = url.getPath();
 
@@ -58,13 +58,13 @@ public class EmiminoForumDesc extends SelectorsUsingForumDescriptor {
 	}
 
 	// @Override
-	// public String postUrlToCategoryId(URL url) {
+	// public String CommentUrlToCategoryId(URL url) {
 	// return "???"; // TODO FIXME ...
 	// }
 	///////////////////////////////////////////////////////////////////////////
 
 	@Override
-	public String selectorOfPostsItemsInCategorySite() {
+	public String selectorOfPostItemsInCategorySite() {
 		return "span.topic";
 	}
 
@@ -81,7 +81,7 @@ public class EmiminoForumDesc extends SelectorsUsingForumDescriptor {
 	}
 
 	@Override
-	public String selectorOfTitleInPostSite() {
+	public String selectorOfTitleInCommentSite() {
 		return "h1";
 	}
 
@@ -100,8 +100,8 @@ public class EmiminoForumDesc extends SelectorsUsingForumDescriptor {
 	@Override
 	public String selectorOfCommentsElementInDiscuss() {
 		throw new UnsupportedOperationException(
-				"multiple CSS classes, needed to rewrite #selectCommentsElementInDiscuss");
-		// return "div.discussion_post";
+				"multiple CSS classes, needed to rewrite #selectPostsElementInDiscuss");
+		// return "div.discussion_Comment";
 	}
 
 	@Override
@@ -140,9 +140,9 @@ public class EmiminoForumDesc extends SelectorsUsingForumDescriptor {
 
 	@Override
 	public NodeList selectCommentsElementInDiscuss(Node discuss) {
-		NodeFilter firstPostFilter = new HasAttributeFilter("class", "discussion_post first vycisti");
-		NodeFilter othersPostsFilter = new HasAttributeFilter("class", "discussion_post  vycisti ");
-		NodeFilter filter = new OrFilter(firstPostFilter, othersPostsFilter);
+		NodeFilter firstCommentFilter = new HasAttributeFilter("class", "discussion_post first vycisti");
+		NodeFilter othersCommentsFilter = new HasAttributeFilter("class", "discussion_post  vycisti ");
+		NodeFilter filter = new OrFilter(firstCommentFilter, othersCommentsFilter);
 
 		return tools.applyFilter(discuss, filter);
 		// return super.selectCommentsElementInDiscuss(discuss);

@@ -2,7 +2,7 @@ package cz.martlin.defrost.misc;
 
 import java.util.List;
 
-import cz.martlin.defrost.dataobj.Post;
+import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.PostIdentifier;
 import cz.martlin.defrost.dataobj.PostInfo;
 
@@ -23,7 +23,7 @@ public interface StatusReporter {
 
 	void lastPostPage(PostIdentifier identifier, int page);
 
-	void postLoaded(PostIdentifier identifier, Post post);
+	void postLoaded(PostIdentifier identifier, List<Comment> comments);
 
 	///////////////////////////////////////////////////////////////////////////////
 	void interrupted();
@@ -38,13 +38,21 @@ public interface StatusReporter {
 
 	void firstPostLoading(List<PostInfo> infos);
 
-	void lastPostLoaded(List<Post> posts);
+	void lastPostLoaded(List<Comment> comments);
 
 	///////////////////////////////////////////////////////////////////////////////
 
-	void loadingOfCategoriesInThreadStarted(List<String> categories);
+	void loadingOfPostsInThreadStarting(List<String> categories);
 
-	void loadingOfPostsInThreadStarted(List<PostInfo> posts);
+	void loadingOfCommentsInThreadStarting(List<PostInfo> comments);
+
+	void loadingOfPostsInThreadStarted(List<String> categories);
+
+	void loadingOfPostsInThreadFinished(List<String> categories);
+
+	void loadingOfCommentsInThreadStarted(List<PostInfo> comments);
+
+	void loadingOfCommentsInThreadFinished(List<PostInfo> comments);
 
 	void loadingInThreadStopping();
 

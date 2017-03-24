@@ -5,7 +5,7 @@ import java.util.List;
 
 import cz.martlin.defrost.base.BaseForumDescriptor;
 import cz.martlin.defrost.dataobj.PagedDataResult;
-import cz.martlin.defrost.dataobj.Post;
+import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.PostIdentifier;
 import cz.martlin.defrost.dataobj.PostInfo;
 import cz.martlin.defrost.misc.DefrostException;
@@ -62,9 +62,9 @@ public class Loader implements Interruptable {
 		return posts;
 	}
 
-	public Post loadPost(PostIdentifier identifier) {
+	public List<Comment> loadComments(PostIdentifier identifier) {
 		restart();
-		Post post = null;
+		List<Comment> comments = new ArrayList<>();
 
 		reporter.startingLoadPost(identifier);
 		for (int i = 1;; i++) {
@@ -75,27 +75,24 @@ public class Loader implements Interruptable {
 
 			reporter.loadingPostPage(identifier, i);
 
-			PagedDataResult<Post> result;
+			PagedDataResult<List<Comment>> result;
 			try {
 				result = postParser.loadAndParse(identifier, i);
 			} catch (DefrostException e) {
 				reporter.error(e);
 				continue;
 			}
-			if (post == null) {
-				post = result.getData();
-			} else {
-				post.getComments().addAll(result.getData().getComments());
-			}
+
+			comments.addAll(result.getData());
 
 			if (!result.isHasNextPage()) {
 				reporter.lastPostPage(identifier, i);
 				break;
 			}
 		}
-		reporter.postLoaded(identifier, post);
+		reporter.postLoaded(identifier, comments);
 
-		return post;
+		return comments;
 	}
 	///////////////////////////////////////////////////////////////////////////////
 
@@ -103,7 +100,7 @@ public class Loader implements Interruptable {
 		List<PostInfo> result = new ArrayList<>();
 
 		reporter.firstCategoryLoading(categories);
-		
+
 		for (String category : categories) {
 			if (isInterrupted()) {
 				break;
@@ -114,26 +111,26 @@ public class Loader implements Interruptable {
 		}
 
 		reporter.lastCategoryLoaded(result);
-		
+
 		return result;
 	}
 
-	public List<Post> loadPosts(List<PostInfo> infos) {
-		List<Post> result = new ArrayList<>();
+	public List<Comment> loadComments(List<PostInfo> infos) {
+		List<Comment> result = new ArrayList<>();
 
 		reporter.firstPostLoading(infos);
-		
+
 		for (PostInfo info : infos) {
 			if (isInterrupted()) {
 				break;
 			}
 
-			Post post = loadPost(info.getIdentifier());
-			result.add(post);
+			List<Comment> comments = loadComments(info.getIdentifier());
+			result.addAll(comments);
 		}
 
 		reporter.lastPostLoaded(result);
-		
+
 		return result;
 	}
 
