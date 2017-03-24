@@ -257,7 +257,7 @@ public class MainController implements Initializable {
 
 	///////////////////////////////////////////////////////////////////////////////
 
-	// TODO output by user, output by ...
+	// TODO output by user, output by ... buttons
 
 	///////////////////////////////////////////////////////////////////////////////
 
@@ -268,7 +268,7 @@ public class MainController implements Initializable {
 	}
 
 	protected void updateTotals() {
-		Platform.runLater(() -> {
+		Platform.runLater(() -> {	//TODO replace by initializePosts and initializeComments ?
 			this.postsTotalLbl.setText("total: " + loader.getLoadedPostsCount());
 			this.commentsTotalLbl.setText("total: " + loader.getLoadedCommentsCount());
 		});
