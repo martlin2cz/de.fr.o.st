@@ -68,14 +68,14 @@ public class CategoryParser {
 		for (int i = 0; i < items.size(); i++) {
 			Node item = items.elementAt(i);
 
-			PostInfo info;
+			PostInfo post;
 			try {
-				info = desc.postItemToPostInfo(item, category);
+				post = desc.postItemToPostInfo(item, category);
 			} catch (Exception e) {
 				LOG.log(Level.WARNING, "Cannot find post info in post item", e);
 				continue;
 			}
-			posts.add(info);
+			posts.add(post);
 		}
 
 		return posts;

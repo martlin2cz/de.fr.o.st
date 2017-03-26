@@ -51,8 +51,8 @@ public class PrettyPrinter {
 		}
 	}
 
-	public void printCommentsInfos(List<PostInfo> infos, PrintStream out) {
-		for (PostInfo info : infos) {
+	public void printPosts(List<PostInfo> posts, PrintStream out) {
+		for (PostInfo info : posts) {
 			out.print(info.getIdentifier().getCategory());
 			out.print(" / ");
 			out.print(info.getIdentifier().getId());

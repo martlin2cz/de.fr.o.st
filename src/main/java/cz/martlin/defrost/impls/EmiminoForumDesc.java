@@ -21,6 +21,11 @@ public class EmiminoForumDesc extends SelectorsUsingForumDescriptor {
 				"http://www.emimino.cz/diskuse/" + COMMENT_ID_NEEDLE + "/strankovani/" + PAGE_NUMBER_NEEDLE, //
 				new EmiminoDateFormat()); //
 	}
+	
+	@Override
+	public String getDescription() {
+		return "emimino.cz";
+	}
 
 	@Override
 	public String[] listAvaibleCategories() {

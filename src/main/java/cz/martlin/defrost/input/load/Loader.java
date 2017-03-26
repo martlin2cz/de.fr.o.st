@@ -96,7 +96,7 @@ public class Loader implements Interruptable {
 	}
 	///////////////////////////////////////////////////////////////////////////////
 
-	public List<PostInfo> loadCategories(List<String> categories) {
+	public List<PostInfo> loadPosts(List<String> categories) {
 		List<PostInfo> result = new ArrayList<>();
 
 		reporter.firstCategoryLoading(categories);
@@ -115,17 +115,17 @@ public class Loader implements Interruptable {
 		return result;
 	}
 
-	public List<Comment> loadComments(List<PostInfo> infos) {
+	public List<Comment> loadComments(List<PostInfo> posts) {
 		List<Comment> result = new ArrayList<>();
 
-		reporter.firstPostLoading(infos);
+		reporter.firstPostLoading(posts);
 
-		for (PostInfo info : infos) {
+		for (PostInfo post : posts) {
 			if (isInterrupted()) {
 				break;
 			}
 
-			List<Comment> comments = loadComments(info.getIdentifier());
+			List<Comment> comments = loadComments(post.getIdentifier());
 			result.addAll(comments);
 		}
 

@@ -29,10 +29,15 @@ public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 	}
 
 	@Override
-	public String[] listAvaibleCategories() {
-		return new String[] {"zpravy", "ona", "technet", "sport"};
+	public String getDescription() {
+		return "idnes.cz";
 	}
-	
+
+	@Override
+	public String[] listAvaibleCategories() {
+		return new String[] { "zpravy", "ona", "technet", "sport" };
+	}
+
 	///////////////////////////////////////////////////////////////////////////
 
 	@Override
@@ -42,13 +47,13 @@ public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 		return params.get("c");
 	}
 
-//	@Override
-//	public String CommentUrlToCategoryId(URL url) {
-//		String host = url.getHost();
-//
-//		int index = host.indexOf('.');
-//		return host.substring(0, index);
-//	}
+	// @Override
+	// public String CommentUrlToCategoryId(URL url) {
+	// String host = url.getHost();
+	//
+	// int index = host.indexOf('.');
+	// return host.substring(0, index);
+	// }
 
 	///////////////////////////////////////////////////////////////////////////
 
@@ -71,7 +76,7 @@ public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 	public String selectorOfCategoryNextPageButton() {
 		return "td.tar a.ico-right span";
 	}
-	
+
 	@Override
 	public String selectorOfDiscussElementInPostSite() {
 		return "div#disc-list";
@@ -86,7 +91,7 @@ public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 	public String selectorOfPostNextPageButton() {
 		return "td.tar a.ico-right span";
 	}
-	
+
 	@Override
 	public String selectorOfIdInComment() {
 		return "h4.name";

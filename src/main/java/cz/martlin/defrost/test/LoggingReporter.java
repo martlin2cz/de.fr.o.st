@@ -1,4 +1,4 @@
-package cz.martlin.defrost.misc;
+package cz.martlin.defrost.test;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.PostIdentifier;
 import cz.martlin.defrost.dataobj.PostInfo;
+import cz.martlin.defrost.misc.StatusReporter;
 
 public class LoggingReporter implements StatusReporter {
 	private final Logger LOG = Logger.getLogger(getClass().getName());
@@ -150,6 +151,24 @@ public class LoggingReporter implements StatusReporter {
 
 	@Override
 	public void loadingOfCommentsInThreadFinished(List<PostInfo> comments) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void exportPostsStarted(List<PostInfo> posts) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void exportingPost(PostInfo post) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void exportPostsDone(List<PostInfo> posts) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -33,13 +33,6 @@ public class PostParser {
 		this.networker = new Networker();
 	}
 
-	/**
-	 * Loads and parses the Comment on given url.
-	 * 
-	 * 
-	 * @return
-	 * @throws DefrostException
-	 */
 	public PagedDataResult<List<Comment>> loadAndParse(PostIdentifier identifier, int page) throws DefrostException {
 		URL url;
 		try {

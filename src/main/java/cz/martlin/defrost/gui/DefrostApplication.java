@@ -15,11 +15,12 @@ public class DefrostApplication extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
-		Parent root = loader.load();
 
-		MainController controller = loader.getController();
 		BaseForumDescriptor descriptor = inferDescriptor();
-		controller.setDescriptor(descriptor);
+		MainController controller = new MainController(descriptor);
+		loader.setController(controller);
+
+		Parent root = loader.load();
 
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
@@ -38,7 +39,7 @@ public class DefrostApplication extends Application {
 				BaseForumDescriptor descriptor = (BaseForumDescriptor) instance;
 				return descriptor;
 			} catch (Exception e) {
-				//TODO handle error
+				// TODO handle error
 				e.printStackTrace();
 			}
 		}

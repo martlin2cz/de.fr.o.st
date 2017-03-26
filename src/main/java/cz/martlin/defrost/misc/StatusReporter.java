@@ -6,6 +6,7 @@ import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.PostIdentifier;
 import cz.martlin.defrost.dataobj.PostInfo;
 
+@Deprecated
 public interface StatusReporter {
 	///////////////////////////////////////////////////////////////////////////////
 	void startingLoadCategory(String category);
@@ -57,5 +58,13 @@ public interface StatusReporter {
 	void loadingInThreadStopping();
 
 	void loadingInThreadStopped();
+
+	///////////////////////////////////////////////////////////////////////////////
+
+	void exportPostsStarted(List<PostInfo> posts);
+
+	void exportingPost(PostInfo post);
+
+	void exportPostsDone(List<PostInfo> posts);
 
 }

@@ -21,7 +21,6 @@ import cz.martlin.defrost.input.load.Loader;
 import cz.martlin.defrost.input.load.PostParser;
 import cz.martlin.defrost.input.tools.Networker;
 import cz.martlin.defrost.misc.DefrostException;
-import cz.martlin.defrost.misc.LoggingReporter;
 import cz.martlin.defrost.misc.StatusReporter;
 
 public class _Testing {
@@ -100,7 +99,7 @@ public class _Testing {
 				System.out.println("Category " + category + " of " + desc + ", page " + i + ":");
 				PagedDataResult<List<PostInfo>> result = parser.listPosts(category, i);
 				List<PostInfo> infos = result.getData();
-				printer.printCommentsInfos(infos, System.out);
+				printer.printPosts(infos, System.out);
 
 				if (!result.isHasNextPage()) {
 					System.out.println("No more pages");

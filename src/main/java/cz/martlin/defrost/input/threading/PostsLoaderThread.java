@@ -25,7 +25,7 @@ public class PostsLoaderThread extends Thread {
 	public void run() {
 		reporter.loadingOfPostsInThreadStarted(categories);
 
-		infos = loader.loadCategories(categories);
+		infos = loader.loadPosts(categories);
 
 		reporter.loadingOfPostsInThreadFinished(categories);
 	}

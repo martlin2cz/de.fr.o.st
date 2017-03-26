@@ -7,6 +7,7 @@ import cz.martlin.defrost.dataobj.PostIdentifier;
 import cz.martlin.defrost.dataobj.PostInfo;
 import cz.martlin.defrost.misc.StatusReporter;
 
+@Deprecated
 public class GuiReporter implements StatusReporter {
 
 	private final MainController ctl;
@@ -103,46 +104,65 @@ public class GuiReporter implements StatusReporter {
 
 	@Override
 	public void loadingOfPostsInThreadStarting(List<String> categories) {
-		ctl.setStatus("Starting");
+		//XXX ctl.setStatus("Starting");
 	}
 
 	@Override
 	public void loadingOfCommentsInThreadStarting(List<PostInfo> Comments) {
-		ctl.setStatus("Starting");
+		//XXX ctl.setStatus("Starting");
 	}
 
 	@Override
 	public void loadingOfPostsInThreadStarted(List<String> categories) {
-		ctl.setStatus("Started");
+		//XXX ctl.setStatus("Started");
 	}
 
 	@Override
 	public void loadingOfCommentsInThreadStarted(List<PostInfo> comments) {
-		ctl.setStatus("Started");
+		//XXX ctl.setStatus("Started");
 	}
 
 	@Override
 	public void loadingOfPostsInThreadFinished(List<String> categories) {
-		ctl.setStatus("Finished");
-		ctl.loadingFinished();
+		//XXX ctl.setStatus("Finished");
+		//XXX ctl.loadingFinished();
 	}
 
 	@Override
 	public void loadingOfCommentsInThreadFinished(List<PostInfo> comments) {
-		ctl.setStatus("Finished");
-		ctl.loadingFinished();
+		//XXX ctl.setStatus("Finished");
+		//XXX ctl.loadingFinished();
 	}
 
 	@Override
 	public void loadingInThreadStopping() {
-		ctl.setStatus("Stopping...");
+		//XXX ctl.setStatus("Stopping...");
 	}
 
 	@Override
 	public void loadingInThreadStopped() {
-		ctl.setStatus("Stopped");
+		//XXX ctl.setStatus("Stopped");
 	}
 
+
+	///////////////////////////////////////////////////////////////////////////////
+
+	
+	@Override
+	public void exportPostsStarted(List<PostInfo> posts) {
+		//XXX itemsLoadingStarting("exporting posts", posts.size());
+	}
+
+	@Override
+	public void exportingPost(PostInfo post) {
+		//XXX itemsLoadingProgress("exporting posts", null);
+	}
+
+	@Override
+	public void exportPostsDone(List<PostInfo> posts) {
+		//XXX itemsLoadingComplete("exporting posts");
+	}
+	
 	///////////////////////////////////////////////////////////////////////////////
 
 	/**
@@ -156,9 +176,9 @@ public class GuiReporter implements StatusReporter {
 		itemsToLoad = totalCount;
 		currentItemIndex = 0;
 
-		String message = "(" + currentItemIndex + "/" + itemsToLoad + ") Loading " + what;
-		ctl.setStatus(message);
-		ctl.setLoadingStarted(message);
+		//XXX String message = "(" + currentItemIndex + "/" + itemsToLoad + ") Loading " + what;
+		//XXX ctl.setStatus(message);
+		//XXX ctl.setLoadingStarted(message);
 	}
 
 	/**
@@ -172,14 +192,14 @@ public class GuiReporter implements StatusReporter {
 		if (page == null) {
 			currentItemIndex++;
 
-			double progress = ((double) currentItemIndex) / (itemsToLoad + 1);
-			String message = "(" + currentItemIndex + "/" + itemsToLoad + ") Loading " + what;
+			//XXX double progress = ((double) currentItemIndex) / (itemsToLoad + 1);
+			//XXX String message = "(" + currentItemIndex + "/" + itemsToLoad + ") Loading " + what;
 
-			ctl.setLoadingProgress(message, progress);
+			//XXX ctl.setLoadingProgress(message, progress);
 		} else {
-			double progress = ((double) currentItemIndex) / (itemsToLoad + 1);
-			String message = "(" + currentItemIndex + "/" + itemsToLoad + ") Loading " + what + ", page " + page;
-			ctl.setLoadingProgress(message, progress);
+			//XXX double progress = ((double) currentItemIndex) / (itemsToLoad + 1);
+			//XXX String message = "(" + currentItemIndex + "/" + itemsToLoad + ") Loading " + what + ", page " + page;
+			//XXX ctl.setLoadingProgress(message, progress);
 		}
 	}
 
@@ -189,9 +209,9 @@ public class GuiReporter implements StatusReporter {
 	 * @param what
 	 */
 	private void itemsLoadingComplete(String what) {
-		String message = what + " loaded";
-		ctl.setLoadingStopped(message);
-		ctl.updateTotals();
+		//XXX String message = what + " loaded";
+		//XXX ctl.setLoadingStopped(message);
+		//XXX ctl.updateTotals();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
