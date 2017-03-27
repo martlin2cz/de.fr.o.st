@@ -17,8 +17,6 @@ import cz.martlin.defrost.input.tools.ParserTools;
 import cz.martlin.defrost.tasks.BaseCSVTasks.CSVExportTask;
 import cz.martlin.defrost.tasks.BaseCSVTasks.CSVImportTask;
 import cz.martlin.defrost.tasks.BaseLoadingIndicator;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 
 public class ImportExportClassesWrapper {
 	public static final File POSTS_FILE = new File("posts_infos.csv");
@@ -50,8 +48,8 @@ public class ImportExportClassesWrapper {
 
 	public static class CSVPostsImportTask extends CSVImportTask<PostInfo> {
 
-		public CSVPostsImportTask(BaseLoadingIndicator indicator, EventHandler<WorkerStateEvent> resultHandler) {
-			super("Imporing posts", "Importing post", indicator, resultHandler, POSTS_FILE);
+		public CSVPostsImportTask(BaseLoadingIndicator indicator) {
+			super("Imporing posts", "Importing post", indicator, POSTS_FILE);
 		}
 
 		@Override
@@ -90,8 +88,8 @@ public class ImportExportClassesWrapper {
 
 	public static class CSVCommentsImportTask extends CSVImportTask<Comment> {
 
-		public CSVCommentsImportTask(BaseLoadingIndicator indicator, EventHandler<WorkerStateEvent> resultHandler) {
-			super("Imporing comments", "Importing comment", indicator, resultHandler, COMMENTS_FILE);
+		public CSVCommentsImportTask(BaseLoadingIndicator indicator) {
+			super("Imporing comments", "Importing comment", indicator, COMMENTS_FILE);
 		}
 
 		@Override

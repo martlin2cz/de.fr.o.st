@@ -102,6 +102,8 @@ public class EmiminoDateFormat extends DateFormat {
 
 		cal.set(dateCal.get(Calendar.YEAR), dateCal.get(Calendar.MONTH), dateCal.get(Calendar.DAY_OF_MONTH),
 				timeCal.get(Calendar.HOUR_OF_DAY), timeCal.get(Calendar.MINUTE), timeCal.get(Calendar.SECOND));
+		
+		cal.set(Calendar.MILLISECOND, 0);
 
 		return cal.getTime();
 	}

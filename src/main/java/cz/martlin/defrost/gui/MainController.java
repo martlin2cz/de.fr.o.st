@@ -10,6 +10,7 @@ import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.PostInfo;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleListProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,6 +23,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.GridPane;
 
 public class MainController implements Initializable {
@@ -98,8 +100,6 @@ public class MainController implements Initializable {
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		System.out.println(discussInUseLbl);
-
 		initBindings();
 	}
 
@@ -108,11 +108,14 @@ public class MainController implements Initializable {
 		discussInUseLbl.textProperty().bind(discussInUseProp);
 
 		ObservableList<String> categories = impl.getCategories();
-		categoriesLst.setItems(categories);
+		categoriesLst.itemsProperty().bind(new SimpleListProperty<>(categories));
+		categoriesLst.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		categoriesTotalLbl.textProperty().bind(Bindings.size(categories).asString());
 
 		ObservableList<PostInfo> posts = impl.getPosts();
-		postsLst.setItems(posts);
+		postsLst.itemsProperty().bind(new SimpleListProperty<>(posts));
+		postsLst.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		postsLst.setCellFactory(new PostsListViewCallback());
 		postsTotalLbl.textProperty().bind(Bindings.size(posts).asString());
 
 		ObservableList<Comment> comments = impl.getComments();
@@ -154,7 +157,7 @@ public class MainController implements Initializable {
 
 	@FXML
 	private void exportPostsButtAction(ActionEvent event) {
-		impl.startExportingComments();
+		impl.startExportingPosts();
 	}
 
 	@FXML
@@ -174,7 +177,20 @@ public class MainController implements Initializable {
 
 	///////////////////////////////////////////////////////////////////////////////
 
-	// TODO output by user, output by ... buttons
+	@FXML
+	private void outputByPostButtAction(ActionEvent event) {
+		// TODO
+	}
+
+	@FXML
+	private void outputByUserButtAction(ActionEvent event) {
+		// TODO
+	}
+
+	@FXML
+	private void outputUserXpostButtAction(ActionEvent event) {
+		// TODO
+	}
 
 	///////////////////////////////////////////////////////////////////////////////
 

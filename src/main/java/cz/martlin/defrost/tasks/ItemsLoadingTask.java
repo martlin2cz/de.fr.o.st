@@ -1,5 +1,6 @@
 package cz.martlin.defrost.tasks;
 
+import cz.martlin.defrost.misc.DefrostException;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -21,6 +22,7 @@ import javafx.event.EventHandler;
  */
 public abstract class ItemsLoadingTask<T> extends Task<T> {
 
+	protected final BaseLoadingIndicator indicator;	//XXX back to private
 	protected final String itemsDesc;
 	protected final String itemDesc;
 
@@ -30,11 +32,14 @@ public abstract class ItemsLoadingTask<T> extends Task<T> {
 
 	public ItemsLoadingTask(String itemsDesc, String itemDesc, BaseLoadingIndicator indicator) {
 		super();
+
+		this.indicator = indicator;
+
 		this.itemsDesc = itemsDesc;
 		this.itemDesc = itemDesc;
 
 		updateTitle(itemDesc);
-		
+
 		setStatusIndicator(indicator);
 		makeStatusIndicatorUnset(indicator);
 	}
@@ -87,17 +92,23 @@ public abstract class ItemsLoadingTask<T> extends Task<T> {
 	}
 
 	public void loadingFinished() {
-		this.currentItemIndex = 0;
+		//this.currentItemIndex = 0;
 		this.currentItem = null;
-		
+
 		updateProgressAndMessage(itemsDesc, null, "completed");
 
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
 
+	public void error(DefrostException e) {
+		indicator.error(e);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////
+
 	private void updateProgressAndMessage(String desc, String item, String suffix) {
-		updateProgress(currentItemIndex, totalCount);
+		updateProgress(currentItemIndex - 1, totalCount);
 
 		String msg = generateMessage(desc, item, suffix);
 		updateMessage(msg);

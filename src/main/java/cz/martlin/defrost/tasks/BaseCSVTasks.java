@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.LineNumberReader;
 import java.io.Reader;
 import java.io.Writer;
 import java.text.ParseException;
@@ -17,8 +18,6 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
 import cz.martlin.defrost.misc.DefrostException;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 
 public class BaseCSVTasks {
 
@@ -31,12 +30,10 @@ public class BaseCSVTasks {
 
 		private final File file;
 
-		public CSVImportTask(String itemsDesc, String itemDesc, BaseLoadingIndicator indicator,
-				EventHandler<WorkerStateEvent> resultHandler, File file) {
+		public CSVImportTask(String itemsDesc, String itemDesc, BaseLoadingIndicator indicator, File file) {
 			super(itemsDesc, itemDesc, indicator);
 
 			this.file = file;
-			this.setOnSucceeded(resultHandler);
 		}
 
 		@Override
@@ -48,7 +45,7 @@ public class BaseCSVTasks {
 				fr = new FileReader(file);
 				parser = new CSVParser(fr, FORMAT);
 
-				int count = parser.getRecords().size(); // TODO FIXME !!!
+				int count = countLines(file);
 				List<E> result = new ArrayList<>(count);
 
 				loadingStarted(count);
@@ -102,8 +99,11 @@ public class BaseCSVTasks {
 				printer = new CSVPrinter(fw, FORMAT);
 				final CSVPrinter pr = printer;
 
+				loadingStarted(items.size());
+
 				items.forEach((item) -> {
 					if (!this.isCancelled()) {
+						loadingNextItem(null);
 						Object[] fields = exportItem(item);
 						try {
 							pr.printRecord(fields);
@@ -115,6 +115,7 @@ public class BaseCSVTasks {
 				});
 
 				printer.flush();
+				loadingFinished();
 			} catch (IOException e) {
 				throw new DefrostException(itemsDesc + " failed", e);
 			} finally {
@@ -126,6 +127,24 @@ public class BaseCSVTasks {
 		}
 
 		public abstract Object[] exportItem(E item);
+	}
+
+	private static int countLines(File file) throws IOException {
+		// http://stackoverflow.com/questions/453018/number-of-lines-in-a-file-in-java
+
+		LineNumberReader lnr = null;
+		try {
+			lnr = new LineNumberReader(new FileReader(file));
+
+			lnr.skip(Long.MAX_VALUE);
+			return lnr.getLineNumber() + 1;
+		} catch (IOException e) {
+			return Integer.MAX_VALUE;
+		} finally {
+			if (lnr != null) {
+				lnr.close();
+			}
+		}
 	}
 
 	protected static void closeQuietly(Closeable closeable) throws DefrostException {
