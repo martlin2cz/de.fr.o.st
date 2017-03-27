@@ -1,8 +1,11 @@
 package cz.martlin.defrost.dataobj;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
-public class Comment {
+public class Comment implements Serializable {
+	private static final long serialVersionUID = 7250895692201806228L;
+	
 	private final PostInfo post;
 	private final User author;
 	private final Calendar date;

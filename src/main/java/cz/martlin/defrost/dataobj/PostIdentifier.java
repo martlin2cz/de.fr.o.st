@@ -1,6 +1,11 @@
 package cz.martlin.defrost.dataobj;
 
-public class PostIdentifier {
+import java.io.Serializable;
+
+public class PostIdentifier implements Serializable, Comparable<PostIdentifier> {
+
+	private static final long serialVersionUID = 7908894990189622622L;
+
 	private final String category;
 	private final String id;
 
@@ -52,6 +57,23 @@ public class PostIdentifier {
 	@Override
 	public String toString() {
 		return "PostIdentifier [category=" + category + ", id=" + id + "]";
+	}
+
+	@Override
+	public int compareTo(PostIdentifier o) {
+		int cmp;
+
+		cmp = category.compareTo(o.category);
+		if (cmp != 0) {
+			return cmp;
+		}
+
+		cmp = id.compareTo(o.id);
+		if (cmp != 0) {
+			return cmp;
+		}
+
+		return 0;
 	}
 
 }

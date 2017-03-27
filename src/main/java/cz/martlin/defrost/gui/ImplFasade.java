@@ -14,6 +14,9 @@ import cz.martlin.defrost.output.ie.ImportExportClassesWrapper.CSVCommentsExport
 import cz.martlin.defrost.output.ie.ImportExportClassesWrapper.CSVCommentsImportTask;
 import cz.martlin.defrost.output.ie.ImportExportClassesWrapper.CSVPostsExportTask;
 import cz.martlin.defrost.output.ie.ImportExportClassesWrapper.CSVPostsImportTask;
+import cz.martlin.defrost.output.out.CommentsByPostOutputTask;
+import cz.martlin.defrost.output.out.CommentsByUserOutputTask;
+import cz.martlin.defrost.output.out.CommentsUserXPostOutputTask;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableStringValue;
 import javafx.collections.ObservableList;
@@ -107,13 +110,32 @@ public class ImplFasade {
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
+	public void startOutputByPost() {
+		Task<?> task = new CommentsByPostOutputTask(indicator, comments);
+
+		startTaskInBackground(task);
+	}
+
+	public void startOutputByUser() {
+		Task<?> task = new CommentsByUserOutputTask(indicator, comments);
+
+		startTaskInBackground(task);
+	}
+
+	public void startOutputUserXPost() {
+		Task<?> task = new CommentsUserXPostOutputTask(indicator, comments);
+
+		startTaskInBackground(task);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////
 
 	private <T> void addFinishListeners(Task<?> task, List<T> resultList) {
 		EventHandler<WorkerStateEvent> handler = (event) -> {
 
 			@SuppressWarnings("unchecked")
 			List<T> items = (List<T>) event.getSource().getValue();
-			
+
 			if (items != null) {
 				resultList.addAll(items);
 			}

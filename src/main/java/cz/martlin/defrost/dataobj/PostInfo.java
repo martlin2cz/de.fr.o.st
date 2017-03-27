@@ -1,6 +1,10 @@
 package cz.martlin.defrost.dataobj;
 
-public class PostInfo {
+import java.io.Serializable;
+
+public class PostInfo implements Serializable, Comparable<PostInfo> {
+	private static final long serialVersionUID = -2267610207446081405L;
+
 	private final String title;
 	private final PostIdentifier identifier;
 
@@ -52,6 +56,11 @@ public class PostInfo {
 	@Override
 	public String toString() {
 		return "PostInfo [title=" + title + ", identifier=" + identifier + "]";
+	}
+
+	@Override
+	public int compareTo(PostInfo o) {
+		return this.identifier.compareTo(o.identifier);
 	}
 
 }

@@ -63,6 +63,8 @@ public class BaseCSVTasks {
 					}
 				});
 
+				postprocessItems(result);
+
 				loadingFinished();
 				return result;
 			} catch (IOException e) {
@@ -71,6 +73,9 @@ public class BaseCSVTasks {
 				closeQuietly(fr);
 				closeQuietly(parser);
 			}
+		}
+
+		protected void postprocessItems(List<E> result) {
 		}
 
 		public abstract E exctractItem(CSVRecord record) throws ParseException;
@@ -101,6 +106,8 @@ public class BaseCSVTasks {
 
 				loadingStarted(items.size());
 
+				preprocessItems(items);
+
 				items.forEach((item) -> {
 					if (!this.isCancelled()) {
 						loadingNextItem(null);
@@ -124,6 +131,9 @@ public class BaseCSVTasks {
 			}
 
 			return null;
+		}
+
+		protected void preprocessItems(List<E> items) {
 		}
 
 		public abstract Object[] exportItem(E item);

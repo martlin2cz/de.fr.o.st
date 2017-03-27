@@ -179,17 +179,17 @@ public class MainController implements Initializable {
 
 	@FXML
 	private void outputByPostButtAction(ActionEvent event) {
-		// TODO
+		impl.startOutputByPost();
 	}
 
 	@FXML
 	private void outputByUserButtAction(ActionEvent event) {
-		// TODO
+		impl.startOutputByUser();
 	}
 
 	@FXML
 	private void outputUserXpostButtAction(ActionEvent event) {
-		// TODO
+		impl.startOutputUserXPost();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
