@@ -18,9 +18,9 @@ If you want to implement custom "forum", just create class implementing interfac
 
 ## Screens
 
-![screen of app selection](https://raw.githubusercontent.com/martlin_cz/de.fr.o.st/master/screens/selection.png)
-![screen of app loading](https://raw.githubusercontent.com/martlin_cz/de.fr.o.st/master/screens/loading.png)
-![screen output](https://raw.githubusercontent.com/martlin_cz/de.fr.o.st/master/screens/output.png)
+![screen of app selection](https://raw.githubusercontent.com/martlin2cz/de.fr.o.st/master/screens/selection.png)
+![screen of app loading](https://raw.githubusercontent.com/martlin2cz/de.fr.o.st/master/screens/loading.png)
+![screen output](https://raw.githubusercontent.com/martlin2cz/de.fr.o.st/master/screens/output.png)
 
 ## Build
 
