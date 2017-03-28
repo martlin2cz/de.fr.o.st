@@ -3,36 +3,50 @@ package cz.martlin.defrost.gui;
 import java.util.Arrays;
 import java.util.List;
 
-import cz.martlin.defrost.base.BaseForumDescriptor;
 import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.PostInfo;
+import cz.martlin.defrost.forums.base.BaseForumDescriptor;
 import cz.martlin.defrost.input.load.CommentsLoadingTask;
 import cz.martlin.defrost.input.load.PostsLoadingTask;
-import cz.martlin.defrost.input.tools.ObservableUniquesList;
-import cz.martlin.defrost.misc.DefrostException;
-import cz.martlin.defrost.output.ie.ImportExportClassesWrapper.CSVCommentsExportTask;
-import cz.martlin.defrost.output.ie.ImportExportClassesWrapper.CSVCommentsImportTask;
-import cz.martlin.defrost.output.ie.ImportExportClassesWrapper.CSVPostsExportTask;
-import cz.martlin.defrost.output.ie.ImportExportClassesWrapper.CSVPostsImportTask;
+import cz.martlin.defrost.output.ie.CommentsImportExportWrapper.CSVCommentsExportTask;
+import cz.martlin.defrost.output.ie.CommentsImportExportWrapper.CSVCommentsImportTask;
+import cz.martlin.defrost.output.ie.PostsImportExportWrapper.CSVPostsExportTask;
+import cz.martlin.defrost.output.ie.PostsImportExportWrapper.CSVPostsImportTask;
 import cz.martlin.defrost.output.out.CommentsByPostOutputTask;
 import cz.martlin.defrost.output.out.CommentsByUserOutputTask;
 import cz.martlin.defrost.output.out.CommentsUserXPostOutputTask;
+import cz.martlin.defrost.tasks.BaseLoadingIndicator;
+import cz.martlin.defrost.utils.DefrostException;
+import cz.martlin.defrost.utils.ObservableUniquesList;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableStringValue;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 
+/**
+ * Makes the bridge between the UI and the core implementation.
+ * 
+ * @author martin
+ *
+ */
 public class ImplFasade {
 
 	private final BaseForumDescriptor descriptor;
-	private final GuiLoadingIndicator indicator;
+	private final BaseLoadingIndicator indicator;
 
 	private final ObservableList<PostInfo> posts;
 	private final ObservableList<Comment> comments;
 
 	private Task<?> currentTask;
+
+	public ImplFasade(BaseForumDescriptor descriptor, BaseLoadingIndicator indicator) {
+		this.descriptor = descriptor;
+		this.indicator = indicator;
+
+		this.posts = new ObservableUniquesList<>();
+		this.comments = new ObservableUniquesList<>();
+	}
 
 	public ImplFasade(BaseForumDescriptor descriptor, MainController controller) {
 		this.descriptor = descriptor;
@@ -44,35 +58,65 @@ public class ImplFasade {
 
 	///////////////////////////////////////////////////////////////////////////////
 
+	/**
+	 * Returns description of discuss in use.
+	 * 
+	 * @return
+	 */
 	public ObservableStringValue getDiscussInUseDesc() {
 		return new SimpleStringProperty(descriptor.getDescription());
 	}
 
+	/**
+	 * Returns list of avaible categories.
+	 * 
+	 * @return
+	 */
 	public ObservableList<String> getCategories() {
 		List<String> categories = Arrays.asList(descriptor.listAvaibleCategories());
 		return new ObservableUniquesList<String>(categories);
 	}
 
+	/**
+	 * Returns list of current posts.
+	 * 
+	 * @return
+	 */
 	public ObservableList<PostInfo> getPosts() {
 		return posts;
 	}
 
+	/**
+	 * Returns list of current comments.
+	 * 
+	 * @return
+	 */
 	public ObservableList<Comment> getComments() {
 		return comments;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
 
+	/**
+	 * Starts loading of posts of given categories.
+	 * 
+	 * @param categories
+	 */
 	public void startLoadingPosts(List<String> categories) {
-		Task<?> task = new PostsLoadingTask(descriptor, indicator, categories);
+		Task<List<PostInfo>> task = new PostsLoadingTask(descriptor, indicator, categories);
 
 		addFinishListeners(task, this.posts);
 
 		startTaskInBackground(task);
 	}
 
+	/**
+	 * Starts loading of comments of given posts.
+	 * 
+	 * @param posts
+	 */
 	public void startLoadingComments(List<PostInfo> posts) {
-		Task<?> task = new CommentsLoadingTask(descriptor, indicator, posts);
+		Task<List<Comment>> task = new CommentsLoadingTask(descriptor, indicator, posts);
 
 		addFinishListeners(task, this.comments);
 
@@ -81,28 +125,40 @@ public class ImplFasade {
 
 	///////////////////////////////////////////////////////////////////////////////
 
+	/**
+	 * Starts exporting of current posts.
+	 */
 	public void startExportingPosts() {
-		Task<?> task = new CSVPostsExportTask(indicator, posts);
+		Task<Void> task = new CSVPostsExportTask(indicator, posts);
 
 		startTaskInBackground(task);
 	}
 
+	/**
+	 * Starts importing into current posts.
+	 */
 	public void startImportingPosts() {
-		Task<?> task = new CSVPostsImportTask(indicator);
+		Task<List<PostInfo>> task = new CSVPostsImportTask(indicator);
 
 		addFinishListeners(task, this.posts);
 
 		startTaskInBackground(task);
 	}
 
+	/**
+	 * Starts exporting of current comments.
+	 */
 	public void startExportingComments() {
-		Task<?> task = new CSVCommentsExportTask(indicator, comments);
+		Task<Void> task = new CSVCommentsExportTask(indicator, comments);
 
 		startTaskInBackground(task);
 	}
 
+	/**
+	 * Starts importing into current comments.
+	 */
 	public void startImportingComments() {
-		Task<?> task = new CSVCommentsImportTask(indicator);
+		Task<List<Comment>> task = new CSVCommentsImportTask(indicator);
 
 		addFinishListeners(task, this.comments);
 
@@ -110,42 +166,55 @@ public class ImplFasade {
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Starts outputting by post.
+	 */
 	public void startOutputByPost() {
-		Task<?> task = new CommentsByPostOutputTask(indicator, comments);
+		Task<Void> task = new CommentsByPostOutputTask(indicator, comments);
 
 		startTaskInBackground(task);
 	}
 
+	/**
+	 * Starts outputting by user.
+	 */
 	public void startOutputByUser() {
-		Task<?> task = new CommentsByUserOutputTask(indicator, comments);
+		Task<Void> task = new CommentsByUserOutputTask(indicator, comments);
 
 		startTaskInBackground(task);
 	}
 
+	/**
+	 * Starts outputting user x post table.
+	 */
 	public void startOutputUserXPost() {
-		Task<?> task = new CommentsUserXPostOutputTask(indicator, comments);
+		Task<Void> task = new CommentsUserXPostOutputTask(indicator, comments);
 
 		startTaskInBackground(task);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
 
-	private <T> void addFinishListeners(Task<?> task, List<T> resultList) {
-		EventHandler<WorkerStateEvent> handler = (event) -> {
+	/**
+	 * Stops currently running task.
+	 */
+	public void stopTaskInBackground() {
+		boolean succ = this.currentTask.cancel();
+		if (!succ) {
+			DefrostException e = new DefrostException("Canceling task failed");
+			indicator.error(e);
+		}
 
-			@SuppressWarnings("unchecked")
-			List<T> items = (List<T>) event.getSource().getValue();
-
-			if (items != null) {
-				resultList.addAll(items);
-			}
-		};
-
-		task.setOnSucceeded(handler);
-		task.setOnCancelled(handler);
-		task.setOnFailed(handler);
+		this.currentTask = null;
 	}
 
+	///////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Starts given task, in background.
+	 * 
+	 * @param task
+	 */
 	private void startTaskInBackground(Task<?> task) {
 		String name = task.getClass().getSimpleName() + "Thread";
 
@@ -155,14 +224,20 @@ public class ImplFasade {
 		this.currentTask = task;
 	}
 
-	public void stopTaskInBackground() {
-		boolean succ = this.currentTask.cancel();
-		if (!succ) {
-			DefrostException e = new DefrostException("Canceling task failed");
-			indicator.error(e);
-		}
+	/**
+	 * Adds "add result of task to given resultList" handlers to given task.
+	 * 
+	 * @param task
+	 * @param resultList
+	 */
+	private <T> void addFinishListeners(Task<List<T>> task, List<T> resultList) {
+		ChangeListener<? super List<T>> listener = (value, oldVal, newVal) -> {
+			if (newVal != null) {
+				resultList.addAll(newVal);
+			}
+		};
 
-		this.currentTask = null;
+		task.valueProperty().addListener(listener);
 	}
 
 }

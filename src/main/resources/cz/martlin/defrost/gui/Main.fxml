@@ -87,7 +87,7 @@
     <HBox id="topBar" prefHeight="-1.0" prefWidth="-1.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
       <children>
         <Label id="" graphicTextGap="4.0" maxWidth="-1.0" minHeight="16.0" minWidth="-1.0" text="Discuss in use:" />
-        <Label id="" fx:id="discussInUseLbl" text="discuss" HBox.margin="$x2" />
+        <Label id="" fx:id="discussInUseLbl" onMouseClicked="#discussLblMouseClicked" text="discuss" HBox.margin="$x2" />
       </children>
     </HBox>
   </children>

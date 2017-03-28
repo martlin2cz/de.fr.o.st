@@ -1,4 +1,4 @@
-package cz.martlin.defrost.impls;
+package cz.martlin.defrost.forums.impl;
 
 import java.net.URL;
 
@@ -10,18 +10,18 @@ import org.htmlparser.filters.OrFilter;
 import org.htmlparser.tags.Html;
 import org.htmlparser.util.NodeList;
 
-import cz.martlin.defrost.base.SelectorsUsingForumDescriptor;
-import cz.martlin.defrost.misc.DefrostException;
+import cz.martlin.defrost.forums.base.SelectorsUsingForumDescriptor;
+import cz.martlin.defrost.utils.DefrostException;
 
 public class EmiminoForumDesc extends SelectorsUsingForumDescriptor {
 
 	public EmiminoForumDesc() {
 		super(//
 				"http://www.emimino.cz/diskuse/" + CATEGORY_ID_NEEDLE + "/strankovani/" + PAGE_NUMBER_NEEDLE, //
-				"http://www.emimino.cz/diskuse/" + COMMENT_ID_NEEDLE + "/strankovani/" + PAGE_NUMBER_NEEDLE, //
+				"http://www.emimino.cz/diskuse/" + POST_ID_NEEDLE + "/strankovani/" + PAGE_NUMBER_NEEDLE, //
 				new EmiminoDateFormat()); //
 	}
-	
+
 	@Override
 	public String getDescription() {
 		return "emimino.cz";
@@ -50,7 +50,7 @@ public class EmiminoForumDesc extends SelectorsUsingForumDescriptor {
 	///////////////////////////////////////////////////////////////////////////
 
 	@Override
-	public String commentUrlToCommentId(URL url) {
+	public String postUrlToPostId(URL url) {
 		final String prefix = "/diskuse/";
 		String path = url.getPath();
 
@@ -62,10 +62,6 @@ public class EmiminoForumDesc extends SelectorsUsingForumDescriptor {
 		return id;
 	}
 
-	// @Override
-	// public String CommentUrlToCategoryId(URL url) {
-	// return "???"; // TODO FIXME ...
-	// }
 	///////////////////////////////////////////////////////////////////////////
 
 	@Override
@@ -81,12 +77,10 @@ public class EmiminoForumDesc extends SelectorsUsingForumDescriptor {
 	@Override
 	public String selectorOfCategoryNextPageButton() {
 		throw new UnsupportedOperationException("neded to rewrite");
-		// TODO testme
-		// return "div.pager b";
 	}
 
 	@Override
-	public String selectorOfTitleInCommentSite() {
+	public String selectorOfTitleInPostSite() {
 		return "h1";
 	}
 
@@ -98,24 +92,20 @@ public class EmiminoForumDesc extends SelectorsUsingForumDescriptor {
 	@Override
 	public String selectorOfPostNextPageButton() {
 		throw new UnsupportedOperationException("neded to rewrite");
-		// TODO testme
-		// return "div.pager b + a";
 	}
 
 	@Override
 	public String selectorOfCommentsElementInDiscuss() {
-		throw new UnsupportedOperationException(
-				"multiple CSS classes, needed to rewrite #selectPostsElementInDiscuss");
-		// return "div.discussion_Comment";
+		throw new UnsupportedOperationException("multiple CSS classes, needed to rewrite #selectPostsElementInDiscuss");
 	}
 
 	@Override
-	public String selectorOfIdInComment() {
+	public String selectorOfAuthorIdInComment() {
 		return "div.user div.user_in a";
 	}
 
 	@Override
-	public String selectorOfNameInComment() {
+	public String selectorOfAuthorNameInComment() {
 		return "div.user div.user_in a";
 	}
 
@@ -150,11 +140,17 @@ public class EmiminoForumDesc extends SelectorsUsingForumDescriptor {
 		NodeFilter filter = new OrFilter(firstCommentFilter, othersCommentsFilter);
 
 		return tools.applyFilter(discuss, filter);
-		// return super.selectCommentsElementInDiscuss(discuss);
 	}
 
 	///////////////////////////////////////////////////////////////////////////
 
+	/**
+	 * Returns the pager element (if exists).
+	 * 
+	 * @param document
+	 * @return
+	 * @throws DefrostException
+	 */
 	private Node findPagerIfHasNexButton(Html document) throws DefrostException {
 		NodeFilter filter = new CssSelectorNodeFilter("div.pager");
 		NodeList nodes = tools.applyFilter(document, filter);

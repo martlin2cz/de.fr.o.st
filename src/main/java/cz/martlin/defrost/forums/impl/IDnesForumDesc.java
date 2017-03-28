@@ -1,4 +1,4 @@
-package cz.martlin.defrost.impls;
+package cz.martlin.defrost.forums.impl;
 
 import java.net.URL;
 import java.text.DateFormat;
@@ -9,8 +9,8 @@ import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.filters.HasAttributeFilter;
 
-import cz.martlin.defrost.base.SelectorsUsingForumDescriptor;
-import cz.martlin.defrost.misc.DefrostException;
+import cz.martlin.defrost.forums.base.SelectorsUsingForumDescriptor;
+import cz.martlin.defrost.utils.DefrostException;
 
 public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 
@@ -19,7 +19,7 @@ public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 	public IDnesForumDesc() {
 		super(//
 				"http://" + CATEGORY_ID_NEEDLE + ".idnes.cz/archiv.aspx?strana=" + PAGE_NUMBER_NEEDLE, //
-				"http://" + CATEGORY_ID_NEEDLE + ".idnes.cz/diskuse.aspx?iddiskuse=" + COMMENT_ID_NEEDLE, //
+				"http://" + CATEGORY_ID_NEEDLE + ".idnes.cz/diskuse.aspx?iddiskuse=" + POST_ID_NEEDLE, //
 				DATE_FORMAT);//
 
 		// article url:
@@ -41,19 +41,11 @@ public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 	///////////////////////////////////////////////////////////////////////////
 
 	@Override
-	public String commentUrlToCommentId(URL url) {
+	public String postUrlToPostId(URL url) {
 		Map<String, String> params = tools.getUrlQueryParams(url);
 
 		return params.get("c");
 	}
-
-	// @Override
-	// public String CommentUrlToCategoryId(URL url) {
-	// String host = url.getHost();
-	//
-	// int index = host.indexOf('.');
-	// return host.substring(0, index);
-	// }
 
 	///////////////////////////////////////////////////////////////////////////
 
@@ -68,7 +60,7 @@ public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 	}
 
 	@Override
-	public String selectorOfTitleInCommentSite() {
+	public String selectorOfTitleInPostSite() {
 		return "h3 a";
 	}
 
@@ -93,12 +85,12 @@ public class IDnesForumDesc extends SelectorsUsingForumDescriptor {
 	}
 
 	@Override
-	public String selectorOfIdInComment() {
+	public String selectorOfAuthorIdInComment() {
 		return "h4.name";
 	}
 
 	@Override
-	public String selectorOfNameInComment() {
+	public String selectorOfAuthorNameInComment() {
 		return "h4.name a";
 	}
 

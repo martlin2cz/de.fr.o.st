@@ -4,24 +4,27 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.htmlparser.Node;
 import org.htmlparser.tags.Html;
 import org.htmlparser.util.NodeList;
 
-import cz.martlin.defrost.base.BaseForumDescriptor;
 import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.PagedDataResult;
 import cz.martlin.defrost.dataobj.PostIdentifier;
 import cz.martlin.defrost.dataobj.PostInfo;
 import cz.martlin.defrost.dataobj.User;
-import cz.martlin.defrost.input.tools.Networker;
-import cz.martlin.defrost.misc.DefrostException;
+import cz.martlin.defrost.forums.base.BaseForumDescriptor;
+import cz.martlin.defrost.utils.DefrostException;
+import cz.martlin.defrost.utils.Networker;
 
+/**
+ * Implements parsing of post site.
+ * 
+ * @author martin
+ *
+ */
 public class PostParser {
-	private final Logger LOG = Logger.getLogger(getClass().getName());
 
 	private final BaseForumDescriptor desc;
 	private final Networker networker;
@@ -33,6 +36,14 @@ public class PostParser {
 		this.networker = new Networker();
 	}
 
+	/**
+	 * For given post identifier and page lists the comments.
+	 * 
+	 * @param identifier
+	 * @param page
+	 * @return
+	 * @throws DefrostException
+	 */
 	public PagedDataResult<List<Comment>> loadAndParse(PostIdentifier identifier, int page) throws DefrostException {
 		URL url;
 		try {
@@ -80,8 +91,9 @@ public class PostParser {
 	}
 
 	/**
-	 * Infers comments from given list of comments elements.
+	 * From given coments elements list infers comments.
 	 * 
+	 * @param post
 	 * @param cmts
 	 * @return
 	 * @throws DefrostException
@@ -96,8 +108,7 @@ public class PostParser {
 			try {
 				comment = inferComment(post, node);
 			} catch (Exception e) {
-				LOG.log(Level.WARNING, "Cannot infer comment", e);
-				continue;
+				throw new DefrostException("Cannot infer comment", e);
 			}
 			comments.add(comment);
 		}
@@ -106,7 +117,7 @@ public class PostParser {
 	}
 
 	/**
-	 * From given comment element parses and creates comment object.
+	 * From given comment element parses and creates comment instance.
 	 * 
 	 * @param comment
 	 * @return

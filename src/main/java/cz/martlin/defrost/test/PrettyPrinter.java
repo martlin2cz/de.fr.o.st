@@ -8,13 +8,25 @@ import java.util.List;
 import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.PostInfo;
 
+/**
+ * Helping class performing more human readable output of some common data.
+ * 
+ * @author martin
+ *
+ */
 public class PrettyPrinter {
 	private final DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss");
 
 	public PrettyPrinter() {
 	}
 
-	public void printComment(List<Comment> comments, PrintStream out) {
+	/**
+	 * Prints given comments.
+	 * 
+	 * @param comments
+	 * @param out
+	 */
+	public void printComments(List<Comment> comments, PrintStream out) {
 		if (comments.isEmpty()) {
 			System.out.println("No comments");
 		} else {
@@ -51,6 +63,12 @@ public class PrettyPrinter {
 		}
 	}
 
+	/**
+	 * Prints given posts.
+	 * 
+	 * @param posts
+	 * @param out
+	 */
 	public void printPosts(List<PostInfo> posts, PrintStream out) {
 		for (PostInfo info : posts) {
 			out.print(info.getIdentifier().getCategory());

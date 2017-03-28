@@ -1,4 +1,4 @@
-package cz.martlin.defrost.base;
+package cz.martlin.defrost.forums.base;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,12 +15,19 @@ import org.htmlparser.util.NodeList;
 import cz.martlin.defrost.dataobj.PostIdentifier;
 import cz.martlin.defrost.dataobj.PostInfo;
 import cz.martlin.defrost.dataobj.User;
-import cz.martlin.defrost.input.tools.ParserTools;
+import cz.martlin.defrost.utils.ParserTools;
 
+/**
+ * Implements the common forum. Take look at abstract <code>select</code>*
+ * methods, to see how this class works.
+ * 
+ * @author martin
+ *
+ */
 public abstract class CommonForumDescriptor implements BaseForumDescriptor {
 
 	public static final String CATEGORY_ID_NEEDLE = "${category_id}";
-	public static final String COMMENT_ID_NEEDLE = "${comment_id}";
+	public static final String POST_ID_NEEDLE = "${comment_id}";
 	public static final String PAGE_NUMBER_NEEDLE = "${page_number}";
 
 	protected final ParserTools tools;
@@ -63,12 +70,18 @@ public abstract class CommonForumDescriptor implements BaseForumDescriptor {
 
 	@Override
 	public PostIdentifier identifierOfPost(URL url, String category) {
-		String id = commentUrlToCommentId(url);
+		String id = postUrlToPostId(url);
 
 		return new PostIdentifier(category, id);
 	}
 
-	public abstract String commentUrlToCommentId(URL url);
+	/**
+	 * From given url of post infers id of post.
+	 * 
+	 * @param url
+	 * @return
+	 */
+	public abstract String postUrlToPostId(URL url);
 
 	@Override
 	public boolean hasCategoryNextPage(Html document) throws Exception {
@@ -84,20 +97,34 @@ public abstract class CommonForumDescriptor implements BaseForumDescriptor {
 	}
 
 	@Override
-	public PostInfo postItemToPostInfo(Node PostItem, String category) throws Exception {
-		URL url = findPostURLInPostItem(PostItem);
+	public PostInfo postItemToPostInfo(Node postItem, String category) throws Exception {
+		URL url = findPostURLInPostItem(postItem);
 		PostIdentifier identifier = identifierOfPost(url, category);
 
-		String title = findPostTitleInPostItem(PostItem);
+		String title = findPostTitleInPostItem(postItem);
 		return new PostInfo(title, identifier);
 	}
 
-	protected LinkTag findPostItemElement(Node PostItem) throws Exception {
-		return selectPostLinkInPostItem(PostItem);
+	/**
+	 * Finds link to post in post item.
+	 * 
+	 * @param postItem
+	 * @return
+	 * @throws Exception
+	 */
+	protected LinkTag findPostItemLinkElement(Node postItem) throws Exception {
+		return selectPostLinkInPostItem(postItem);
 	}
 
-	protected URL findPostURLInPostItem(Node PostItem) throws Exception {
-		LinkTag link = findPostItemElement(PostItem);
+	/**
+	 * In given post item finds URL of post.
+	 * 
+	 * @param postItem
+	 * @return
+	 * @throws Exception
+	 */
+	protected URL findPostURLInPostItem(Node postItem) throws Exception {
+		LinkTag link = findPostItemLinkElement(postItem);
 		String path = link.getLink();
 
 		try {
@@ -107,8 +134,15 @@ public abstract class CommonForumDescriptor implements BaseForumDescriptor {
 		}
 	}
 
-	protected String findPostTitleInPostItem(Node PostItem) throws Exception {
-		LinkTag link = findPostItemElement(PostItem);
+	/**
+	 * In given post item find title of post.
+	 * 
+	 * @param postItem
+	 * @return
+	 * @throws Exception
+	 */
+	protected String findPostTitleInPostItem(Node postItem) throws Exception {
+		LinkTag link = findPostItemLinkElement(postItem);
 		return tools.inferTextInside(link);
 	}
 
@@ -134,6 +168,13 @@ public abstract class CommonForumDescriptor implements BaseForumDescriptor {
 		return comments;
 	}
 
+	/**
+	 * In given post finds its title.
+	 * 
+	 * @param document
+	 * @return
+	 * @throws Exception
+	 */
 	protected String findPostTitleInPost(Html document) throws Exception {
 		Node node = selectTitleInPostSite(document);
 		return tools.inferTextInside(node);
@@ -166,12 +207,26 @@ public abstract class CommonForumDescriptor implements BaseForumDescriptor {
 
 	///////////////////////////////////////////////////////////////////////////
 
+	/**
+	 * In given comment finds comment's author's id.
+	 * 
+	 * @param comment
+	 * @return
+	 * @throws Exception
+	 */
 	protected String findCommentAuthorId(Node comment) throws Exception {
 		Node idNode = selectAuthorIdInComment(comment);
 		String id = tools.inferTextInside(idNode);
 		return id;
 	}
 
+	/**
+	 * In given comment finds comment's author's name.
+	 * 
+	 * @param comment
+	 * @return
+	 * @throws Exception
+	 */
 	protected String findCommentAuthorName(Node comment) throws Exception {
 		Node nameNode = selectAuthorNameInComment(comment);
 		String name = tools.inferTextInside(nameNode);
@@ -179,45 +234,139 @@ public abstract class CommonForumDescriptor implements BaseForumDescriptor {
 	}
 
 	///////////////////////////////////////////////////////////////////////////
+	/**
+	 * Returns list of post items in given category site.
+	 * 
+	 * @param document
+	 * @return
+	 * @throws Exception
+	 */
 	public abstract NodeList selectPostItemInCategorySite(Html document) throws Exception;
 
-	public abstract LinkTag selectPostLinkInPostItem(Node PostItem) throws Exception;
+	/**
+	 * Returns link to post in given post item.
+	 * 
+	 * @param postItem
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract LinkTag selectPostLinkInPostItem(Node postItem) throws Exception;
 
+	/**
+	 * Returns the "next button" in category site or null if no such.
+	 * 
+	 * @param document
+	 * @return
+	 * @throws Exception
+	 */
 	public abstract Node selectCategoryNextPageButton(Html document) throws Exception;
 
+	/**
+	 * Returns element of the discuss.
+	 * 
+	 * @param document
+	 * @return
+	 * @throws Exception
+	 */
 	public abstract Node selectDiscussElementInPostSite(Html document) throws Exception;
 
+	/**
+	 * Returns the comments elements in the discuss.
+	 * 
+	 * @param discuss
+	 * @return
+	 * @throws Exception
+	 */
 	public abstract NodeList selectCommentsElementInDiscuss(Node discuss) throws Exception;
 
+	/**
+	 * Returns element with title of post.
+	 * 
+	 * @param document
+	 * @return
+	 * @throws Exception
+	 */
 	public abstract Node selectTitleInPostSite(Html document) throws Exception;
 
+	/**
+	 * Returns the "next button" of post or null if no such.
+	 * 
+	 * @param document
+	 * @return
+	 * @throws Exception
+	 */
 	public abstract Node selectPostNextPageButton(Html document) throws Exception;
 
+	/**
+	 * Returns element with the date of comment.
+	 * 
+	 * @param comment
+	 * @return
+	 * @throws Exception
+	 */
 	public abstract Node selectCommentDateInComment(Node comment) throws Exception;
 
+	/**
+	 * Returns element with the comment content.
+	 * 
+	 * @param comment
+	 * @return
+	 * @throws Exception
+	 */
 	public abstract Node selectCommentContentInComment(Node comment) throws Exception;
 
+	/**
+	 * Returns element with the author's id.
+	 * 
+	 * @param comment
+	 * @return
+	 * @throws Exception
+	 */
 	public abstract Node selectAuthorIdInComment(Node comment) throws Exception;
 
+	/**
+	 * Returns element with the author's name.
+	 * 
+	 * @param comment
+	 * @return
+	 * @throws Exception
+	 */
 	public abstract Node selectAuthorNameInComment(Node comment) throws Exception;
 
 	///////////////////////////////////////////////////////////////////////////
 
+	/**
+	 * For given pattern (string possibly containing {@link #CATEGORY_ID_NEEDLE}
+	 * , {@link #POST_ID_NEEDLE} or {@link #PAGE_NUMBER_NEEDLE}) replaces theese
+	 * needles with given real values.
+	 * 
+	 * @param pattern
+	 * @param identifier
+	 * @param page
+	 * @return
+	 */
 	protected static String renderPath(String pattern, PostIdentifier identifier, int page) {
 		String result = pattern;
 
 		result = result.replace(CATEGORY_ID_NEEDLE, identifier.getCategory());
-		result = result.replace(COMMENT_ID_NEEDLE, identifier.getId());
+		result = result.replace(POST_ID_NEEDLE, identifier.getId());
 		result = result.replace(PAGE_NUMBER_NEEDLE, Integer.toString(page));
 
 		return result;
 	}
 
-	protected Calendar parseDateFromDateNode(String text) {
+	/**
+	 * Parses date and returns as {@link Calendar}.
+	 * 
+	 * @param text
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	protected Calendar parseDateFromDateNode(String text) throws IllegalArgumentException {
 
 		try {
 			Date date = commentDateFormat.parse(text);
-			return tools.dateToCalendar(date);
+			return ParserTools.dateToCalendar(date);
 		} catch (ParseException e) {
 			throw new IllegalArgumentException("Cannot parse date " + text, e);
 		}

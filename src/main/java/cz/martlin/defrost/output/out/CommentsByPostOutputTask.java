@@ -11,6 +11,12 @@ import cz.martlin.defrost.dataobj.PostInfo;
 import cz.martlin.defrost.tasks.BaseCSVTasks.CSVExportTask;
 import cz.martlin.defrost.tasks.BaseLoadingIndicator;
 
+/**
+ * Task performing outputing of comments groupped by posts.
+ * 
+ * @author martin
+ *
+ */
 public class CommentsByPostOutputTask extends CSVExportTask<Comment> {
 	private static final File FILE = new File("comments_by_post.csv");
 

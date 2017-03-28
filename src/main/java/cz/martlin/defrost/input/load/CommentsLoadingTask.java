@@ -3,15 +3,21 @@ package cz.martlin.defrost.input.load;
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.martlin.defrost.base.BaseForumDescriptor;
 import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.PagedDataResult;
 import cz.martlin.defrost.dataobj.PostIdentifier;
 import cz.martlin.defrost.dataobj.PostInfo;
-import cz.martlin.defrost.misc.DefrostException;
+import cz.martlin.defrost.forums.base.BaseForumDescriptor;
 import cz.martlin.defrost.tasks.BaseLoadingIndicator;
 import cz.martlin.defrost.tasks.ItemsLoadingTask;
+import cz.martlin.defrost.utils.DefrostException;
 
+/**
+ * Task implementing loading of posts' comments.
+ * 
+ * @author martin
+ *
+ */
 public class CommentsLoadingTask extends ItemsLoadingTask<List<Comment>> {
 
 	private final PostParser parser;
@@ -29,6 +35,12 @@ public class CommentsLoadingTask extends ItemsLoadingTask<List<Comment>> {
 		return loadComments(posts);
 	}
 
+	/**
+	 * Loads comments of given posts.
+	 * 
+	 * @param posts
+	 * @return
+	 */
 	private List<Comment> loadComments(List<PostInfo> posts) {
 		List<Comment> result = new ArrayList<>();
 
@@ -40,17 +52,25 @@ public class CommentsLoadingTask extends ItemsLoadingTask<List<Comment>> {
 			}
 
 			loadingNextItem(post.getTitle());
-			
+
 			List<Comment> comments = loadCommentsOfPost(post);
 			result.addAll(comments);
-			
+
+			updateValue(null);
 			updateValue(result);
 		}
 
 		loadingFinished();
+
 		return result;
 	}
 
+	/**
+	 * Loads comments of given post.
+	 * 
+	 * @param post
+	 * @return
+	 */
 	private List<Comment> loadCommentsOfPost(PostInfo post) {
 		List<Comment> result = new ArrayList<>();
 

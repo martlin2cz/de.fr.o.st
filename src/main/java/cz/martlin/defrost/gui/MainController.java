@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
-import cz.martlin.defrost.base.BaseForumDescriptor;
 import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.PostInfo;
+import cz.martlin.defrost.forums.base.BaseForumDescriptor;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleListProperty;
@@ -24,6 +24,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 public class MainController implements Initializable {
@@ -65,6 +66,7 @@ public class MainController implements Initializable {
 	@FXML
 	private Label commentsTotalLbl;
 
+	// implementation
 	private final ImplFasade impl;
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -124,8 +126,6 @@ public class MainController implements Initializable {
 
 	///////////////////////////////////////////////////////////////////////////////
 
-	///////////////////////////////////////////////////////////////////////////////
-
 	@FXML
 	private void loadPostsButtAction(ActionEvent event) {
 		List<String> categories = categoriesLst.getSelectionModel().getSelectedItems();
@@ -151,6 +151,11 @@ public class MainController implements Initializable {
 	@FXML
 	private void stopButtAction(ActionEvent event) {
 		impl.stopTaskInBackground();
+	}
+	
+	@FXML
+	private void discussLblMouseClicked(MouseEvent event) {
+		error("You don't have to click everywhere, do you?", false);	
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -206,7 +211,7 @@ public class MainController implements Initializable {
 			Alert alert = new Alert(type);
 			alert.setHeaderText("Error");
 			alert.setContentText(text);
-			alert.show();
+			alert.showAndWait();
 		});
 
 		if (isFatal) {

@@ -1,4 +1,4 @@
-package cz.martlin.defrost.base;
+package cz.martlin.defrost.forums.base;
 
 import java.text.DateFormat;
 
@@ -7,8 +7,17 @@ import org.htmlparser.tags.Html;
 import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.NodeList;
 
-import cz.martlin.defrost.misc.DefrostException;
+import cz.martlin.defrost.utils.DefrostException;
 
+/**
+ * Extends the {@link CommonForumDescriptor} in way that all the
+ * <code>select</code>* uses CSS selectors given by abstract methods
+ * <code>selectorOf</code>* specified in this class. If selector is not enough,
+ * particular <code>select</code>-method can be overriden.
+ * 
+ * @author martin
+ *
+ */
 public abstract class SelectorsUsingForumDescriptor extends CommonForumDescriptor {
 
 	public SelectorsUsingForumDescriptor(String categorySiteURLPattern, String commentSiteURLPattern,
@@ -49,7 +58,7 @@ public abstract class SelectorsUsingForumDescriptor extends CommonForumDescripto
 
 	@Override
 	public Node selectTitleInPostSite(Html document) throws DefrostException {
-		String selector = selectorOfTitleInCommentSite();
+		String selector = selectorOfTitleInPostSite();
 		return tools.applySelectorGetFirst(document, selector);
 	}
 
@@ -78,38 +87,82 @@ public abstract class SelectorsUsingForumDescriptor extends CommonForumDescripto
 
 	@Override
 	public Node selectAuthorIdInComment(Node comment) throws DefrostException {
-		String selector = selectorOfIdInComment();
+		String selector = selectorOfAuthorIdInComment();
 		return tools.applySelectorGetFirst(comment, selector);
 	}
 
 	@Override
 	public Node selectAuthorNameInComment(Node comment) throws DefrostException {
-		String selector = selectorOfNameInComment();
+		String selector = selectorOfAuthorNameInComment();
 		return tools.applySelectorGetFirst(comment, selector);
 	}
 
 	///////////////////////////////////////////////////////////////////////////
 
+	/**
+	 * Returns selector of post items list in category site.
+	 * @return
+	 */
 	public abstract String selectorOfPostItemsInCategorySite();
 
+	/**
+	 * Returns selector of post link in post item.
+	 * @return
+	 */
 	public abstract String selectorOfPostLinkInPostItem();
 
+	/**
+	 * Returns selector of next page button in category site.
+	 * @return
+	 */
 	public abstract String selectorOfCategoryNextPageButton();
 
-	public abstract String selectorOfTitleInCommentSite();
+	/**
+	 * Returns selector of post in post site.
+	 * @return
+	 */
+	public abstract String selectorOfTitleInPostSite();
 
+	/**
+	 * Returns selector of discuss element in post site.
+	 * @return
+	 */
 	public abstract String selectorOfDiscussElementInPostSite();
 
+	/**
+	 * Returns selector of next page button in post site.
+	 * @return
+	 */
 	public abstract String selectorOfPostNextPageButton();
 
+	/**
+	 * Returns selector of comments element in post discuss element.
+	 * @return
+	 */
 	public abstract String selectorOfCommentsElementInDiscuss();
 
-	public abstract String selectorOfIdInComment();
+	/**
+	 * Returns selector of author's id in comment element.
+	 * @return
+	 */
+	public abstract String selectorOfAuthorIdInComment();
 
-	public abstract String selectorOfNameInComment();
+	/**
+	 * Returns selector of author's name in comment element.
+	 * @return
+	 */
+	public abstract String selectorOfAuthorNameInComment();
 
+	/**
+	 * Returns selector of comments's date in comment element.
+	 * @return
+	 */
 	public abstract String selectorOfCommentDateInComment();
 
+	/**
+	 * Returns selector of comment content in comment element.
+	 * @return
+	 */
 	public abstract String selectorOfCommentContentInComment();
 
 	///////////////////////////////////////////////////////////////////////////

@@ -16,6 +16,12 @@ import cz.martlin.defrost.dataobj.User;
 import cz.martlin.defrost.tasks.BaseCSVTasks.CSVExportTask;
 import cz.martlin.defrost.tasks.BaseLoadingIndicator;
 
+/**
+ * Task performing outputing counts of comments in table users x posts.
+ * 
+ * @author martin
+ *
+ */
 public class CommentsUserXPostOutputTask extends CSVExportTask<Entry<User, Map<PostInfo, Set<Comment>>>> {
 	private static final File FILE = new File("comments_user_x_post.csv");
 
@@ -30,6 +36,12 @@ public class CommentsUserXPostOutputTask extends CSVExportTask<Entry<User, Map<P
 		columns = inferPosts(comments);
 	}
 
+	/**
+	 * For given list of comments infers set of posts given comments occurs in.
+	 * 
+	 * @param comments
+	 * @return
+	 */
 	public static List<PostInfo> inferPosts(List<Comment> comments) {
 		Set<PostInfo> set = new HashSet<>();
 
@@ -38,11 +50,23 @@ public class CommentsUserXPostOutputTask extends CSVExportTask<Entry<User, Map<P
 		return new ArrayList<>(set);
 	}
 
+	/**
+	 * Returns table of comments as list of entries.
+	 * 
+	 * @param comments
+	 * @return
+	 */
 	private static List<Entry<User, Map<PostInfo, Set<Comment>>>> convert(List<Comment> comments) {
 		Map<User, Map<PostInfo, Set<Comment>>> map = convertToMap(comments);
 		return new ArrayList<>(map.entrySet());
 	}
 
+	/**
+	 * For given list of comments returns table of users' posts' comments.
+	 * 
+	 * @param comments
+	 * @return
+	 */
 	public static Map<User, Map<PostInfo, Set<Comment>>> convertToMap(List<Comment> comments) {
 		Map<User, Map<PostInfo, Set<Comment>>> result = new HashMap<>();
 
@@ -77,17 +101,22 @@ public class CommentsUserXPostOutputTask extends CSVExportTask<Entry<User, Map<P
 	@Override
 	public Object[] exportItem(Entry<User, Map<PostInfo, Set<Comment>>> item) {
 		if (EMPTY_ENTRY.equals(item)) {
-			return headerLine();
+			return headerRow();
 		} else {
 			User user = item.getKey();
 			Map<PostInfo, Set<Comment>> ofPosts = item.getValue();
 
-			return putUserLine(user, ofPosts);
+			return userRow(user, ofPosts);
 		}
 
 	}
 
-	private Object[] headerLine() {
+	/**
+	 * Creates the header row (lists posts' ids).
+	 * 
+	 * @return
+	 */
+	private Object[] headerRow() {
 		List<String> line = new ArrayList<>(columns.size() + 1);
 
 		line.add("");
@@ -100,7 +129,14 @@ public class CommentsUserXPostOutputTask extends CSVExportTask<Entry<User, Map<P
 
 	}
 
-	private Object[] putUserLine(User user, Map<PostInfo, Set<Comment>> ofPosts) {
+	/**
+	 * Creates the user row (counts of comments for each post)
+	 * 
+	 * @param user
+	 * @param ofPosts
+	 * @return
+	 */
+	private Object[] userRow(User user, Map<PostInfo, Set<Comment>> ofPosts) {
 		List<String> line = new ArrayList<>(columns.size() + 1);
 
 		line.add(user.getId());

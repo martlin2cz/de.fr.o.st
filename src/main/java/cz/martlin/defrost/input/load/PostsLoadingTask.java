@@ -3,13 +3,19 @@ package cz.martlin.defrost.input.load;
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.martlin.defrost.base.BaseForumDescriptor;
 import cz.martlin.defrost.dataobj.PagedDataResult;
 import cz.martlin.defrost.dataobj.PostInfo;
-import cz.martlin.defrost.misc.DefrostException;
+import cz.martlin.defrost.forums.base.BaseForumDescriptor;
 import cz.martlin.defrost.tasks.BaseLoadingIndicator;
 import cz.martlin.defrost.tasks.ItemsLoadingTask;
+import cz.martlin.defrost.utils.DefrostException;
 
+/**
+ * Task implementing loading of posts of categories.
+ * 
+ * @author martin
+ *
+ */
 public class PostsLoadingTask extends ItemsLoadingTask<List<PostInfo>> {
 	private final CategoryParser parser;
 	private final List<String> categories;
@@ -26,6 +32,12 @@ public class PostsLoadingTask extends ItemsLoadingTask<List<PostInfo>> {
 		return loadPosts(categories);
 	}
 
+	/**
+	 * Loads posts of given categories.
+	 * 
+	 * @param categories
+	 * @return
+	 */
 	private List<PostInfo> loadPosts(List<String> categories) {
 		List<PostInfo> result = new ArrayList<>();
 
@@ -37,15 +49,26 @@ public class PostsLoadingTask extends ItemsLoadingTask<List<PostInfo>> {
 			}
 
 			loadingNextItem(category);
+			
 			List<PostInfo> posts = loadPostsOfCategory(category);
 			result.addAll(posts);
+			
+			updateValue(null);
 			updateValue(result);
 		}
 
 		loadingFinished();
+		updateValue(result);
+
 		return result;
 	}
 
+	/**
+	 * Loads posts of given category.
+	 * 
+	 * @param category
+	 * @return
+	 */
 	private List<PostInfo> loadPostsOfCategory(String category) {
 		List<PostInfo> result = new ArrayList<>();
 

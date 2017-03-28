@@ -1,20 +1,14 @@
 package cz.martlin.defrost.tasks;
 
-import cz.martlin.defrost.misc.DefrostException;
+import cz.martlin.defrost.utils.DefrostException;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 
 /**
- * Shows on statusbar followings:
- * 
- * <pre>
- *  Loading A started
- *  Loading B X
- *  Loading B X Y
- *  Loading A complete
- * 
- * </pre>
+ * Implements task with additional methods to using {@link BaseLoadingIndicator}
+ * 's instances report status of loading. Automatically generates progress and
+ * message.
  * 
  * @author martin
  *
@@ -22,7 +16,7 @@ import javafx.event.EventHandler;
  */
 public abstract class ItemsLoadingTask<T> extends Task<T> {
 
-	protected final BaseLoadingIndicator indicator;	//XXX back to private
+	private final BaseLoadingIndicator indicator;
 	protected final String itemsDesc;
 	protected final String itemDesc;
 
@@ -46,18 +40,33 @@ public abstract class ItemsLoadingTask<T> extends Task<T> {
 
 	///////////////////////////////////////////////////////////////////////////////
 
+	/**
+	 * Sets up the binding to indicator.
+	 * 
+	 * @param indicator
+	 */
 	protected void setStatusIndicator(BaseLoadingIndicator indicator) {
 		indicator.getProgress().bind(progressProperty());
 		indicator.getMessage().bind(messageProperty());
 		indicator.getStatus().bind(runningProperty());
 	}
 
+	/**
+	 * Unsets binding of indicator.
+	 * 
+	 * @param indicator
+	 */
 	protected void unsetStatusIndicators(BaseLoadingIndicator indicator) {
 		indicator.getProgress().unbind();
 		indicator.getMessage().unbind();
 		indicator.getStatus().unbind();
 	}
 
+	/**
+	 * Makes unset of binding to be performed at the end of task.
+	 * 
+	 * @param indicator
+	 */
 	protected void makeStatusIndicatorUnset(BaseLoadingIndicator indicator) {
 
 		EventHandler<WorkerStateEvent> handler = (event) -> {
@@ -71,6 +80,11 @@ public abstract class ItemsLoadingTask<T> extends Task<T> {
 
 	///////////////////////////////////////////////////////////////////////////////
 
+	/**
+	 * Reports that loading of given count of items has started.
+	 * 
+	 * @param totalCount
+	 */
 	public void loadingStarted(int totalCount) {
 		this.totalCount = totalCount;
 		this.currentItemIndex = 0;
@@ -79,6 +93,11 @@ public abstract class ItemsLoadingTask<T> extends Task<T> {
 
 	}
 
+	/**
+	 * Reports that loading of next item has started.
+	 * 
+	 * @param currentItem
+	 */
 	public void loadingNextItem(String currentItem) {
 		this.currentItem = currentItem;
 
@@ -87,12 +106,20 @@ public abstract class ItemsLoadingTask<T> extends Task<T> {
 		this.currentItemIndex++;
 	}
 
+	/**
+	 * Reports that something with the current item happened.
+	 * 
+	 * @param message
+	 */
 	public void loadingItemUpdated(String message) {
 		updateProgressAndMessage(itemDesc, currentItem, message);
 	}
 
+	/**
+	 * Reports that loading have been completed.
+	 */
 	public void loadingFinished() {
-		//this.currentItemIndex = 0;
+		// this.currentItemIndex = 0;
 		this.currentItem = null;
 
 		updateProgressAndMessage(itemsDesc, null, "completed");
@@ -101,12 +128,27 @@ public abstract class ItemsLoadingTask<T> extends Task<T> {
 
 	///////////////////////////////////////////////////////////////////////////////
 
+	/**
+	 * Reports error.
+	 * 
+	 * @param e
+	 */
 	public void error(DefrostException e) {
 		indicator.error(e);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
 
+	/**
+	 * Updates progress and message.
+	 * 
+	 * @param desc
+	 *            {@link #itemDesc} or {@link #itemsDesc}
+	 * @param item
+	 *            description of current item (or null if nonsence)
+	 * @param suffix
+	 *            additional info of item or loading (or null if not required)
+	 */
 	private void updateProgressAndMessage(String desc, String item, String suffix) {
 		updateProgress(currentItemIndex - 1, totalCount);
 
@@ -114,6 +156,16 @@ public abstract class ItemsLoadingTask<T> extends Task<T> {
 		updateMessage(msg);
 	}
 
+	/**
+	 * Generates message in format
+	 * <code>(currentItemIndex/totalCount) item desc suffix</code>. Params item
+	 * and suffix are optional.
+	 * 
+	 * @param desc
+	 * @param item
+	 * @param suffix
+	 * @return
+	 */
 	private String generateMessage(String desc, String item, String suffix) {
 		StringBuilder msg = new StringBuilder();
 

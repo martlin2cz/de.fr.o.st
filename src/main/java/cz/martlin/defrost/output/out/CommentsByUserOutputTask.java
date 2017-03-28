@@ -10,6 +10,12 @@ import cz.martlin.defrost.dataobj.User;
 import cz.martlin.defrost.tasks.BaseCSVTasks.CSVExportTask;
 import cz.martlin.defrost.tasks.BaseLoadingIndicator;
 
+/**
+ * Task performing outputing of comments groupped by users.
+ * 
+ * @author martin
+ *
+ */
 public class CommentsByUserOutputTask extends CSVExportTask<Comment> {
 	private static final File FILE = new File("comments_by_user.csv");
 
@@ -23,10 +29,10 @@ public class CommentsByUserOutputTask extends CSVExportTask<Comment> {
 
 		this.currentUser = null;
 	}
-	
+
 	@Override
 	protected void preprocessItems(List<Comment> comments) {
-		comments.sort((c1, c2) -> c1.getAuthor().compareTo(c2.getAuthor()));		
+		comments.sort((c1, c2) -> c1.getAuthor().compareTo(c2.getAuthor()));
 	}
 
 	@Override

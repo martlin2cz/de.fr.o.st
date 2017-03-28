@@ -6,8 +6,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.SwingUtilities;
 
-import cz.martlin.defrost.misc.DefrostException;
 import cz.martlin.defrost.tasks.BaseLoadingIndicator;
+import cz.martlin.defrost.utils.DefrostException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -18,6 +18,12 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.JFXPanel;
 
+/**
+ * Loading indicator such each change of status is printed into console.
+ * 
+ * @author martin
+ *
+ */
 public class ConsoleLoadingIndicator implements BaseLoadingIndicator {
 
 	private final PrintStream out;
@@ -63,6 +69,9 @@ public class ConsoleLoadingIndicator implements BaseLoadingIndicator {
 
 	///////////////////////////////////////////////////////////////////////////////
 
+	/**
+	 * Initializes the FX toolkit.
+	 */
 	public static void initToolkit() {
 		try {
 			// http://stackoverflow.com/questions/11273773/javafx-2-1-toolkit-not-initialized
@@ -82,6 +91,13 @@ public class ConsoleLoadingIndicator implements BaseLoadingIndicator {
 
 	///////////////////////////////////////////////////////////////////////////////
 
+	/**
+	 * Listener printing the change of property into console.
+	 * 
+	 * @author martin
+	 *
+	 * @param <T>
+	 */
 	public class ConsolePrintingListener<T> implements ChangeListener<T> {
 
 		private final String prefix;

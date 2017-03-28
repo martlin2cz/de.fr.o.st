@@ -1,4 +1,4 @@
-package cz.martlin.defrost.input.tools;
+package cz.martlin.defrost.utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -8,8 +8,10 @@ import java.util.Set;
 import javafx.collections.ObservableListBase;
 
 /**
+ * Observable list with unique elements. At each insertion check if no such
+ * element is currently in this list.
  * 
- * https://docs.oracle.com/javase/8/javafx/api/javafx/collections/
+ * Inspired by: https://docs.oracle.com/javase/8/javafx/api/javafx/collections/
  * ModifiableObservableListBase.html
  * 
  * @author martin
@@ -112,7 +114,7 @@ public class ObservableUniquesList<E> extends ObservableListBase<E> {
 		E e = (E) o;
 		nextRemove(list.indexOf(e), e);
 		endChange();
-		
+
 		return had;
 
 	}
@@ -126,7 +128,7 @@ public class ObservableUniquesList<E> extends ObservableListBase<E> {
 
 		nextRemove(index, element);
 		endChange();
-		
+
 		return element;
 	}
 

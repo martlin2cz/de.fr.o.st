@@ -1,16 +1,24 @@
 package cz.martlin.defrost.gui;
 
-import cz.martlin.defrost.base.BaseForumDescriptor;
-import cz.martlin.defrost.impls.EmiminoForumDesc;
+import cz.martlin.defrost.forums.base.BaseForumDescriptor;
+import cz.martlin.defrost.forums.impl.EmiminoForumDesc;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * The main application. Contains {@link #main(String[])} method, console params
+ * processing and showing up the Main frame.
+ * 
+ * @author martin
+ *
+ */
 public class DefrostApplication extends Application {
 
 	private static final BaseForumDescriptor DEFAULT_DESCRIPTOR = new EmiminoForumDesc();
+	// new IDnesForumDesc();
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -28,6 +36,13 @@ public class DefrostApplication extends Application {
 		stage.show();
 	}
 
+	/**
+	 * Tries to use first param as {@link BaseForumDescriptor}'s child class
+	 * name. If so, tries to instatite, else returns the
+	 * {@link #DEFAULT_DESCRIPTOR}.
+	 * 
+	 * @return
+	 */
 	private BaseForumDescriptor inferDescriptor() {
 		Parameters params = getParameters();
 
@@ -39,8 +54,7 @@ public class DefrostApplication extends Application {
 				BaseForumDescriptor descriptor = (BaseForumDescriptor) instance;
 				return descriptor;
 			} catch (Exception e) {
-				// TODO handle error
-				e.printStackTrace();
+				System.err.println("Cannot instantite descriptor: " + e.getMessage());
 			}
 		}
 
@@ -57,11 +71,16 @@ public class DefrostApplication extends Application {
 		}
 	}
 
+	/**
+	 * Prints help, credits and version.
+	 */
 	private static void doHelpAndVersion() {
-		System.out.println("de.fr.o.st");
+		System.out.println("de.fr.o.st 1.0");
 		System.out.println("Discuss forums offline statistics (de.fr.o.st)");
-		System.out.println("m@rtlin, 20. - 22. 03. 2017");
+		System.out.println("m@rtlin, 20. - 28. 03. 2017");
 		System.out.println("Usage: de.fr.o.st [class name of forum descriptor]");
+		
+		System.exit(0);
 	}
 
 }

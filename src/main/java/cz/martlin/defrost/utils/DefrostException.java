@@ -1,13 +1,12 @@
-package cz.martlin.defrost.misc;
-
-import java.io.IOException;
+package cz.martlin.defrost.utils;
 
 /**
- * Exception occured during wherever in the process.
+ * Exception occured during wherever in the de.fr.o.st application's process.
+ * 
  * @author martin
  *
  */
-public class DefrostException extends IOException {
+public class DefrostException extends Exception {
 
 	private static final long serialVersionUID = 3132075198299594902L;
 

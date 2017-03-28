@@ -17,8 +17,14 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
-import cz.martlin.defrost.misc.DefrostException;
+import cz.martlin.defrost.utils.DefrostException;
 
+/**
+ * Tasks implementing CSV importing and exporting.
+ * 
+ * @author martin
+ *
+ */
 public class BaseCSVTasks {
 
 	public static final CSVFormat FORMAT = CSVFormat.DEFAULT;
@@ -26,6 +32,13 @@ public class BaseCSVTasks {
 	private BaseCSVTasks() {
 	}
 
+	/**
+	 * Taks performing the importing of items.
+	 * 
+	 * @author martin
+	 *
+	 * @param <E>
+	 */
 	public static abstract class CSVImportTask<E> extends ItemsLoadingTask<List<E>> {
 
 		private final File file;
@@ -70,18 +83,37 @@ public class BaseCSVTasks {
 			} catch (IOException e) {
 				throw new DefrostException(itemsDesc + " failed", e);
 			} finally {
-				closeQuietly(fr);
-				closeQuietly(parser);
+				close(fr);
+				close(parser);
 			}
 		}
 
+		/**
+		 * Does some postprocess with loaded data.
+		 * 
+		 * @param result
+		 */
 		protected void postprocessItems(List<E> result) {
 		}
 
+		/**
+		 * Imports one item from given record.
+		 * 
+		 * @param record
+		 * @return
+		 * @throws ParseException
+		 */
 		public abstract E exctractItem(CSVRecord record) throws ParseException;
 
 	}
 
+	/**
+	 * Task performing exporting of items.
+	 * 
+	 * @author martin
+	 *
+	 * @param <E>
+	 */
 	public static abstract class CSVExportTask<E> extends ItemsLoadingTask<Void> {
 
 		private final File file;
@@ -126,19 +158,37 @@ public class BaseCSVTasks {
 			} catch (IOException e) {
 				throw new DefrostException(itemsDesc + " failed", e);
 			} finally {
-				closeQuietly(fw);
-				closeQuietly(printer);
+				close(fw);
+				close(printer);
 			}
 
 			return null;
 		}
 
+		/**
+		 * Does some preprocess of items.
+		 * 
+		 * @param items
+		 */
 		protected void preprocessItems(List<E> items) {
 		}
 
+		/**
+		 * Exports one item.
+		 * 
+		 * @param item
+		 * @return
+		 */
 		public abstract Object[] exportItem(E item);
 	}
 
+	/**
+	 * Simply counts number of lines in given file.
+	 * 
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 */
 	private static int countLines(File file) throws IOException {
 		// http://stackoverflow.com/questions/453018/number-of-lines-in-a-file-in-java
 
@@ -157,7 +207,13 @@ public class BaseCSVTasks {
 		}
 	}
 
-	protected static void closeQuietly(Closeable closeable) throws DefrostException {
+	/**
+	 * Closes the closeable if not null.
+	 * 
+	 * @param closeable
+	 * @throws DefrostException
+	 */
+	protected static void close(Closeable closeable) throws DefrostException {
 		if (closeable != null) {
 			try {
 				closeable.close();

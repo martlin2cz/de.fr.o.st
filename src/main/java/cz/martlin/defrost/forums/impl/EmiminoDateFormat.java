@@ -1,4 +1,4 @@
-package cz.martlin.defrost.impls;
+package cz.martlin.defrost.forums.impl;
 
 import java.text.DateFormat;
 import java.text.FieldPosition;

@@ -3,21 +3,23 @@ package cz.martlin.defrost.input.load;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.htmlparser.Node;
 import org.htmlparser.tags.Html;
 import org.htmlparser.util.NodeList;
 
-import cz.martlin.defrost.base.BaseForumDescriptor;
 import cz.martlin.defrost.dataobj.PagedDataResult;
 import cz.martlin.defrost.dataobj.PostInfo;
-import cz.martlin.defrost.input.tools.Networker;
-import cz.martlin.defrost.misc.DefrostException;
+import cz.martlin.defrost.forums.base.BaseForumDescriptor;
+import cz.martlin.defrost.utils.DefrostException;
+import cz.martlin.defrost.utils.Networker;
 
+/**
+ * Implements parsing of category site.
+ * @author martin
+ *
+ */
 public class CategoryParser {
-	private final Logger LOG = Logger.getLogger(getClass().getName());
 
 	private final Networker networker;
 	private final BaseForumDescriptor desc;
@@ -28,6 +30,13 @@ public class CategoryParser {
 		this.desc = desc;
 	}
 
+	/**
+	 * Lists posts of given category and given page.
+	 * @param category
+	 * @param page
+	 * @return
+	 * @throws DefrostException
+	 */
 	public PagedDataResult<List<PostInfo>> listPosts(String category, int page) throws DefrostException {
 		URL url;
 		try {
@@ -60,6 +69,13 @@ public class CategoryParser {
 		return new PagedDataResult<List<PostInfo>>(posts, page, hasNextPage);
 	}
 
+	/**
+	 * From given site's document parses posts.
+	 * @param document
+	 * @param category
+	 * @return
+	 * @throws Exception
+	 */
 	private List<PostInfo> parsePosts(Html document, String category) throws Exception {
 		List<PostInfo> posts = new LinkedList<>();
 
@@ -72,8 +88,7 @@ public class CategoryParser {
 			try {
 				post = desc.postItemToPostInfo(item, category);
 			} catch (Exception e) {
-				LOG.log(Level.WARNING, "Cannot find post info in post item", e);
-				continue;
+				throw new DefrostException("Cannot find post info in post item", e);
 			}
 			posts.add(post);
 		}

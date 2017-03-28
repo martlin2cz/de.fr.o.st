@@ -1,4 +1,4 @@
-package cz.martlin.defrost.impl;
+package cz.martlin.defrost.forums.impl;
 
 import static org.junit.Assert.*;
 
@@ -10,7 +10,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import cz.martlin.defrost.impls.EmiminoDateFormat;
+import cz.martlin.defrost.forums.impl.EmiminoDateFormat;
 
 public class EmiminoDateFormatTest {
 

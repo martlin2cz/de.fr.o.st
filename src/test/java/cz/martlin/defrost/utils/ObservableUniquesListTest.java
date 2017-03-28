@@ -1,8 +1,10 @@
-package cz.martlin.defrost.input.tools;
+package cz.martlin.defrost.utils;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import cz.martlin.defrost.utils.ObservableUniquesList;
 
 public class ObservableUniquesListTest {
 
