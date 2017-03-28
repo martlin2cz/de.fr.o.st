@@ -89,7 +89,7 @@ public abstract class ItemsLoadingTask<T> extends Task<T> {
 		this.totalCount = totalCount;
 		this.currentItemIndex = 0;
 
-		updateProgressAndMessage(itemsDesc, null, "started");
+		updateProgressAndMessage(itemsDesc, null, Messages.getString("started")); //$NON-NLS-1$
 
 	}
 
@@ -122,7 +122,7 @@ public abstract class ItemsLoadingTask<T> extends Task<T> {
 		// this.currentItemIndex = 0;
 		this.currentItem = null;
 
-		updateProgressAndMessage(itemsDesc, null, "completed");
+		updateProgressAndMessage(itemsDesc, null, Messages.getString("completed")); //$NON-NLS-1$
 
 	}
 

@@ -44,7 +44,7 @@ public class CommentsImportExportWrapper {
 	public static class CSVCommentsExportTask extends CSVExportTask<Comment> {
 
 		public CSVCommentsExportTask(BaseLoadingIndicator indicator, List<Comment> items) {
-			super("Exporting comments", "Exporting comment", indicator, COMMENTS_FILE, items);
+			super(Messages.getString("Exporting_comments"), Messages.getString("Exporting_comment"), indicator, COMMENTS_FILE, items); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		@Override
@@ -71,7 +71,7 @@ public class CommentsImportExportWrapper {
 	public static class CSVCommentsImportTask extends CSVImportTask<Comment> {
 
 		public CSVCommentsImportTask(BaseLoadingIndicator indicator) {
-			super("Imporing comments", "Importing comment", indicator, COMMENTS_FILE);
+			super(Messages.getString("Importing_comments"), Messages.getString("Importing_comment"), indicator, COMMENTS_FILE); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		@Override

@@ -24,7 +24,7 @@ public class CommentsLoadingTask extends ItemsLoadingTask<List<Comment>> {
 	private final List<PostInfo> posts;
 
 	public CommentsLoadingTask(BaseForumDescriptor descriptor, BaseLoadingIndicator indicator, List<PostInfo> posts) {
-		super("Loading comments", "Loading comments of", indicator);
+		super(Messages.getString("Loading_comments"), Messages.getString("Loading_comments_of"), indicator); //$NON-NLS-1$ //$NON-NLS-2$
 
 		this.posts = posts;
 		this.parser = new PostParser(descriptor);
@@ -79,7 +79,7 @@ public class CommentsLoadingTask extends ItemsLoadingTask<List<Comment>> {
 				break;
 			}
 
-			loadingItemUpdated("page " + i);
+			loadingItemUpdated(Messages.getString("page") + " " + i); //$NON-NLS-1$
 			PagedDataResult<List<Comment>> comments;
 			try {
 				PostIdentifier identifier = post.getIdentifier();

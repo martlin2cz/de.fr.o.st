@@ -21,7 +21,7 @@ public class PostsLoadingTask extends ItemsLoadingTask<List<PostInfo>> {
 	private final List<String> categories;
 
 	public PostsLoadingTask(BaseForumDescriptor descriptor, BaseLoadingIndicator indicator, List<String> categories) {
-		super("Loading posts", "Loading posts of", indicator);
+		super(Messages.getString("Loading_posts"), Messages.getString("Loading_posts_of"), indicator); //$NON-NLS-1$ //$NON-NLS-2$
 
 		this.parser = new CategoryParser(descriptor);
 		this.categories = categories;
@@ -49,10 +49,10 @@ public class PostsLoadingTask extends ItemsLoadingTask<List<PostInfo>> {
 			}
 
 			loadingNextItem(category);
-			
+
 			List<PostInfo> posts = loadPostsOfCategory(category);
 			result.addAll(posts);
-			
+
 			updateValue(null);
 			updateValue(result);
 		}
@@ -77,7 +77,7 @@ public class PostsLoadingTask extends ItemsLoadingTask<List<PostInfo>> {
 				break;
 			}
 
-			loadingItemUpdated("page " + i);
+			loadingItemUpdated(Messages.getString("page") + " " + i); //$NON-NLS-1$
 			PagedDataResult<List<PostInfo>> posts;
 			try {
 				posts = parser.listPosts(category, i);

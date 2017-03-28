@@ -31,7 +31,7 @@ public class CommentsUserXPostOutputTask extends CSVExportTask<Entry<User, Map<P
 	private final List<PostInfo> columns;
 
 	public CommentsUserXPostOutputTask(BaseLoadingIndicator indicator, List<Comment> comments) {
-		super("Outputting comments", "outputting row of user", indicator, FILE, convert(comments));
+		super(Messages.getString("Outputting_comments"), Messages.getString("outputting_row_of_user"), indicator, FILE, convert(comments)); //$NON-NLS-1$ //$NON-NLS-2$
 
 		columns = inferPosts(comments);
 	}

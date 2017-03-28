@@ -54,7 +54,7 @@ public class DefrostApplication extends Application {
 				BaseForumDescriptor descriptor = (BaseForumDescriptor) instance;
 				return descriptor;
 			} catch (Exception e) {
-				System.err.println("Cannot instantite descriptor: " + e.getMessage());
+				System.err.println(Messages.getString("Cannot_instantite_descriptor") + e.getMessage()); //$NON-NLS-1$
 			}
 		}
 
@@ -76,9 +76,9 @@ public class DefrostApplication extends Application {
 	 */
 	private static void doHelpAndVersion() {
 		System.out.println("de.fr.o.st 1.0");
-		System.out.println("Discuss forums offline statistics (de.fr.o.st)");
+		System.out.println(Messages.getString("Discuss_forums_statistics_defrost")); //$NON-NLS-1$
 		System.out.println("m@rtlin, 20. - 28. 03. 2017");
-		System.out.println("Usage: de.fr.o.st [class name of forum descriptor]");
+		System.out.println(Messages.getString("Usage_defrost_class_name_of_forum_descriptor")); //$NON-NLS-1$
 		
 		System.exit(0);
 	}

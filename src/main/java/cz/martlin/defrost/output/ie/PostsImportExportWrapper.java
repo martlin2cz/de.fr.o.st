@@ -34,7 +34,7 @@ public class PostsImportExportWrapper {
 	public static class CSVPostsExportTask extends CSVExportTask<PostInfo> {
 
 		public CSVPostsExportTask(BaseLoadingIndicator indicator, List<PostInfo> items) {
-			super("Exporting posts", "Exporting post", indicator, POSTS_FILE, items);
+			super(Messages.getString("Exporting_posts"), Messages.getString("Exporting_post"), indicator, POSTS_FILE, items); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		@Override
@@ -57,7 +57,7 @@ public class PostsImportExportWrapper {
 	public static class CSVPostsImportTask extends CSVImportTask<PostInfo> {
 
 		public CSVPostsImportTask(BaseLoadingIndicator indicator) {
-			super("Imporing posts", "Importing post", indicator, POSTS_FILE);
+			super(Messages.getString("Importing_posts"), Messages.getString("Importing_post"), indicator, POSTS_FILE); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		@Override

@@ -42,28 +42,28 @@ public class CategoryParser {
 		try {
 			url = desc.urlOfCategory(category, page);
 		} catch (Exception e) {
-			throw new DefrostException("Cannot construct URL of category", e);
+			throw new DefrostException(Messages.getString("Cannot_construct_URL_of_category"), e); //$NON-NLS-1$
 		}
 
 		Html document;
 		try {
 			document = networker.query(url);
 		} catch (Exception e) {
-			throw new DefrostException("Cannot download category site", e);
+			throw new DefrostException(Messages.getString("Cannot_download_category_site"), e); //$NON-NLS-1$
 		}
 
 		List<PostInfo> posts;
 		try {
 			posts = parsePosts(document, category);
 		} catch (Exception e) {
-			throw new DefrostException("Cannot parse posts of category", e);
+			throw new DefrostException(Messages.getString("Cannot_parse_posts_of_category"), e); //$NON-NLS-1$
 		}
 
 		boolean hasNextPage;
 		try {
 			hasNextPage = desc.hasCategoryNextPage(document);
 		} catch (Exception e) {
-			throw new DefrostException("Cannot find if has next page", e);
+			throw new DefrostException(Messages.getString("Cannot_find_if_has_next_page"), e); //$NON-NLS-1$
 		}
 
 		return new PagedDataResult<List<PostInfo>>(posts, page, hasNextPage);
@@ -88,7 +88,7 @@ public class CategoryParser {
 			try {
 				post = desc.postItemToPostInfo(item, category);
 			} catch (Exception e) {
-				throw new DefrostException("Cannot find post info in post item", e);
+				throw new DefrostException(Messages.getString("Cannot_find_post_info_in_post_item"), e); //$NON-NLS-1$
 			}
 			posts.add(post);
 		}

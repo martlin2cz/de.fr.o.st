@@ -201,7 +201,7 @@ public class ImplFasade {
 	public void stopTaskInBackground() {
 		boolean succ = this.currentTask.cancel();
 		if (!succ) {
-			DefrostException e = new DefrostException("Canceling task failed");
+			DefrostException e = new DefrostException(Messages.getString("Canceling_task_failed")); //$NON-NLS-1$
 			indicator.error(e);
 		}
 

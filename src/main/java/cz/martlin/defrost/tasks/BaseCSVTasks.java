@@ -71,7 +71,7 @@ public class BaseCSVTasks {
 							result.add(item);
 						}
 					} catch (Exception e) {
-						DefrostException de = new DefrostException(itemDesc + " failed", e);
+						DefrostException de = new DefrostException(itemDesc + " " + Messages.getString("failed"), e); //$NON-NLS-1$
 						throw new RuntimeException(de);
 					}
 				});
@@ -81,7 +81,7 @@ public class BaseCSVTasks {
 				loadingFinished();
 				return result;
 			} catch (IOException e) {
-				throw new DefrostException(itemsDesc + " failed", e);
+				throw new DefrostException(itemsDesc  + " " + Messages.getString("failed"), e); //$NON-NLS-1$
 			} finally {
 				close(fr);
 				close(parser);
@@ -147,7 +147,7 @@ public class BaseCSVTasks {
 						try {
 							pr.printRecord(fields);
 						} catch (Exception e) {
-							DefrostException de = new DefrostException(itemDesc + " failed", e);
+							DefrostException de = new DefrostException(itemDesc  + " " + Messages.getString("failed"), e); //$NON-NLS-1$
 							throw new RuntimeException(de);
 						}
 					}
@@ -156,7 +156,7 @@ public class BaseCSVTasks {
 				printer.flush();
 				loadingFinished();
 			} catch (IOException e) {
-				throw new DefrostException(itemsDesc + " failed", e);
+				throw new DefrostException(itemsDesc  + " " + Messages.getString("failed"), e); //$NON-NLS-1$
 			} finally {
 				close(fw);
 				close(printer);
@@ -218,7 +218,7 @@ public class BaseCSVTasks {
 			try {
 				closeable.close();
 			} catch (IOException e) {
-				throw new DefrostException("Cannot close file", e);
+				throw new DefrostException(Messages.getString("Cannot_close_file"), e); //$NON-NLS-1$
 			}
 		}
 	}

@@ -30,8 +30,8 @@ public class PostsListViewCallback implements Callback<ListView<PostInfo>, ListC
 				this.setText(item.getTitle());
 
 				String tooltip = //
-						"Category: " + item.getIdentifier().getCategory() + ", " //
-								+ "id: " + item.getIdentifier().getId(); //
+						Messages.getString("Category") + ": " + item.getIdentifier().getCategory() + ", " // //$NON-NLS-1$
+								+ Messages.getString("id") + ": " + item.getIdentifier().getId(); // //$NON-NLS-1$
 
 				this.setTooltip(new Tooltip(tooltip));
 			}

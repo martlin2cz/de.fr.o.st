@@ -40,7 +40,7 @@ public class Networker {
 			Html html = (Html) node;
 			return html;
 		} catch (Exception e) {
-			throw new DefrostException("Cannnot parse HTML", e);
+			throw new DefrostException(Messages.getString("Cannot_parse_HTML"), e); //$NON-NLS-1$
 		}
 	}
 

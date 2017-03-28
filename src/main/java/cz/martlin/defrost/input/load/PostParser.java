@@ -49,42 +49,42 @@ public class PostParser {
 		try {
 			url = desc.urlOfPost(identifier, page);
 		} catch (Exception e) {
-			throw new DefrostException("Cannot create url of post", e);
+			throw new DefrostException(Messages.getString("Cannot_create_url_of_post"), e); //$NON-NLS-1$
 		}
 
 		Html html;
 		try {
 			html = networker.query(url);
 		} catch (Exception e) {
-			throw new DefrostException("Cannot download post", e);
+			throw new DefrostException(Messages.getString("Cannot_download_post"), e); //$NON-NLS-1$
 		}
 
 		PostInfo post;
 		try {
 			post = desc.findPostInfoInPost(identifier, html);
 		} catch (Exception e) {
-			throw new DefrostException("Cannot infer post info", e);
+			throw new DefrostException(Messages.getString("Cannot_infer_post_info"), e); //$NON-NLS-1$
 		}
 
 		NodeList cmts;
 		try {
 			cmts = desc.findPostDiscussElements(html);
 		} catch (Exception e) {
-			throw new DefrostException("Cannot find comments", e);
+			throw new DefrostException(Messages.getString("Cannot_find_comments"), e); //$NON-NLS-1$
 		}
 
 		List<Comment> comments;
 		try {
 			comments = inferComments(post, cmts);
 		} catch (DefrostException e) {
-			throw new DefrostException("Cannot parse comments", e);
+			throw new DefrostException(Messages.getString("Cannot_parse_comments"), e); //$NON-NLS-1$
 		}
 
 		boolean hasNextPage;
 		try {
 			hasNextPage = desc.hasPostNextPage(html);
 		} catch (Exception e) {
-			throw new DefrostException("Cannot find if post has next page", e);
+			throw new DefrostException(Messages.getString("Cannot_find_if_post_has_next_page"), e); //$NON-NLS-1$
 		}
 
 		return new PagedDataResult<List<Comment>>(comments, page, hasNextPage);
@@ -108,7 +108,7 @@ public class PostParser {
 			try {
 				comment = inferComment(post, node);
 			} catch (Exception e) {
-				throw new DefrostException("Cannot infer comment", e);
+				throw new DefrostException(Messages.getString("Cannot_infer_comment"), e); //$NON-NLS-1$
 			}
 			comments.add(comment);
 		}

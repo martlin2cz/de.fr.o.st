@@ -44,7 +44,8 @@ public class EmiminoForumDesc extends SelectorsUsingForumDescriptor {
 				"novorozenec-kojenec", // 644 pages
 				"co-trapi-maminky", // 660 pages
 				"zdravi", // 684 pages
-				"xxxx-testing-error" };
+				// "xxxx-testing-error", //
+		};
 	}
 
 	///////////////////////////////////////////////////////////////////////////

@@ -131,7 +131,7 @@ public class MainController implements Initializable {
 		List<String> categories = categoriesLst.getSelectionModel().getSelectedItems();
 
 		if (categories.isEmpty()) {
-			error("Select at least one category", false);
+			error(Messages.getString("Select_at_least_one_category"), false); //$NON-NLS-1$
 		} else {
 			impl.startLoadingPosts(categories);
 		}
@@ -142,7 +142,7 @@ public class MainController implements Initializable {
 		List<PostInfo> posts = postsLst.getSelectionModel().getSelectedItems();
 
 		if (posts.isEmpty()) {
-			error("Select at least one post", false);
+			error(Messages.getString("Select_at_least_one_post"), false); //$NON-NLS-1$
 		} else {
 			impl.startLoadingComments(posts);
 		}
@@ -155,7 +155,7 @@ public class MainController implements Initializable {
 	
 	@FXML
 	private void discussLblMouseClicked(MouseEvent event) {
-		error("You don't have to click everywhere, do you?", false);	
+		error(Messages.getString("You_dont_have_to_click_everywhere"), false);	 //$NON-NLS-1$
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -209,7 +209,7 @@ public class MainController implements Initializable {
 			}
 
 			Alert alert = new Alert(type);
-			alert.setHeaderText("Error");
+			alert.setHeaderText(Messages.getString("Error")); //$NON-NLS-1$
 			alert.setContentText(text);
 			alert.showAndWait();
 		});

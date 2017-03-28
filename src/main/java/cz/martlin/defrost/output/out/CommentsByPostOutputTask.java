@@ -26,7 +26,7 @@ public class CommentsByPostOutputTask extends CSVExportTask<Comment> {
 	private PostInfo currentPost;
 
 	public CommentsByPostOutputTask(BaseLoadingIndicator indicator, List<Comment> comments) {
-		super("Outputting comments", "Outputting comment", indicator, FILE, comments);
+		super(Messages.getString("Outputting_comments"), Messages.getString("Outputting_comment"), indicator, FILE, comments); //$NON-NLS-1$ //$NON-NLS-2$
 
 		this.currentPost = null;
 	}
