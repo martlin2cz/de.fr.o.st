@@ -4,7 +4,7 @@
 
 	<groupId>cz.martlin</groupId>
 	<artifactId>de.fr.o.st</artifactId>
-	<version>1.0</version>
+	<version>1.1</version>
 
 	<name>de.fr.o.st</name>
 	<description>Discuss forums offline statistics (de.fr.o.st), a tool for analysis of comments in web site's Comments' comments</description>
@@ -31,6 +31,22 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.21</version>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.21</version>
+		</dependency>
+
 
 		<!-- https://mvnrepository.com/artifact/org.htmlparser/htmlparser -->
 		<dependency>

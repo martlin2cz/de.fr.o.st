@@ -1,5 +1,8 @@
 package cz.martlin.defrost.gui;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cz.martlin.defrost.forums.base.BaseForumDescriptor;
 import cz.martlin.defrost.forums.impl.EmiminoForumDesc;
 import cz.martlin.defrost.utils.Msg;
@@ -17,25 +20,31 @@ import javafx.stage.Stage;
  *
  */
 public class DefrostApplication extends Application {
+	private static final Logger LOG = LoggerFactory.getLogger(DefrostApplication.class);
 
 	private static final BaseForumDescriptor DEFAULT_DESCRIPTOR = new EmiminoForumDesc();
 	// new IDnesForumDesc();
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
 
-		BaseForumDescriptor descriptor = inferDescriptor();
-		MainController controller = new MainController(descriptor);
-		loader.setController(controller);
-		loader.setResources(Msg.RESOURCE_BUNDLE);
-		
-		Parent root = loader.load();
+			BaseForumDescriptor descriptor = inferDescriptor();
+			MainController controller = new MainController(descriptor);
+			loader.setController(controller);
+			loader.setResources(Msg.RESOURCE_BUNDLE);
 
-		Scene scene = new Scene(root);
-		stage.setScene(scene);
-		stage.setTitle("de.fr.o.st");
-		stage.show();
+			Parent root = loader.load();
+
+			Scene scene = new Scene(root);
+			stage.setScene(scene);
+			stage.setTitle("de.fr.o.st");
+			stage.show();
+		} catch (Exception e) {
+			LOG.error("Cannot start GUI", e);
+			throw e;
+		}
 	}
 
 	/**
@@ -56,6 +65,7 @@ public class DefrostApplication extends Application {
 				BaseForumDescriptor descriptor = (BaseForumDescriptor) instance;
 				return descriptor;
 			} catch (Exception e) {
+				LOG.warn("Cannot instantite descriptor", e);
 				System.err.println(Msg.getString("Cannot_instantite_descriptor") + e.getMessage()); //$NON-NLS-1$
 			}
 		}
@@ -69,7 +79,15 @@ public class DefrostApplication extends Application {
 						|| "-v".equals(args[0]) || "--version".equals(args[0]))) {
 			doHelpAndVersion();
 		} else {
-			launch(args);
+			doApplicationRun(args);
+		}
+	}
+
+	private static void doApplicationRun(String[] args) {
+		try {
+		launch(args);
+		} catch (Exception e) {
+			LOG.error("Error occured during the application start", e);
 		}
 	}
 
@@ -77,11 +95,11 @@ public class DefrostApplication extends Application {
 	 * Prints help, credits and version.
 	 */
 	private static void doHelpAndVersion() {
-		System.out.println("de.fr.o.st 1.0");
+		System.out.println("de.fr.o.st 1.1");
 		System.out.println(Msg.getString("Discuss_forums_statistics_defrost")); //$NON-NLS-1$
-		System.out.println("m@rtlin, 20. - 28. 03. 2017");
+		System.out.println("m@rtlin, 20. - 28. 03. 2017, 29.03.2017");
 		System.out.println(Msg.getString("Usage_defrost_class_name_of_forum_descriptor")); //$NON-NLS-1$
-		
+
 		System.exit(0);
 	}
 

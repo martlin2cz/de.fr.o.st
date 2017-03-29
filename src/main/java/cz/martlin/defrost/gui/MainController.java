@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.PostInfo;
 import cz.martlin.defrost.forums.base.BaseForumDescriptor;
@@ -29,6 +32,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 public class MainController implements Initializable {
+	private final Logger LOG = LoggerFactory.getLogger(getClass());
 
 	// statusbar
 	@FXML
@@ -153,10 +157,10 @@ public class MainController implements Initializable {
 	private void stopButtAction(ActionEvent event) {
 		impl.stopTaskInBackground();
 	}
-	
+
 	@FXML
 	private void discussLblMouseClicked(MouseEvent event) {
-		error(Msg.getString("You_dont_have_to_click_everywhere"), false);	 //$NON-NLS-1$
+		error(Msg.getString("You_dont_have_to_click_everywhere"), false); //$NON-NLS-1$
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -203,10 +207,13 @@ public class MainController implements Initializable {
 	public void error(String text, boolean isFatal) {
 		Platform.runLater(() -> {
 			AlertType type;
+			
 			if (isFatal) {
 				type = AlertType.ERROR;
+				LOG.error(text);
 			} else {
 				type = AlertType.WARNING;
+				LOG.warn(text);
 			}
 
 			Alert alert = new Alert(type);

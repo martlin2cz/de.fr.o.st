@@ -6,11 +6,27 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cz.martlin.defrost.test.ConsoleLoadingIndicator;
 
 public class ItemsLoadingTaskTest {
+	private static final Logger LOG = LoggerFactory.getLogger(ItemsLoadingTaskTest.class);
+
+	@BeforeClass
+	public static void check() {
+		try {
+			ConsoleLoadingIndicator.initToolkit();
+		} catch (ExceptionInInitializerError e) {
+			LOG.warn("Cannot initialize FX toolkit (are you in console?), test skipped", e);
+			Assume.assumeNoException(e);
+		}
+
+	}
 
 	@Test
 	public void test() throws InterruptedException, ExecutionException, TimeoutException {

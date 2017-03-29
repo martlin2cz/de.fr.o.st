@@ -1,5 +1,8 @@
 package cz.martlin.defrost.tasks;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cz.martlin.defrost.utils.DefrostException;
 import cz.martlin.defrost.utils.Msg;
 import javafx.concurrent.Task;
@@ -16,6 +19,7 @@ import javafx.event.EventHandler;
  * @param <T>
  */
 public abstract class ItemsLoadingTask<T> extends Task<T> {
+	private final Logger LOG = LoggerFactory.getLogger(getClass());
 
 	private final BaseLoadingIndicator indicator;
 	protected final String itemsDesc;
@@ -155,6 +159,8 @@ public abstract class ItemsLoadingTask<T> extends Task<T> {
 
 		String msg = generateMessage(desc, item, suffix);
 		updateMessage(msg);
+		
+		LOG.debug(msg);
 	}
 
 	/**

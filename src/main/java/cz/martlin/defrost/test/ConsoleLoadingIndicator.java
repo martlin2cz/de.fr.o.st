@@ -77,7 +77,11 @@ public class ConsoleLoadingIndicator implements BaseLoadingIndicator {
 			// http://stackoverflow.com/questions/11273773/javafx-2-1-toolkit-not-initialized
 			final CountDownLatch latch = new CountDownLatch(1);
 			SwingUtilities.invokeLater(() -> {
-				new JFXPanel(); // initializes JavaFX environment
+				try {
+					new JFXPanel(); // initializes JavaFX environment
+				} catch (Exception e) {
+					throw new RuntimeException("Cannot create some panel", e);
+				}
 				latch.countDown();
 			});
 

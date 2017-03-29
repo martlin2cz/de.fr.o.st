@@ -151,8 +151,7 @@ public class ParserTools {
 				query_pairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"),
 						URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
 			} catch (UnsupportedEncodingException e) {
-				// TODO handle exception
-				return null;
+				throw new IllegalStateException("Encoding not supported", e);
 			}
 		}
 		return query_pairs;
