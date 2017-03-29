@@ -1,6 +1,7 @@
 package cz.martlin.defrost.gui;
 
 import cz.martlin.defrost.dataobj.PostInfo;
+import cz.martlin.defrost.utils.Msg;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tooltip;
@@ -30,8 +31,8 @@ public class PostsListViewCallback implements Callback<ListView<PostInfo>, ListC
 				this.setText(item.getTitle());
 
 				String tooltip = //
-						Messages.getString("Category") + ": " + item.getIdentifier().getCategory() + ", " // //$NON-NLS-1$
-								+ Messages.getString("id") + ": " + item.getIdentifier().getId(); // //$NON-NLS-1$
+						Msg.getString("Category") + ": " + item.getIdentifier().getCategory() + ", " // //$NON-NLS-1$
+								+ Msg.getString("id") + ": " + item.getIdentifier().getId(); // //$NON-NLS-1$
 
 				this.setTooltip(new Tooltip(tooltip));
 			}

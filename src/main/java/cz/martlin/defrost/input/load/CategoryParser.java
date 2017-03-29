@@ -12,6 +12,7 @@ import cz.martlin.defrost.dataobj.PagedDataResult;
 import cz.martlin.defrost.dataobj.PostInfo;
 import cz.martlin.defrost.forums.base.BaseForumDescriptor;
 import cz.martlin.defrost.utils.DefrostException;
+import cz.martlin.defrost.utils.Msg;
 import cz.martlin.defrost.utils.Networker;
 
 /**
@@ -42,28 +43,28 @@ public class CategoryParser {
 		try {
 			url = desc.urlOfCategory(category, page);
 		} catch (Exception e) {
-			throw new DefrostException(Messages.getString("Cannot_construct_URL_of_category"), e); //$NON-NLS-1$
+			throw new DefrostException(Msg.getString("Cannot_construct_URL_of_category"), e); //$NON-NLS-1$
 		}
 
 		Html document;
 		try {
 			document = networker.query(url);
 		} catch (Exception e) {
-			throw new DefrostException(Messages.getString("Cannot_download_category_site"), e); //$NON-NLS-1$
+			throw new DefrostException(Msg.getString("Cannot_download_category_site"), e); //$NON-NLS-1$
 		}
 
 		List<PostInfo> posts;
 		try {
 			posts = parsePosts(document, category);
 		} catch (Exception e) {
-			throw new DefrostException(Messages.getString("Cannot_parse_posts_of_category"), e); //$NON-NLS-1$
+			throw new DefrostException(Msg.getString("Cannot_parse_posts_of_category"), e); //$NON-NLS-1$
 		}
 
 		boolean hasNextPage;
 		try {
 			hasNextPage = desc.hasCategoryNextPage(document);
 		} catch (Exception e) {
-			throw new DefrostException(Messages.getString("Cannot_find_if_has_next_page"), e); //$NON-NLS-1$
+			throw new DefrostException(Msg.getString("Cannot_find_if_category_has_next_page"), e); //$NON-NLS-1$
 		}
 
 		return new PagedDataResult<List<PostInfo>>(posts, page, hasNextPage);
@@ -88,7 +89,7 @@ public class CategoryParser {
 			try {
 				post = desc.postItemToPostInfo(item, category);
 			} catch (Exception e) {
-				throw new DefrostException(Messages.getString("Cannot_find_post_info_in_post_item"), e); //$NON-NLS-1$
+				throw new DefrostException(Msg.getString("Cannot_find_post_info_in_post_item"), e); //$NON-NLS-1$
 			}
 			posts.add(post);
 		}

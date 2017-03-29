@@ -10,6 +10,7 @@ import cz.martlin.defrost.dataobj.PostInfo;
 import cz.martlin.defrost.tasks.BaseCSVTasks.CSVExportTask;
 import cz.martlin.defrost.tasks.BaseCSVTasks.CSVImportTask;
 import cz.martlin.defrost.tasks.BaseLoadingIndicator;
+import cz.martlin.defrost.utils.Msg;
 
 /**
  * Wrapper class for {@link CSVPostsExportTask} and {@link CSVPostsImportTask}.
@@ -34,7 +35,7 @@ public class PostsImportExportWrapper {
 	public static class CSVPostsExportTask extends CSVExportTask<PostInfo> {
 
 		public CSVPostsExportTask(BaseLoadingIndicator indicator, List<PostInfo> items) {
-			super(Messages.getString("Exporting_posts"), Messages.getString("Exporting_post"), indicator, POSTS_FILE, items); //$NON-NLS-1$ //$NON-NLS-2$
+			super(Msg.getString("Exporting_posts"), Msg.getString("Exporting_post"), indicator, POSTS_FILE, items); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		@Override
@@ -57,7 +58,7 @@ public class PostsImportExportWrapper {
 	public static class CSVPostsImportTask extends CSVImportTask<PostInfo> {
 
 		public CSVPostsImportTask(BaseLoadingIndicator indicator) {
-			super(Messages.getString("Importing_posts"), Messages.getString("Importing_post"), indicator, POSTS_FILE); //$NON-NLS-1$ //$NON-NLS-2$
+			super(Msg.getString("Importing_posts"), Msg.getString("Importing_post"), indicator, POSTS_FILE); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		@Override

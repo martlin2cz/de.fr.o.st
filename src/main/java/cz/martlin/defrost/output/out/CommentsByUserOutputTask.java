@@ -9,6 +9,7 @@ import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.User;
 import cz.martlin.defrost.tasks.BaseCSVTasks.CSVExportTask;
 import cz.martlin.defrost.tasks.BaseLoadingIndicator;
+import cz.martlin.defrost.utils.Msg;
 
 /**
  * Task performing outputing of comments groupped by users.
@@ -25,7 +26,7 @@ public class CommentsByUserOutputTask extends CSVExportTask<Comment> {
 	private User currentUser;
 
 	public CommentsByUserOutputTask(BaseLoadingIndicator indicator, List<Comment> comments) {
-		super(Messages.getString("Outputting_comments"), Messages.getString("Outputting_comment"), indicator, FILE, comments); //$NON-NLS-1$ //$NON-NLS-2$
+		super(Msg.getString("Outputting_comments"), Msg.getString("Outputting_comment"), indicator, FILE, comments); //$NON-NLS-1$ //$NON-NLS-2$
 
 		this.currentUser = null;
 	}

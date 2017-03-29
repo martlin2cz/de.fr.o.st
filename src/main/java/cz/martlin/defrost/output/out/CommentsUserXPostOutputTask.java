@@ -15,6 +15,7 @@ import cz.martlin.defrost.dataobj.PostInfo;
 import cz.martlin.defrost.dataobj.User;
 import cz.martlin.defrost.tasks.BaseCSVTasks.CSVExportTask;
 import cz.martlin.defrost.tasks.BaseLoadingIndicator;
+import cz.martlin.defrost.utils.Msg;
 
 /**
  * Task performing outputing counts of comments in table users x posts.
@@ -31,7 +32,7 @@ public class CommentsUserXPostOutputTask extends CSVExportTask<Entry<User, Map<P
 	private final List<PostInfo> columns;
 
 	public CommentsUserXPostOutputTask(BaseLoadingIndicator indicator, List<Comment> comments) {
-		super(Messages.getString("Outputting_comments"), Messages.getString("outputting_row_of_user"), indicator, FILE, convert(comments)); //$NON-NLS-1$ //$NON-NLS-2$
+		super(Msg.getString("Outputting_comments"), Msg.getString("outputting_row_of_user"), indicator, FILE, convert(comments)); //$NON-NLS-1$ //$NON-NLS-2$
 
 		columns = inferPosts(comments);
 	}

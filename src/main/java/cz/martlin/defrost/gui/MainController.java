@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.PostInfo;
 import cz.martlin.defrost.forums.base.BaseForumDescriptor;
+import cz.martlin.defrost.utils.Msg;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleListProperty;
@@ -131,7 +132,7 @@ public class MainController implements Initializable {
 		List<String> categories = categoriesLst.getSelectionModel().getSelectedItems();
 
 		if (categories.isEmpty()) {
-			error(Messages.getString("Select_at_least_one_category"), false); //$NON-NLS-1$
+			error(Msg.getString("Select_at_least_one_category"), false); //$NON-NLS-1$
 		} else {
 			impl.startLoadingPosts(categories);
 		}
@@ -142,7 +143,7 @@ public class MainController implements Initializable {
 		List<PostInfo> posts = postsLst.getSelectionModel().getSelectedItems();
 
 		if (posts.isEmpty()) {
-			error(Messages.getString("Select_at_least_one_post"), false); //$NON-NLS-1$
+			error(Msg.getString("Select_at_least_one_post"), false); //$NON-NLS-1$
 		} else {
 			impl.startLoadingComments(posts);
 		}
@@ -155,7 +156,7 @@ public class MainController implements Initializable {
 	
 	@FXML
 	private void discussLblMouseClicked(MouseEvent event) {
-		error(Messages.getString("You_dont_have_to_click_everywhere"), false);	 //$NON-NLS-1$
+		error(Msg.getString("You_dont_have_to_click_everywhere"), false);	 //$NON-NLS-1$
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -209,7 +210,7 @@ public class MainController implements Initializable {
 			}
 
 			Alert alert = new Alert(type);
-			alert.setHeaderText(Messages.getString("Error")); //$NON-NLS-1$
+			alert.setHeaderText(Msg.getString("Error")); //$NON-NLS-1$
 			alert.setContentText(text);
 			alert.showAndWait();
 		});

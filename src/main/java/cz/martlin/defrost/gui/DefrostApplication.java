@@ -2,6 +2,7 @@ package cz.martlin.defrost.gui;
 
 import cz.martlin.defrost.forums.base.BaseForumDescriptor;
 import cz.martlin.defrost.forums.impl.EmiminoForumDesc;
+import cz.martlin.defrost.utils.Msg;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -27,7 +28,8 @@ public class DefrostApplication extends Application {
 		BaseForumDescriptor descriptor = inferDescriptor();
 		MainController controller = new MainController(descriptor);
 		loader.setController(controller);
-
+		loader.setResources(Msg.RESOURCE_BUNDLE);
+		
 		Parent root = loader.load();
 
 		Scene scene = new Scene(root);
@@ -54,7 +56,7 @@ public class DefrostApplication extends Application {
 				BaseForumDescriptor descriptor = (BaseForumDescriptor) instance;
 				return descriptor;
 			} catch (Exception e) {
-				System.err.println(Messages.getString("Cannot_instantite_descriptor") + e.getMessage()); //$NON-NLS-1$
+				System.err.println(Msg.getString("Cannot_instantite_descriptor") + e.getMessage()); //$NON-NLS-1$
 			}
 		}
 
@@ -76,9 +78,9 @@ public class DefrostApplication extends Application {
 	 */
 	private static void doHelpAndVersion() {
 		System.out.println("de.fr.o.st 1.0");
-		System.out.println(Messages.getString("Discuss_forums_statistics_defrost")); //$NON-NLS-1$
+		System.out.println(Msg.getString("Discuss_forums_statistics_defrost")); //$NON-NLS-1$
 		System.out.println("m@rtlin, 20. - 28. 03. 2017");
-		System.out.println(Messages.getString("Usage_defrost_class_name_of_forum_descriptor")); //$NON-NLS-1$
+		System.out.println(Msg.getString("Usage_defrost_class_name_of_forum_descriptor")); //$NON-NLS-1$
 		
 		System.exit(0);
 	}

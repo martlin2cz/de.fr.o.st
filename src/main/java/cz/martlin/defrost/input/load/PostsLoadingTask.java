@@ -9,6 +9,7 @@ import cz.martlin.defrost.forums.base.BaseForumDescriptor;
 import cz.martlin.defrost.tasks.BaseLoadingIndicator;
 import cz.martlin.defrost.tasks.ItemsLoadingTask;
 import cz.martlin.defrost.utils.DefrostException;
+import cz.martlin.defrost.utils.Msg;
 
 /**
  * Task implementing loading of posts of categories.
@@ -21,7 +22,7 @@ public class PostsLoadingTask extends ItemsLoadingTask<List<PostInfo>> {
 	private final List<String> categories;
 
 	public PostsLoadingTask(BaseForumDescriptor descriptor, BaseLoadingIndicator indicator, List<String> categories) {
-		super(Messages.getString("Loading_posts"), Messages.getString("Loading_posts_of"), indicator); //$NON-NLS-1$ //$NON-NLS-2$
+		super(Msg.getString("Loading_posts"), Msg.getString("Loading_posts_of"), indicator); //$NON-NLS-1$ //$NON-NLS-2$
 
 		this.parser = new CategoryParser(descriptor);
 		this.categories = categories;
@@ -77,7 +78,7 @@ public class PostsLoadingTask extends ItemsLoadingTask<List<PostInfo>> {
 				break;
 			}
 
-			loadingItemUpdated(Messages.getString("page") + " " + i); //$NON-NLS-1$
+			loadingItemUpdated(Msg.getString("page") + " " + i); //$NON-NLS-1$
 			PagedDataResult<List<PostInfo>> posts;
 			try {
 				posts = parser.listPosts(category, i);

@@ -13,9 +13,10 @@ import cz.martlin.defrost.dataobj.Comment;
 import cz.martlin.defrost.dataobj.PostIdentifier;
 import cz.martlin.defrost.dataobj.PostInfo;
 import cz.martlin.defrost.dataobj.User;
-import cz.martlin.defrost.tasks.BaseLoadingIndicator;
 import cz.martlin.defrost.tasks.BaseCSVTasks.CSVExportTask;
 import cz.martlin.defrost.tasks.BaseCSVTasks.CSVImportTask;
+import cz.martlin.defrost.tasks.BaseLoadingIndicator;
+import cz.martlin.defrost.utils.Msg;
 import cz.martlin.defrost.utils.ParserTools;
 
 /**
@@ -44,7 +45,7 @@ public class CommentsImportExportWrapper {
 	public static class CSVCommentsExportTask extends CSVExportTask<Comment> {
 
 		public CSVCommentsExportTask(BaseLoadingIndicator indicator, List<Comment> items) {
-			super(Messages.getString("Exporting_comments"), Messages.getString("Exporting_comment"), indicator, COMMENTS_FILE, items); //$NON-NLS-1$ //$NON-NLS-2$
+			super(Msg.getString("Exporting_comments"), Msg.getString("Exporting_comment"), indicator, COMMENTS_FILE, items); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		@Override
@@ -71,7 +72,7 @@ public class CommentsImportExportWrapper {
 	public static class CSVCommentsImportTask extends CSVImportTask<Comment> {
 
 		public CSVCommentsImportTask(BaseLoadingIndicator indicator) {
-			super(Messages.getString("Importing_comments"), Messages.getString("Importing_comment"), indicator, COMMENTS_FILE); //$NON-NLS-1$ //$NON-NLS-2$
+			super(Msg.getString("Importing_comments"), Msg.getString("Importing_comment"), indicator, COMMENTS_FILE); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		@Override

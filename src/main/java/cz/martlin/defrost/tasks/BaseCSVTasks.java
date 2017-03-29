@@ -18,6 +18,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
 import cz.martlin.defrost.utils.DefrostException;
+import cz.martlin.defrost.utils.Msg;
 
 /**
  * Tasks implementing CSV importing and exporting.
@@ -71,7 +72,7 @@ public class BaseCSVTasks {
 							result.add(item);
 						}
 					} catch (Exception e) {
-						DefrostException de = new DefrostException(itemDesc + " " + Messages.getString("failed"), e); //$NON-NLS-1$
+						DefrostException de = new DefrostException(itemDesc + " " + Msg.getString("failed"), e); //$NON-NLS-1$
 						throw new RuntimeException(de);
 					}
 				});
@@ -81,7 +82,7 @@ public class BaseCSVTasks {
 				loadingFinished();
 				return result;
 			} catch (IOException e) {
-				throw new DefrostException(itemsDesc  + " " + Messages.getString("failed"), e); //$NON-NLS-1$
+				throw new DefrostException(itemsDesc  + " " + Msg.getString("failed"), e); //$NON-NLS-1$
 			} finally {
 				close(fr);
 				close(parser);
@@ -147,7 +148,7 @@ public class BaseCSVTasks {
 						try {
 							pr.printRecord(fields);
 						} catch (Exception e) {
-							DefrostException de = new DefrostException(itemDesc  + " " + Messages.getString("failed"), e); //$NON-NLS-1$
+							DefrostException de = new DefrostException(itemDesc  + " " + Msg.getString("failed"), e); //$NON-NLS-1$
 							throw new RuntimeException(de);
 						}
 					}
@@ -156,7 +157,7 @@ public class BaseCSVTasks {
 				printer.flush();
 				loadingFinished();
 			} catch (IOException e) {
-				throw new DefrostException(itemsDesc  + " " + Messages.getString("failed"), e); //$NON-NLS-1$
+				throw new DefrostException(itemsDesc  + " " + Msg.getString("failed"), e); //$NON-NLS-1$
 			} finally {
 				close(fw);
 				close(printer);
@@ -218,7 +219,7 @@ public class BaseCSVTasks {
 			try {
 				closeable.close();
 			} catch (IOException e) {
-				throw new DefrostException(Messages.getString("Cannot_close_file"), e); //$NON-NLS-1$
+				throw new DefrostException(Msg.getString("Cannot_close_file"), e); //$NON-NLS-1$
 			}
 		}
 	}

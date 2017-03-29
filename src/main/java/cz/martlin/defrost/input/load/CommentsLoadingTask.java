@@ -11,6 +11,7 @@ import cz.martlin.defrost.forums.base.BaseForumDescriptor;
 import cz.martlin.defrost.tasks.BaseLoadingIndicator;
 import cz.martlin.defrost.tasks.ItemsLoadingTask;
 import cz.martlin.defrost.utils.DefrostException;
+import cz.martlin.defrost.utils.Msg;
 
 /**
  * Task implementing loading of posts' comments.
@@ -24,7 +25,7 @@ public class CommentsLoadingTask extends ItemsLoadingTask<List<Comment>> {
 	private final List<PostInfo> posts;
 
 	public CommentsLoadingTask(BaseForumDescriptor descriptor, BaseLoadingIndicator indicator, List<PostInfo> posts) {
-		super(Messages.getString("Loading_comments"), Messages.getString("Loading_comments_of"), indicator); //$NON-NLS-1$ //$NON-NLS-2$
+		super(Msg.getString("Loading_comments"), Msg.getString("Loading_comments_of"), indicator); //$NON-NLS-1$ //$NON-NLS-2$
 
 		this.posts = posts;
 		this.parser = new PostParser(descriptor);
@@ -79,7 +80,7 @@ public class CommentsLoadingTask extends ItemsLoadingTask<List<Comment>> {
 				break;
 			}
 
-			loadingItemUpdated(Messages.getString("page") + " " + i); //$NON-NLS-1$
+			loadingItemUpdated(Msg.getString("page") + " " + i); //$NON-NLS-1$
 			PagedDataResult<List<Comment>> comments;
 			try {
 				PostIdentifier identifier = post.getIdentifier();

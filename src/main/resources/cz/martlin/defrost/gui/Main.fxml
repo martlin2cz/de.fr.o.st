@@ -18,7 +18,7 @@
 			AnchorPane.topAnchor="40.0">
 			<children>
 				<Button id="" mnemonicParsing="false" onAction="#loadPostsButtAction"
-					text="Load posts of selected categories" textAlignment="CENTER"
+					text="%Load_posts_of_selected_categories" textAlignment="CENTER"
 					wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER"
 					GridPane.rowIndex="2" GridPane.valignment="CENTER">
 					<GridPane.margin>
@@ -27,7 +27,7 @@
 					</GridPane.margin>
 				</Button>
 				<Button id="" mnemonicParsing="false" onAction="#loadCommentsButtAction"
-					text="Load comments of selected posts" textAlignment="CENTER"
+					text="%Load_comments_of_selected_posts" textAlignment="CENTER"
 					underline="false" wrapText="true" GridPane.columnIndex="3"
 					GridPane.halignment="CENTER" GridPane.margin="$x1"
 					GridPane.rowIndex="2" GridPane.valignment="CENTER" />
@@ -40,13 +40,13 @@
 					spacing="10.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
 					<children>
 						<Button alignment="CENTER" mnemonicParsing="false"
-							onAction="#outputByPostButtAction" text="Output by Post"
+							onAction="#outputByPostButtAction" text="%Output_by_post"
 							textAlignment="CENTER" wrapText="true" />
 						<Button alignment="CENTER" mnemonicParsing="false"
-							onAction="#outputByUserButtAction" text="Output by User"
+							onAction="#outputByUserButtAction" text="%Output_by_user"
 							textAlignment="CENTER" wrapText="true" VBox.margin="$x1" />
 						<Button mnemonicParsing="false" onAction="#outputUserXpostButtAction"
-							text="Output user x post" textAlignment="CENTER" wrapText="true"
+							text="%Output_user_x_post" textAlignment="CENTER" wrapText="true"
 							VBox.margin="$x1" />
 					</children>
 				</VBox>
@@ -55,25 +55,25 @@
 					GridPane.rowIndex="1" GridPane.valignment="CENTER">
 					<children>
 						<Button mnemonicParsing="false" onAction="#exportPostsButtAction"
-							text="Export" HBox.margin="$x1" />
+							text="%Export" HBox.margin="$x1" />
 						<Button mnemonicParsing="false" onAction="#importPostsButtAction"
-							text="Import" />
+							text="%Import" />
 					</children>
 				</HBox>
 				<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0"
 					GridPane.columnIndex="4" GridPane.rowIndex="1">
 					<children>
 						<Button mnemonicParsing="false" onAction="#exportCommentsButtAction"
-							text="Export" HBox.margin="$x1" />
+							text="%Export" HBox.margin="$x1" />
 						<Button mnemonicParsing="false" onAction="#importCommentsButtAction"
-							text="Import" />
+							text="%Import" />
 					</children>
 				</HBox>
 				<HBox prefHeight="100.0" prefWidth="200.0"
 					GridPane.columnIndex="0" GridPane.halignment="CENTER"
 					GridPane.rowIndex="0" GridPane.valignment="CENTER">
 					<children>
-						<Label text="Categories:" />
+						<Label text="%Categories:" />
 						<Label fx:id="categoriesTotalLbl" text="total">
 							<HBox.margin>
 								<Insets left="10.0" fx:id="x2" />
@@ -85,7 +85,7 @@
 					GridPane.columnIndex="2" GridPane.halignment="CENTER"
 					GridPane.rowIndex="0" GridPane.valignment="CENTER">
 					<children>
-						<Label text="Posts to analyze:" />
+						<Label text="%Posts_to_analyze:" />
 						<Label id="CommentsTotalLbl" fx:id="postsTotalLbl" disable="false"
 							text="total" HBox.margin="$x2" />
 					</children>
@@ -94,7 +94,7 @@
 					GridPane.columnIndex="4" GridPane.halignment="CENTER"
 					GridPane.rowIndex="0" GridPane.valignment="CENTER">
 					<children>
-						<Label text="Comments:" />
+						<Label text="%Comments:" />
 						<Label fx:id="commentsTotalLbl" text="total" HBox.margin="$x2" />
 					</children>
 				</HBox>
@@ -122,7 +122,7 @@
 			</rowConstraints>
 		</GridPane>
 		<Button fx:id="stopButt" cancelButton="true" disable="true"
-			mnemonicParsing="false" onAction="#stopButtAction" text="Stop"
+			mnemonicParsing="false" onAction="#stopButtAction" text="%Stop"
 			textAlignment="LEFT" AnchorPane.rightAnchor="10.0"
 			AnchorPane.topAnchor="10.0" />
 		<AnchorPane id="statusBar" maxHeight="50.0" minHeight="30.0"
@@ -130,7 +130,7 @@
 			AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
 			<children>
 				<Label id="" fx:id="statusBarLbl" layoutX="50.0" layoutY="4.0"
-					maxWidth="-1.0" minHeight="16.0" minWidth="-1.0" text="Status" />
+					maxWidth="-1.0" minHeight="16.0" minWidth="-1.0" text="%Status" />
 				<ProgressBar fx:id="loadingPrgbr" layoutX="50.0"
 					layoutY="26.0" prefHeight="16.0" prefWidth="550.0" progress="0.0"
 					visible="false" />
@@ -143,7 +143,7 @@
 			AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
 			<children>
 				<Label id="" graphicTextGap="4.0" maxWidth="-1.0" minHeight="16.0"
-					minWidth="-1.0" text="Discuss in use:" />
+					minWidth="-1.0" text="%Discuss_in_use:" />
 				<Label id="" fx:id="discussInUseLbl" onMouseClicked="#discussLblMouseClicked"
 					text="discuss" HBox.margin="$x2" />
 			</children>

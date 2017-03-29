@@ -17,6 +17,7 @@ import cz.martlin.defrost.output.out.CommentsByUserOutputTask;
 import cz.martlin.defrost.output.out.CommentsUserXPostOutputTask;
 import cz.martlin.defrost.tasks.BaseLoadingIndicator;
 import cz.martlin.defrost.utils.DefrostException;
+import cz.martlin.defrost.utils.Msg;
 import cz.martlin.defrost.utils.ObservableUniquesList;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -201,7 +202,7 @@ public class ImplFasade {
 	public void stopTaskInBackground() {
 		boolean succ = this.currentTask.cancel();
 		if (!succ) {
-			DefrostException e = new DefrostException(Messages.getString("Canceling_task_failed")); //$NON-NLS-1$
+			DefrostException e = new DefrostException(Msg.getString("Canceling_task_failed")); //$NON-NLS-1$
 			indicator.error(e);
 		}
 

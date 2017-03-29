@@ -1,6 +1,7 @@
 package cz.martlin.defrost.tasks;
 
 import cz.martlin.defrost.utils.DefrostException;
+import cz.martlin.defrost.utils.Msg;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -89,7 +90,7 @@ public abstract class ItemsLoadingTask<T> extends Task<T> {
 		this.totalCount = totalCount;
 		this.currentItemIndex = 0;
 
-		updateProgressAndMessage(itemsDesc, null, Messages.getString("started")); //$NON-NLS-1$
+		updateProgressAndMessage(itemsDesc, null, Msg.getString("started")); //$NON-NLS-1$
 
 	}
 
@@ -122,7 +123,7 @@ public abstract class ItemsLoadingTask<T> extends Task<T> {
 		// this.currentItemIndex = 0;
 		this.currentItem = null;
 
-		updateProgressAndMessage(itemsDesc, null, Messages.getString("completed")); //$NON-NLS-1$
+		updateProgressAndMessage(itemsDesc, null, Msg.getString("completed")); //$NON-NLS-1$
 
 	}
 
