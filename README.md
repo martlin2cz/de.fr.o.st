@@ -26,3 +26,11 @@ If you want to implement custom "forum", just create class implementing interfac
 
 de.fr.o.st is common maven project. Built using `mvn clean package` also generates executable jar file `target/jfx/app/de.fr.o.st-`version`-jfx.jar`.
 
+## History
+### version 1.0
+ - first forking version
+
+### version 1.1
+ - added internationalisation (czech and english translation)
+ - added logging
+
